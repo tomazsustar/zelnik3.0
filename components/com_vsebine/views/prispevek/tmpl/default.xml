@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="Vsebine" option="View">
+	<layout title="Prispevek" option="View">
 	</layout>
 	<fields name="request">
 		<fieldset name="request" >
