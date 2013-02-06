@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+              <field name="id" type="text" default="0" label="COM_VSEBINE_FORM_LBL_PRISPEVEK_ID"
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" /> 
+
+       <field name="title" type="text"
+                
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_TITLE"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_TITLE" 
+                
+                
+                
+            filter="raw" /> 
+
+       <field name="introtext" type="text"
+                
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_INTROTEXT"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_INTROTEXT" 
+                
+                
+                
+            filter="raw" /> 
+
+       <field name="fulltext" type="text"
+                
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_FULLTEXT"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_FULLTEXT" 
+                
+                
+                
+            filter="raw" /> 
+
+       <field name="author" type="text"
+                
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_AUTHOR"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_AUTHOR" 
+                
+                
+                
+            filter="raw" /> 
+
+       <field name="author_alias" type="text"
+                
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_AUTHOR_ALIAS"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_AUTHOR_ALIAS" 
+                
+                
+                
+            filter="raw" /> 
+
+       <field name="created" type="calendar" class="inputbox"
+        
+        
+         default="0000-00-00 00:00:00" 
+        
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_CREATED"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_CREATED" 
+        filter="safehtml" /> 
+
+       <field name="publish_up" type="calendar" class="inputbox"
+        
+        
+         default="0000-00-00 00:00:00" 
+        
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_PUBLISH_UP"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_PUBLISH_UP" 
+        filter="safehtml" /> 
+
+       <field name="publish_down" type="calendar" class="inputbox"
+        
+        
+         default="0000-00-00 00:00:00" 
+        
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_PUBLISH_DOWN"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_PUBLISH_DOWN" 
+        filter="safehtml" /> 
+
+       <field name="tags" type="text"
+                
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_TAGS"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_TAGS" 
+                
+                
+                
+            filter="raw" /> 
+
+       <field name="site_id" type="text" size="40" class="inputbox"
+        
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_SITE_ID"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_SITE_ID" 
+        
+        
+        
+        filter="safehtml" /> 
+
+       <field name="start_date" type="calendar" class="inputbox"
+        
+        
+         default="0000-00-00 00:00:00" 
+        
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_START_DATE"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_START_DATE" 
+        filter="safehtml" /> 
+
+       <field name="end_date" type="calendar" class="inputbox"
+        
+        
+         default="0000-00-00 00:00:00" 
+        
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_END_DATE"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_END_DATE" 
+        filter="safehtml" /> 
+
+       <field name="lokacija" type="text"
+                
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_LOKACIJA"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_LOKACIJA" 
+                
+                
+                
+            filter="raw" /> 
+
+       <field name="frontpage" type="text" size="40" class="inputbox"
+        
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_FRONTPAGE"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_FRONTPAGE" 
+        
+        
+        
+        filter="safehtml" /> 
+
+       <field name="koledar" type="text" size="40" class="inputbox"
+        
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_KOLEDAR"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_KOLEDAR" 
+        
+        
+        
+        filter="safehtml" /> 
+
+       <field name="slika" type="text"
+                
+            label="COM_VSEBINE_FORM_LBL_PRISPEVEK_SLIKA"
+            description="COM_VSEBINE_FORM_DESC_PRISPEVEK_SLIKA" 
+                
+                
+                
+            filter="raw" /> 
+
+         <field
+        name="state"
+        type="list"
+        label="JSTATUS"
+        description="JFIELD_PUBLISHED_DESC"
+        class="inputbox"
+        size="1"
+        default="1">
+        <option value="1">JPUBLISHED</option>
+        <option value="0">JUNPUBLISHED</option>
+    </field> 
+
+ </fieldset> 
+
+ <fieldset 
+                        name="accesscontrol">
+                       <field name="asset_id" type="hidden" filter="unset" />
+                       <field name="rules"
+                            type="rules"
+                            label="JFIELD_RULES_LABEL"
+                            translate_label="false"
+                            filter="rules"
+                            validate="rules"
+                            class="inputbox"
+                            component="com_vsebine"
+                            section="prispevek"
+                        />
+
+	</fieldset>
+
+</form>

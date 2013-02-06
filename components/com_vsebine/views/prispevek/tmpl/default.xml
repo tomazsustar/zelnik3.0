@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Vsebine" option="View">
+	</layout>
+	<fields name="request">
+		<fieldset name="request" >
+
+			<field name="Prispevek" type="text"
+				description="Vpiši id, ali URL obliko naslova za izbran članek"
+				extension="com_vsebine"
+				label="Prispevek"
+			/>
+		</fieldset>
+	</fields>
+</metadata>

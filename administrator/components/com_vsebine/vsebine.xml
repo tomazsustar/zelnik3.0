@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.6.0" method="upgrade">
+    <name>com_vsebine</name>
+    <creationDate>2013-01-29</creationDate>
+    <copyright>Copyright (C) 2013. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <author>Tomaž Šuštar</author>
+    <authorEmail>tomaz@zelnik.net</authorEmail>
+    <authorUrl>http://www.zelnik.net</authorUrl>
+    <version>1.0.0</version>
+    <description>Joomla komponenta za vsebine na Zelniku. </description>
+    
+
+
+    <files folder="site">
+        <filename>index.html</filename>
+        <filename>vsebine.php</filename>
+        <filename>controller.php</filename>
+        <filename>router.php</filename>
+        <folder>views</folder>
+        <folder>models</folder>
+        <folder>controllers</folder>
+        <folder>helpers</folder>
+    </files>
+    <languages folder="site">
+        <language tag="en-GB">language/en-GB.com_vsebine.ini
+        </language>
+    </languages>
+    <administration>
+        <menu img="components/com_vsebine/assets/images/s_com_vsebine.png" >COM_VSEBINE</menu>
+        <submenu>
+            
+			<menu link="option=com_vsebine&amp;view=vsebine" view="vsebine" img="components/com_vsebine/assets/images/s_vsebine.png" alt="Vsebine/Vsebine">COM_VSEBINE_TITLE_VSEBINE</menu>
+
+        </submenu>
+        <files folder="administrator">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
+            <filename>index.html</filename>
+            <filename>vsebine.php</filename>
+            <folder>controllers</folder>
+            <folder>assets</folder>
+            <folder>helpers</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+        </files>
+        <languages folder="administrator">
+            <language tag="en-GB">language/en-GB.com_vsebine.ini
+            </language>
+            <language tag="en-GB">language/en-GB.com_vsebine.sys.ini
+            </language>
+        </languages>
+    </administration>
+</extension>
+<!-- Component built by the Joomla Component Creator -->
+<!-- http://www.notwebdesign.com/joomla-component-creator/ -->
