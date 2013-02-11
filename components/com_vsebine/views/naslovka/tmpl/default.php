@@ -78,5 +78,3 @@ foreach ($this->items as $key => $item) : ?>
 		<?php endforeach; ?>
 <?php //endif; ?>
 
-
-</div>

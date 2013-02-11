@@ -469,7 +469,7 @@ max-width: 1300px;
 margin-top: 60px;
 }
 #element {
-position: fixed;
+position: relative;
 bottom: 20px;
 background-image: url('../images/zajec.png');
 height: 100px;
