@@ -26,7 +26,7 @@ html {
 	-ms-text-size-adjust: 100%;
 }
 a {
-text-decoration:blink;
+text-decoration:none
 }
 a:focus {
 	outline: thin dotted #333;
@@ -317,8 +317,8 @@ height: 800px;
 }
 #content {
 position: relative;
-margin-left: 30px;
-width: 550px;
+margin-left: 20px;
+width: 570px;
 }
 #leva-reklama {
 background-image: url('../images/advertise-160x600.png');
@@ -469,7 +469,7 @@ max-width: 1300px;
 margin-top: 60px;
 }
 #element {
-position: relative;
+position: fixed;
 bottom: 20px;
 background-image: url('../images/zajec.png');
 height: 100px;
@@ -477,3 +477,4 @@ width: 83px;
 margin-right: auto;
 margin-left: 1140px;
 }
+
