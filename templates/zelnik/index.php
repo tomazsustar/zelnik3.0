@@ -164,12 +164,26 @@ else
 		var element = document.getElementById('body'),
 			style = window.getComputedStyle(element),
 			sirinaBody = parseInt(style.getPropertyValue('max-width'));
+		var levaReklama = document.getElementById('leva-reklama'),
+			visinaLevaReklama = $('#leva-reklama').height();
 		
-		if (window.innerWidth < sirinaBody) {
+		if (window.innerWidth < sirinaBody || window.innerHeight < visinaLevaReklama) //skrivanje leve reklame (pokoncne)
+		{ 
 		$("#leva-reklama").css("display", "none");
 		}
 		else {
 		$("#leva-reklama").css("display", "block");
+		}
+		
+		var levaReklama = document.getElementById('desna-reklama'),
+			visinaLevaReklama = $('#desna-reklama').height();
+		
+		if (window.innerHeight < (visinaLevaReklama + 400)) //skrivanje desne reklame
+		{ 
+		$("#desna-reklama").css("display", "none");
+		}
+		else {
+		$("#desna-reklama").css("display", "block");
 		}
 		//skrolanje
 		$(function() {
@@ -185,7 +199,7 @@ $('.jspScrollable').mouseleave(function(){
 });	
 	});
 	
-	function skrijReklamo()
+function skrijReklamo() //zapiranje desne reklame
 {
 var reklama = document.getElementById("desna-reklama");
 $("#desna-reklama").css("display", "none");
