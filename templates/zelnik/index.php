@@ -44,23 +44,7 @@ JHtmlBootstrap::loadCss($includeMaincss = false, $this->direction);
 // Add current user information
 $user = JFactory::getUser();
 
-// Adjusting content width
-if ($this->countModules('position-7') && $this->countModules('position-8'))
-{
-	$span = "span6";
-}
-elseif ($this->countModules('position-7') && !$this->countModules('position-8'))
-{
-	$span = "span9";
-}
-elseif (!$this->countModules('position-7') && $this->countModules('position-8'))
-{
-	$span = "span9";
-}
-else
-{
-	$span = "span12";
-}
+
 
 // Logo file or site title param
 if ($this->params->get('logoFile'))
@@ -252,7 +236,7 @@ $('.jspScrollable').mouseleave(function(){
 	<!-- Body -->
 	<div class="body-background"></div>	
 	<div id="body" class="body">		
-		<div id="leva-reklama"></div>
+		<div id="leva-reklama"><jdoc:include type="modules" name="position-8" style="xhtml" /></div>
 		<div class="container">
 			<div id="glavno-okno" class="sticky">
 				<div id="rob-levi"></div>				
@@ -266,13 +250,10 @@ $('.jspScrollable').mouseleave(function(){
 			</div>	
 			<div id="content">
 				<!-- Begin Content -->
-				<jdoc:include type="modules" name="position-3" style="xhtml" />
-				<jdoc:include type="message" />
 				<jdoc:include type="component" />
-				<jdoc:include type="modules" name="position-2" style="none" />
 				<!-- End Content -->
 			</div> 
-			<div id="desna-reklama"></div>
+			<div id="desna-reklama"><jdoc:include type="modules" name="position-7" style="xhtml" /></div>
 		</div>
 		<div id="element"></div>
 	</div>
