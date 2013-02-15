@@ -36,7 +36,7 @@ JHtml::_('bootstrap.framework');
 
 // Add Stylesheets
 $doc->addStyleSheet('templates/'.$this->template.'/css/template.css');
-$doc->addStyleSheet('templates/'.$this->template.'/css/naslovka.css');
+$doc->addStyleSheet('templates/'.$this->template.'/css/vsebine.css');
 
 // Load optional rtl Bootstrap css and Bootstrap bugfixes
 JHtmlBootstrap::loadCss($includeMaincss = false, $this->direction);
@@ -184,6 +184,13 @@ $('.jspScrollable').mouseleave(function(){
     $(this).find('.jspDrag').stop(true, true).fadeOut('slow');
 });	
 	});
+	
+	function skrijReklamo()
+{
+var reklama = document.getElementById("desna-reklama");
+$("#desna-reklama").css("display", "none");
+return false;
+}
 	</script>
 	
 
@@ -234,27 +241,30 @@ $('.jspScrollable').mouseleave(function(){
 		</div>
 	</div>	
 	<!-- Body -->
-	<div class="body-background"></div>	
-	<div id="body" class="body">		
-		<div id="leva-reklama"><jdoc:include type="modules" name="position-8" style="xhtml" /></div>
-		<div class="container">
-			<div id="glavno-okno" class="sticky">
-				<div id="rob-levi"></div>				
-				<div class="sredina"></div>
-				<div id="rob-desni"></div>
-			</div>
-			<div id="desno-okno" class="sticky">
-				<div id="rob-levi-right"></div>
-				<div class="sredina"></div>
-				<div id="rob-desni-right"></div>
-			</div>	
-			<div id="content">
+		<div class="body-background"></div>	
+		<div id="body" class="body">		
+			<div id="leva-reklama"><jdoc:include type="modules" name="position-8" style="xhtml" /></div>
+			<div class="container">
+				<div id="glavno-okno" class="sticky">
+					<div id="rob-levi"></div>				
+					<div class="sredina"></div>
+					<div id="rob-desni"></div>
+				</div>
+				<div id="desno-okno" class="sticky">
+					<div id="rob-levi-right"></div>
+					<div class="sredina"></div>
+					<div id="rob-desni-right"></div>
+				</div>	
+				<div id="content">
 				<!-- Begin Content -->
 				<jdoc:include type="component" />
 				<!-- End Content -->
-			</div> 
-			<div id="desna-reklama"><jdoc:include type="modules" name="position-7" style="xhtml" /></div>
-		</div>
+				</div> 
+				<div id="desna-reklama">
+				<div id="skrij-reklamo" onclick="skrijReklamo();"></div>
+				<jdoc:include type="modules" name="position-7" style="xhtml" />	
+				</div>	
+			</div>
 		<div id="element"></div>
 	</div>
 	<!-- Footer -->
