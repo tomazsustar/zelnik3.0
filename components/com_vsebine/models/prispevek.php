@@ -62,8 +62,6 @@ protected function populateState()
 
 
 				$query->from('vs_vsebine AS a');
-
-				// Join on category table.
 				$query->select('a.*');
 
 				// Join on user table.
@@ -164,6 +162,22 @@ protected function populateState()
 //					}
 //				}
 
+				// ZNAČKE
+				$query = $db->getQuery(true);
+				$query->from('vs_tags AS t');
+				$query->select('t.*, tv.*');
+				$query->join('INNER', 'vs_tags_vsebina as tv ON tv.id_tag = t.id');
+				$query->where("tv.id_vsebine = $data->id");
+				$query->where("t.tag <> ''");
+				$db->setQuery($query);
+				$tags = $db->loadObjectList();
+//				print_r($tags);
+				foreach ($tags as &$tag){
+					$tag->tagUrl = JRoute::_("index.php?option=com_vsebine&tags=".$tag->tag);
+				}
+				
+				$data->tags=$tags;
+				
 				$this->_item = $data;
 			}
 			catch (Exception $e)

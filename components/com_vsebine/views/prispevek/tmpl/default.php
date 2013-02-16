@@ -30,7 +30,11 @@ JHtml::_('behavior.caption');
 $item=&$this->item?>
 
 <div class="novica">
-	<div class="znacke"><?php echo mb_strtoupper($item->tags); ?></div>
+	<div class="znacke">
+		<?php foreach ($item->tags as $tag):?>
+			 <a href="<?php echo $tag->tagUrl?>"><?php echo mb_strtoupper($tag->tag); ?></a>, 
+		 <?php endforeach ?>
+	 </div>
 	<h1><?php echo $item->title;?></h1>
 	<div class="besedilo">
 		<?php echo $item->fulltext;?>
