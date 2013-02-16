@@ -92,11 +92,18 @@ class VsebineModelVsebine extends JModelList {
         	$query->join('INNER', 'vs_tags_vsebina as tv ON tv.id_vsebine = a.id');
         	$query->join('INNER', 'vs_tags as t ON tv.id_tag = t.id');
         	$query->where("t.tag IN ($tags)");
+        	
         }
+        
         $query=str_replace("SELECT", "SELECT DISTINCT", $query);
         return $query;
     }
     
+    
+    protected function populateState($ordering = null, $direction = null){
+       $this->setState('list.limit', 25);
+        $this->setState('list.offset', 0);
+    }
     	/**
 	 * Method to get a list of articles.
 	 *
