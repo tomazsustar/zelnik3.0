@@ -178,6 +178,33 @@ protected function populateState()
 				
 				$data->tags=$tags;
 				
+				// SLIKE
+				$query = $db->getQuery(true);
+				$query->from('vs_slike AS s');
+				$query->select('s.*, sv.*');
+				$query->join('INNER', 'vs_slike_vsebine as sv ON sv.id_slike = s.id');
+				$query->where("sv.id_vsebine = $data->id");
+				$query->where("sv.mesto_prikaza = 2");
+				$query->order("sv.zp_st ASC");
+				$db->setQuery($query);
+				$slike = $db->loadObjectList();
+				$data->slike = $slike;
+				
+				$query = $db->getQuery(true);
+				$query->from('vs_slike AS s');
+				$query->select('s.*, sv.*');
+				$query->join('INNER', 'vs_slike_vsebine as sv ON sv.id_slike = s.id');
+				$query->where("sv.id_vsebine = $data->id");
+				$query->where("sv.mesto_prikaza = 3");
+				$query->order("sv.zp_st ASC");
+				$db->setQuery($query);
+				$slike = $db->loadObjectList();
+				$data->galerija = $slike;
+				
+				//VIDEO
+				require_once JPATH_COMPONENT.'/helpers/ZVideoHelper.php';
+				$data->video=ZVideoHelper::insertVideo($data->video);
+				
 				$this->_item = $data;
 			}
 			catch (Exception $e)

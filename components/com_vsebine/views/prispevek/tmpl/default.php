@@ -38,7 +38,21 @@ $item=&$this->item?>
 	<h1><?php echo $item->title;?></h1>
 	<div class="besedilo">
 		<?php echo $item->fulltext;?>
+		
 	</div>
+	
+	<h3>Slike</h3>
+	<?php foreach ($item->slike as $slika):?>
+		<a href="<?php echo $slika->url;?>"><img src="<?php echo $slika->url2;?>" /></a>
+	<?php endforeach?>
+	
+	<h3>Video</h3>
+	<?php echo $item->video; ?>
+	<h3>Galerija</h3>
+	<?php foreach ($item->galerija as $slika):?>
+		<a href="<?php echo $slika->url;?>"><img src="<?php echo $slika->url2;?>" /></a>
+	<?php endforeach?>
+	
 </div>
 
 
