@@ -53,5 +53,17 @@ class VsebineController extends JControllerLegacy
 	
 			return $this;
 		}
+		
+		public function module($cachable = false, $urlparams = false){
+//			//echo "<pre>";print_r($this->paths);echo "</pre>";
+			$view = $this->getView('Modul', 'html');
+			$mdl=$this->getModel('Koledar', 'VsebineModel');
+			$view->setModel($mdl, true);
+			$view->addTemplatePath(JPATH_SITE.'/components/com_vsebine/views/modul/tmpl');
+			$view->setLayout('koledar');
+//			//echo "<pre>bbb ";print_r($mdl->getState());echo "</pre>";
+			echo $view->display();
+			
+		}
 	
 }
