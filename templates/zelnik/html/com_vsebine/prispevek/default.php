@@ -30,11 +30,38 @@ JHtml::_('behavior.caption');
 $item=&$this->item?>
 
 <div class="novica">
-	<div class="znacke"><?php echo mb_strtoupper($item->tags); ?></div>
+	<div class="znacke">
+		<?php 
+			$tagsArray=array();
+			foreach ($item->tags as $tag){
+			 $tagsArray[] = '<a href="'.$tag->tagUrl.'">'.mb_strtoupper($tag->tag).'</a>';
+			}
+		 	echo implode(', ',$tagsArray); ?>
+	 </div>
 	<h1><?php echo $item->title;?></h1>
 	<div class="besedilo">
+		<div class=prispevek-slike> 
+			<?php foreach ($item->slike as $slika):?>
+				<div><a href="<?php echo $slika->url;?>" target="_blank"><img style="width:220px;" src="<?php echo $slika->url2;?>" /></a></div>
+			<?php endforeach?>
+		</div>
 		<?php echo $item->fulltext;?>
+		
 	</div>
+	
+	
+	
+	
+	
+	<div class="prispevek-video"><?php echo $item->video; ?></div>
+	<?php if(count($item->galerija)):?> 
+		<div class="prispevek-galerija">
+			<h3>Galerija</h3>
+			<?php foreach ($item->galerija as $slika):?>
+				<a href="<?php echo $slika->url;?>" target="blank"><img src="<?php echo $slika->url2;?>" style="width:130px;" /></a>
+			<?php endforeach?>
+		</div>
+	<?php endif;?>
 </div>
 
 

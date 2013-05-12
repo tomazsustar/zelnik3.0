@@ -29,18 +29,19 @@ JHtml::_('behavior.caption');
 <?php 
 $count = count($this->items);
 $item=&$this->items[0];
-list($width, $height) = @getimagesize($item->slika);
-if($height!=0){
-$razmerje = $width / $height;
-if($razmerje>1.5) {
-$visek = (1-$width/($height*1.5))*50;
-$izbira="height: 100%; margin-left: ".$visek."%";
-}
-else  {
-$visek = (1-$height/($width/1.5))*25;
-$izbira="width: 100%; margin-top: ".$visek."%";
-}
-}
+//list($width, $height) = @getimagesize($item->slika);
+//if($height!=0){
+//$razmerje = $width / $height;
+//if($razmerje>1.5) {
+//$visek = (1-$width/($height*1.5))*50;
+//$izbira="height: 100%; margin-left: ".$visek."%";
+//}
+//else  {
+//$visek = (1-$height/($width/1.5))*25;
+//$izbira="width: 100%; margin-top: ".$visek."%";
+//}
+//}
+$izbira="width: 100%;";
 ?>
 <div class="naslovna-novica">
 	<div class="znacka"><a href="<?php echo $item->tagUrl?>"><?php echo mb_strtoupper($item->tag); ?></a></div>
@@ -60,18 +61,19 @@ if($i&1) { ?>
 <?php 
 	}
 if($count>$i){ $item=&$this->items[$i];
-list($width, $height) = @getimagesize($item->slika);
-if($height!=0){
-$razmerje = $width / $height;
-if($razmerje>1.5) {
-$visek = (1-$width/($height*1.5))*50;
-$izbira="height: 100%; margin-left: ".$visek."%";
-}
-else  {
-$visek = (1-$height/($width/1.5))*25;
-$izbira="width: 100%; margin-top: ".$visek."%";
-}
-}
+//list($width, $height) = @getimagesize($item->slika);
+//if($height!=0){
+//$razmerje = $width / $height;
+//if($razmerje>1.5) {
+//$visek = (1-$width/($height*1.5))*50;
+//$izbira="height: 100%; margin-left: ".$visek."%";
+//}
+//else  {
+//$visek = (1-$height/($width/1.5))*25;
+//$izbira="width: 100%; margin-top: ".$visek."%";
+//}
+//}
+$izbira="width: 100%;";
 ?>
 <div class="naslovna-novica-pomozna">
 	<div class="znacka"><a href="<?php echo $item->tagUrl?>"><?php echo mb_strtoupper($item->tag); ?></a></div>
@@ -110,18 +112,19 @@ for($j = 1; $j <= 100; $j += 5) {
 <div class="stolpec">
 <?php
 if($count>(4+$j)){ $item=&$this->items[4+$j]; 
-list($width, $height) = @getimagesize($item->slika);
-if($height!=0){
-$razmerje = $width / $height;
-if($razmerje>1.5) {
-$visek = (1-$width/($height*1.5))*50;
-$izbira="height: 100%; margin-left: ".$visek."%";
-}
-else  {
-$visek = (1-$height/($width/1.5))*25;
-$izbira="width: 100%; margin-top: ".$visek."%";
-}
-}
+//list($width, $height) = @getimagesize($item->slika);
+//if($height!=0){
+//$razmerje = $width / $height;
+//if($razmerje>1.5) {
+//$visek = (1-$width/($height*1.5))*50;
+//$izbira="height: 100%; margin-left: ".$visek."%";
+//}
+//else  {
+//$visek = (1-$height/($width/1.5))*25;
+//$izbira="width: 100%; margin-top: ".$visek."%";
+//}
+//}
+$izbira="width: 100%;";
 ?>
 <div class="naslovna-novica">
 	<div class="znacka"><a href="<?php echo $item->tagUrl?>"><?php echo mb_strtoupper($item->tag); ?></a></div>
@@ -141,18 +144,19 @@ for($i = (5+$j); $i <= (8+$j); $i += 1) {
 <?php 
 	}
 if($count>$i){ $item=&$this->items[$i];
-list($width, $height) = @getimagesize($item->slika);
-if($height!=0){
-$razmerje = $width / $height;
-if($razmerje>1.5) {
-$visek = (1-$width/($height*1.5))*50;
-$izbira="height: 100%; margin-left: ".$visek."%";
-}
-else  {
-$visek = (1-$height/($width/1.5))*25;
-$izbira="width: 100%; margin-top: ".$visek."%";
-}
-}
+//list($width, $height) = @getimagesize($item->slika);
+//if($height!=0){
+//$razmerje = $width / $height;
+//if($razmerje>1.5) {
+//$visek = (1-$width/($height*1.5))*50;
+//$izbira="height: 100%; margin-left: ".$visek."%";
+//}
+//else  {
+//$visek = (1-$height/($width/1.5))*25;
+//$izbira="width: 100%; margin-top: ".$visek."%";
+//}
+//}
+$izbira="width: 100%;";
 ?>
 <div class="naslovna-novica-pomozna">
 	<a href="<?php echo $item->url?>">
@@ -180,16 +184,16 @@ if(($j+1)&1) {
 }
 
 
-foreach ($this->items as $key => $item) : ?>
+/*foreach ($this->items as $key => $item) : ?>
 
 					<?php //$this->item = &$item;
 					//echo $this->loadTemplate('item');?>
 					
 				<div>
-					<?php echo $item->title."-".$item->publish_up; ?>
+					<?php //echo $item->title."-".$item->publish_up; ?>
 				</div>
 			
 
-		<?php endforeach; ?>
+		<?php endforeach; */?>
 <?php //endif; ?>
 

@@ -86,3 +86,21 @@ float: left;
 width: 570px;
 float: left;
 }
+.besedilo{
+	width:100%;
+	overflow: hidden;
+}
+.prispevek-slike{
+	float:right;
+}
+.prispevek-slike div{
+	margin:5px;
+}
+.prispevek-video{
+	margin-top:30px;
+	width:100%;
+}
+.prispevek-galerija{
+	margin-top:30px;
+	width:100%;
+}
