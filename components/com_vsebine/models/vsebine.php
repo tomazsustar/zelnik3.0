@@ -106,7 +106,7 @@ class VsebineModelVsebine extends JModelList {
     
     
     protected function populateState($ordering = null, $direction = null){
-       $this->setState('list.limit', 40);
+       $this->setState('list.limit', 100);
         $this->setState('list.offset', 0);
     }
     	/**
@@ -119,6 +119,7 @@ class VsebineModelVsebine extends JModelList {
 	 */
 	public function getItems()
 	{
+		$podstr = JRequest::getVar('tags', false);
 		$items	= parent::getItems();
 		$i=0;
 		$blocks=array();
@@ -132,25 +133,33 @@ class VsebineModelVsebine extends JModelList {
 				$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id);
 			else
 				 $item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->title_url);
-		 	if($i<5){
-		 		$blocks[0][]=$item;
-		 	}else{
-		 		foreach ($this->sotredTags as $st){
-		 			if(in_array($st->tag, $item->tags)){
-		 				if(!isset($blocks[$st->tag]) || count($blocks[$st->tag])<=5){
-		 					$blocks[$st->tag][]=$item;
-		 				}
-		 			}
-		 		}		 		
-		 	}
+			if(!$podstr){
+			 	if($i<5){
+			 		$blocks[0][]=$item;
+			 	}else{
+			 		foreach ($this->sotredTags as $st){
+			 			if(in_array($st->tag, $item->tags)){
+			 				if(!isset($blocks[$st->tag]) || 
+			 					count($blocks[$st->tag])<5){
+			 					$blocks[$st->tag][]=$item;
+			 				}
+			 			}
+			 		}		 		
+			 	}
+			}
 		 	$i++;
 		}
 		$return=array();
-		foreach ($blocks as $block){
-			$return=array_merge($return, $block);
+		if(!$podstr){
+			foreach ($blocks as $key => $block){
+				//echo $key.':'.count($block).',';
+				if(count($block)==5)
+					$return=array_merge($return, $block);
+			}
+			//echo "<pre>".print_r($blocks)."</pre>";
+			return $return;
 		}
-		//echo "<pre>".print_r($blocks)."</pre>";
-		return $return;
+		else return $items;
 	}
 	
 	private function setSortedTags(){

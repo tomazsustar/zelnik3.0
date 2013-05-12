@@ -29,18 +29,19 @@ JHtml::_('behavior.caption');
 <?php 
 $count = count($this->items);
 $item=&$this->items[0];
-list($width, $height) = @getimagesize($item->slika);
-if($height!=0){
-$razmerje = $width / $height;
-if($razmerje>1.5) {
-$visek = (1-$width/($height*1.5))*50;
-$izbira="height: 100%; margin-left: ".$visek."%";
-}
-else  {
-$visek = (1-$height/($width/1.5))*25;
-$izbira="width: 100%; margin-top: ".$visek."%";
-}
-}
+//list($width, $height) = @getimagesize($item->slika);
+//if($height!=0){
+//$razmerje = $width / $height;
+//if($razmerje>1.5) {
+//$visek = (1-$width/($height*1.5))*50;
+//$izbira="height: 100%; margin-left: ".$visek."%";
+//}
+//else  {
+//$visek = (1-$height/($width/1.5))*25;
+//$izbira="width: 100%; margin-top: ".$visek."%";
+//}
+//}
+$izbira="width: 100%;";
 ?>
 <div class="naslovna-novica">
 	<div class="znacka"><a href="<?php echo $item->tagUrl?>"><?php echo mb_strtoupper($item->tag); ?></a></div>
@@ -60,18 +61,19 @@ if($i&1) { ?>
 <?php 
 	}
 if($count>$i){ $item=&$this->items[$i];
-list($width, $height) = @getimagesize($item->slika);
-if($height!=0){
-$razmerje = $width / $height;
-if($razmerje>1.5) {
-$visek = (1-$width/($height*1.5))*50;
-$izbira="height: 100%; margin-left: ".$visek."%";
-}
-else  {
-$visek = (1-$height/($width/1.5))*25;
-$izbira="width: 100%; margin-top: ".$visek."%";
-}
-}
+//list($width, $height) = @getimagesize($item->slika);
+//if($height!=0){
+//$razmerje = $width / $height;
+//if($razmerje>1.5) {
+//$visek = (1-$width/($height*1.5))*50;
+//$izbira="height: 100%; margin-left: ".$visek."%";
+//}
+//else  {
+//$visek = (1-$height/($width/1.5))*25;
+//$izbira="width: 100%; margin-top: ".$visek."%";
+//}
+//}
+$izbira="width: 100%;";
 ?>
 <div class="naslovna-novica-pomozna">
 	<div class="znacka"><a href="<?php echo $item->tagUrl?>"><?php echo mb_strtoupper($item->tag); ?></a></div>
@@ -89,10 +91,7 @@ if(($i+1)&1) {
 <?php 
 	} 
 }
-
 ?>
-
-<!--<hr />-->
 <div id="reklama">
 <?php
 $modules = JModuleHelper::getModules('position-6');
@@ -100,26 +99,32 @@ foreach($modules as $module)
 {
 echo JModuleHelper::renderModule($module);
 }
+if (!isset($module)) {echo "<hr />";}
 ?>
 </div>
 
 <?php
-for($j = 1; $j <= 20; $j += 5) { ?>
+for($j = 1; $j <= 100; $j += 5) { 
+	if($j&1) { ?>
+	<div class="stolpec-precno"> 
+<?php 
+	}?>
 <div class="stolpec">
 <?php
 if($count>(4+$j)){ $item=&$this->items[4+$j]; 
-list($width, $height) = @getimagesize($item->slika);
-if($height!=0){
-$razmerje = $width / $height;
-if($razmerje>1.5) {
-$visek = (1-$width/($height*1.5))*50;
-$izbira="height: 100%; margin-left: ".$visek."%";
-}
-else  {
-$visek = (1-$height/($width/1.5))*25;
-$izbira="width: 100%; margin-top: ".$visek."%";
-}
-}
+//list($width, $height) = @getimagesize($item->slika);
+//if($height!=0){
+//$razmerje = $width / $height;
+//if($razmerje>1.5) {
+//$visek = (1-$width/($height*1.5))*50;
+//$izbira="height: 100%; margin-left: ".$visek."%";
+//}
+//else  {
+//$visek = (1-$height/($width/1.5))*25;
+//$izbira="width: 100%; margin-top: ".$visek."%";
+//}
+//}
+$izbira="width: 100%;";
 ?>
 <div class="naslovna-novica">
 	<div class="znacka"><a href="<?php echo $item->tagUrl?>"><?php echo mb_strtoupper($item->tag); ?></a></div>
@@ -139,18 +144,19 @@ for($i = (5+$j); $i <= (8+$j); $i += 1) {
 <?php 
 	}
 if($count>$i){ $item=&$this->items[$i];
-list($width, $height) = @getimagesize($item->slika);
-if($height!=0){
-$razmerje = $width / $height;
-if($razmerje>1.5) {
-$visek = (1-$width/($height*1.5))*50;
-$izbira="height: 100%; margin-left: ".$visek."%";
-}
-else  {
-$visek = (1-$height/($width/1.5))*25;
-$izbira="width: 100%; margin-top: ".$visek."%";
-}
-}
+//list($width, $height) = @getimagesize($item->slika);
+//if($height!=0){
+//$razmerje = $width / $height;
+//if($razmerje>1.5) {
+//$visek = (1-$width/($height*1.5))*50;
+//$izbira="height: 100%; margin-left: ".$visek."%";
+//}
+//else  {
+//$visek = (1-$height/($width/1.5))*25;
+//$izbira="width: 100%; margin-top: ".$visek."%";
+//}
+//}
+$izbira="width: 100%;";
 ?>
 <div class="naslovna-novica-pomozna">
 	<a href="<?php echo $item->url?>">
@@ -170,6 +176,24 @@ if(($i+$j-1)&1) {
 ?>
 </div>
 <?php
+if(($j+1)&1) { 
+	?>
+	</div> 
+<?php 
+	} 
 }
-?>
+
+
+/*foreach ($this->items as $key => $item) : ?>
+
+					<?php //$this->item = &$item;
+					//echo $this->loadTemplate('item');?>
+					
+				<div>
+					<?php //echo $item->title."-".$item->publish_up; ?>
+				</div>
+			
+
+		<?php endforeach; */?>
 <?php //endif; ?>
+
