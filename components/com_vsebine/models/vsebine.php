@@ -16,6 +16,7 @@ jimport('joomla.application.component.modellist');
  */
 class VsebineModelVsebine extends JModelList {
 
+	var $sotredTags=array();
     /**
      * Constructor.
      *
@@ -24,7 +25,9 @@ class VsebineModelVsebine extends JModelList {
      * @since    1.6
      */
     public function __construct($config = array()) {
+    	
         parent::__construct($config);
+        $this->setSortedTags();
     }
 
     /**
@@ -79,9 +82,10 @@ class VsebineModelVsebine extends JModelList {
         $query->from('`vs_vsebine` AS a');
         
         $query->where('a.state = 2');
+        $query->where('a.publish_up < current_timestamp');
         
         
-        $query->order('publish_up DESC');
+        $query->order('a.publish_up DESC');
         
         if($tags){
         	$tags = explode(',', $tags);
@@ -92,7 +96,8 @@ class VsebineModelVsebine extends JModelList {
         	$query->join('INNER', 'vs_tags_vsebina as tv ON tv.id_vsebine = a.id');
         	$query->join('INNER', 'vs_tags as t ON tv.id_tag = t.id');
         	$query->where("t.tag IN ($tags)");
-        	
+        }else{
+        	$query->where('(a.publish_down > current_timestamp or a.publish_down is null)');
         }
         
         $query=str_replace("SELECT", "SELECT DISTINCT", $query);
@@ -101,7 +106,7 @@ class VsebineModelVsebine extends JModelList {
     
     
     protected function populateState($ordering = null, $direction = null){
-       $this->setState('list.limit', 25);
+       $this->setState('list.limit', 40);
         $this->setState('list.offset', 0);
     }
     	/**
@@ -115,20 +120,58 @@ class VsebineModelVsebine extends JModelList {
 	public function getItems()
 	{
 		$items	= parent::getItems();
+		$i=0;
+		$blocks=array();
 		foreach ($items as $item){
 			//značke
 			$item->tags = explode(',',$item->tags);
+			$item->tags=$this->sortItemTags($item->tags);
 			$item->tag = $item->tags[0];
 			$item->tagUrl = JRoute::_("index.php?option=com_vsebine&tags=".$item->tag);
 			if($item->title_url=="")
 				$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id);
 			else
 				 $item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->title_url);
-		
-			
+		 	if($i<5){
+		 		$blocks[0][]=$item;
+		 	}else{
+		 		foreach ($this->sotredTags as $st){
+		 			if(in_array($st->tag, $item->tags)){
+		 				if(!isset($blocks[$st->tag]) || count($blocks[$st->tag])<=5){
+		 					$blocks[$st->tag][]=$item;
+		 				}
+		 			}
+		 		}		 		
+		 	}
+		 	$i++;
 		}
-		
-		return $items;
+		$return=array();
+		foreach ($blocks as $block){
+			$return=array_merge($return, $block);
+		}
+		//echo "<pre>".print_r($blocks)."</pre>";
+		return $return;
+	}
+	
+	private function setSortedTags(){
+		$q="SELECT count(t.id) as cnt, t.tag, t.id FROM `vs_tags_vsebina` ts
+			inner join vs_tags t on t.id=ts.id_tag group by t.id order by cnt desc limit 1, 20"; //preštej značke
+		$db = $this->getDbo();
+		$db->setQuery($q);
+		$this->sotredTags=$db->loadObjectList();
+	}
+	
+	public function sortItemTags($tags){
+		$return=array();
+		foreach ($this->sotredTags as $ct){
+			if(in_array($ct->tag, $tags)){
+					$return[]=$ct->tag;
+			}	
+		}		
+		//pripni še ostale
+		$diff=array_diff($tags, $return); 
+		$return=array_merge($return, $diff);
+		return $return;
 	}
 
 }

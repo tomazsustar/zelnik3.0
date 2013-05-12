@@ -46,12 +46,7 @@ $item=&$this->item?>
 			<?php endforeach?>
 		</div>
 		<?php echo $item->fulltext;?>
-		
 	</div>
-	
-	
-	
-	
 	
 	<div class="prispevek-video"><?php echo $item->video; ?></div>
 	<?php if(count($item->galerija)):?> 
