@@ -266,7 +266,9 @@ return false;
 				</div>
 				<div id="desno-okno" class="sticky">
 					<div id="rob-levi-right"></div>
-					<div class="sredina"></div>
+					<div class="sredina">
+						<jdoc:include type="modules" name="position-10" style="xhtml" />
+					</div>
 					<div id="rob-desni-right"></div>
 				</div>	
 				<div id="content">
