@@ -77,7 +77,7 @@ class VsebineModelKoledar extends JModelList {
                 )
         );
         
-        $query->from('`vs_vsebine` AS a');
+        $query->from('`nize01_zelnik`.`vs_vsebine` AS a');
         
         $query->where('a.state = 2');
         $query->where('k.zacetek > current_timestamp ');
@@ -118,33 +118,35 @@ class VsebineModelKoledar extends JModelList {
 	 */
 	public function getItems()
 	{
-		$dates;
+		$dates=array();
 		$items	= parent::getItems();
 		$i=0;
-		$zac = new ZDate($items[0]->zacetek);
-		$dan = $zac->datumDB();
-		//echo "DAAAAN:".$dan;
-		foreach ($items as $item){
-			//datumi
-			$item->zacetek=new ZDate($item->zacetek);
-			
-			if($item->konec)
-				$item->konec=new ZDate($item->konec);
-			
-			if($item->title_url=="")
-				$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id);
-			else
-				 $item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->title_url);
-			
-				 
-			if($dan != $item->zacetek->datumDB()) {
-				$dan = $item->zacetek->datumDB(); 
-				$i=0;
+		if(count($items)){
+			$zac = new ZDate($items[0]->zacetek);
+			$dan = $zac->datumDB();
+			//echo "DAAAAN:".$dan;
+			foreach ($items as $item){
+				//datumi
+				$item->zacetek=new ZDate($item->zacetek);
+				
+				if($item->konec)
+					$item->konec=new ZDate($item->konec);
+				
+				if($item->title_url=="")
+					$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id);
+				else
+					 $item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->title_url);
+				
+					 
+				if($dan != $item->zacetek->datumDB()) {
+					$dan = $item->zacetek->datumDB(); 
+					$i=0;
+				}
+				$dates[$dan][$i]=$item;
+				
+				$i++;
+				
 			}
-			$dates[$dan][$i]=$item;
-			
-			$i++;
-			
 		}
 		//echo "<pre>";print_r($dates);echo "</pre>";
 		return $dates;

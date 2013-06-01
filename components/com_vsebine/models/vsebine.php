@@ -79,7 +79,7 @@ class VsebineModelVsebine extends JModelList {
                 )
         );
         
-        $query->from('`vs_vsebine` AS a');
+        $query->from('`nize01_zelnik`.`vs_vsebine` AS a');
         
         $query->where('a.state = 2');
         $query->where('a.publish_up < current_timestamp');
@@ -98,6 +98,7 @@ class VsebineModelVsebine extends JModelList {
         	$query->where("t.tag IN ($tags)");
         }else{
         	$query->where('(a.publish_down > current_timestamp or a.publish_down is null)');
+        	$query->where('(a.frontpage <> 1)');
         }
         
         $query=str_replace("SELECT", "SELECT DISTINCT", $query);
