@@ -39,7 +39,7 @@ class VsebineViewVsebine extends JViewLegacy
         
 		$this->addToolbar();
         
-        $this->sidebar = JHtmlSidebar::render();
+        //$this->sidebar = JHtmlSidebar::render();
 		parent::display($tpl);
 	}
 
@@ -107,19 +107,19 @@ class VsebineViewVsebine extends JViewLegacy
 		}
         
         //Set sidebar action - New in 3.0
-		JHtmlSidebar::setAction('index.php?option=com_vsebine&view=vsebine');
+		//JHtmlSidebar::setAction('index.php?option=com_vsebine&view=vsebine');
         
         $this->extra_sidebar = '';
         
-		JHtmlSidebar::addFilter(
-
-			JText::_('JOPTION_SELECT_PUBLISHED'),
-
-			'filter_published',
-
-			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), "value", "text", $this->state->get('filter.state'), true)
-
-		);
+//		JHtmlSidebar::addFilter(
+//
+//			JText::_('JOPTION_SELECT_PUBLISHED'),
+//
+//			'filter_published',
+//
+//			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), "value", "text", $this->state->get('filter.state'), true)
+//
+//		);
 
         
 	}
