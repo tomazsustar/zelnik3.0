@@ -82,7 +82,7 @@ class VsebineModelKoledar extends JModelList {
         $query->where('a.state = 2');
         $query->where('k.zacetek > current_timestamp ');
         
-        $query->join('INNER', 'vs_koledar as k ON k.id_vsebine = a.id');
+        $query->join('INNER', 'nize01_zelnik.vs_koledar as k ON k.id_vsebine = a.id');
         
         $query->order('k.zacetek ASC');
         
@@ -92,8 +92,8 @@ class VsebineModelKoledar extends JModelList {
         	foreach($tags as $tag){$qTags[]=$db->quote($tag); }
         	$tags=implode(',', $qTags);
         	//echo $tags;
-        	$query->join('INNER', 'vs_tags_vsebina as tv ON tv.id_vsebine = a.id');
-        	$query->join('INNER', 'vs_tags as t ON tv.id_tag = t.id');
+        	$query->join('INNER', 'nize01_zelnik.vs_tags_vsebina as tv ON tv.id_vsebine = a.id');
+        	$query->join('INNER', 'nize01_zelnik.vs_tags as t ON tv.id_tag = t.id');
         	$query->where("t.tag IN ($tags)");
         	$query=str_replace("SELECT", "SELECT DISTINCT", $query);
         }

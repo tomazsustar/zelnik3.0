@@ -120,7 +120,7 @@ class VsebineModelvsebine extends JModelList
 				'a.*'
 			)
 		);
-		$query->from('`#__vsebine` AS a');
+		$query->from('nize01_zelnik.vs_vsebine AS a');
 
 
 

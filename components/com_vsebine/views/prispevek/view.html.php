@@ -33,7 +33,7 @@ protected $item;
 		$app		= JFactory::getApplication();
 		$user		= JFactory::getUser();
 		$userId		= $user->get('id');
-		$dispatcher	= JEventDispatcher::getInstance();
+		//$dispatcher	= JEventDispatcher::getInstance();
 
 		$this->item  = $this->get('Item');
 		//$this->print = $app->input->getBool('print');

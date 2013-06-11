@@ -9,6 +9,7 @@
  */
 defined('_JEXEC') or die;
 
+
 jimport('joomla.application.component.modellist');
 
 /**
@@ -63,6 +64,7 @@ class VsebineModelVsebine extends JModelList {
      */
     protected function getListQuery() {
         // Create a new query object.
+        $app = JFactory::getApplication('site');
         $db = $this->getDbo();
         $query = $db->getQuery(true);
         $tags = JRequest::getVar('tags', false);
@@ -87,18 +89,22 @@ class VsebineModelVsebine extends JModelList {
         
         $query->order('a.publish_up DESC');
         
+        $query->join('INNER', '`nize01_zelnik`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
+        $query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
+        $query->where("p.domena = '".$app->getParams('com_vsebine')->get('portal')."'");
+        
         if($tags){
         	$tags = explode(',', $tags);
         	$qTags = array();
         	foreach($tags as $tag){$qTags[]=$db->quote($tag); }
         	$tags=implode(',', $qTags);
         	//echo $tags;
-        	$query->join('INNER', 'vs_tags_vsebina as tv ON tv.id_vsebine = a.id');
-        	$query->join('INNER', 'vs_tags as t ON tv.id_tag = t.id');
+        	$query->join('INNER', '`nize01_zelnik`.vs_tags_vsebina as tv ON tv.id_vsebine = a.id');
+        	$query->join('INNER', '`nize01_zelnik`.vs_tags as t ON tv.id_tag = t.id');
         	$query->where("t.tag IN ($tags)");
         }else{
         	$query->where('(a.publish_down > current_timestamp or a.publish_down is null)');
-        	$query->where('(a.frontpage <> 1)');
+        	$query->where('(a.frontpage = 1)');
         }
         
         $query=str_replace("SELECT", "SELECT DISTINCT", $query);
@@ -121,9 +127,12 @@ class VsebineModelVsebine extends JModelList {
 	public function getItems()
 	{
 		$podstr = JRequest::getVar('tags', false);
+		$zdruzi = JRequest::getVar('zdruzi', 0);
+
 		$items	= parent::getItems();
 		$i=0;
 		$blocks=array();
+		//echo count($items);
 		foreach ($items as $item){
 			//značke
 			$item->tags = explode(',',$item->tags);
@@ -134,9 +143,10 @@ class VsebineModelVsebine extends JModelList {
 				$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id);
 			else
 				 $item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->title_url);
-			if(!$podstr){
+			if(!$podstr && $zdruzi){
 			 	if($i<5){
 			 		$blocks[0][]=$item;
+			 		
 			 	}else{
 			 		foreach ($this->sotredTags as $st){
 			 			if(in_array($st->tag, $item->tags)){
@@ -151,7 +161,7 @@ class VsebineModelVsebine extends JModelList {
 		 	$i++;
 		}
 		$return=array();
-		if(!$podstr){
+		if(!$podstr && $zdruzi){
 			foreach ($blocks as $key => $block){
 				//echo $key.':'.count($block).',';
 				if(count($block)==5)
@@ -164,8 +174,8 @@ class VsebineModelVsebine extends JModelList {
 	}
 	
 	private function setSortedTags(){
-		$q="SELECT count(t.id) as cnt, t.tag, t.id FROM `vs_tags_vsebina` ts
-			inner join vs_tags t on t.id=ts.id_tag group by t.id order by cnt desc limit 1, 20"; //preštej značke
+		$q="SELECT count(t.id) as cnt, t.tag, t.id FROM `nize01_zelnik`.`vs_tags_vsebina` ts
+			inner join `nize01_zelnik`.vs_tags t on t.id=ts.id_tag group by t.id order by cnt desc limit 1, 20"; //preštej značke
 		$db = $this->getDbo();
 		$db->setQuery($q);
 		$this->sotredTags=$db->loadObjectList();

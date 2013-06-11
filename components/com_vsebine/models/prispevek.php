@@ -9,7 +9,7 @@
  */
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modellist');
+jimport('joomla.application.component.modelitem');
 
 /**
  * Methods supporting a list of Vsebine records.
@@ -61,7 +61,7 @@ protected function populateState()
 				$query = $db->getQuery(true);
 
 
-				$query->from('vs_vsebine AS a');
+				$query->from('nize01_zelnik.vs_vsebine AS a');
 				$query->select('a.*');
 
 				// Join on user table.
@@ -164,9 +164,9 @@ protected function populateState()
 
 				// ZNAČKE
 				$query = $db->getQuery(true);
-				$query->from('vs_tags AS t');
+				$query->from('nize01_zelnik.vs_tags AS t');
 				$query->select('t.*, tv.*');
-				$query->join('INNER', 'vs_tags_vsebina as tv ON tv.id_tag = t.id');
+				$query->join('INNER', 'nize01_zelnik.vs_tags_vsebina as tv ON tv.id_tag = t.id');
 				$query->where("tv.id_vsebine = $data->id");
 				$query->where("t.tag <> ''");
 				$db->setQuery($query);
@@ -180,9 +180,9 @@ protected function populateState()
 				
 				// SLIKE
 				$query = $db->getQuery(true);
-				$query->from('vs_slike AS s');
+				$query->from('nize01_zelnik.vs_slike AS s');
 				$query->select('s.*, sv.*');
-				$query->join('INNER', 'vs_slike_vsebine as sv ON sv.id_slike = s.id');
+				$query->join('INNER', 'nize01_zelnik.vs_slike_vsebine as sv ON sv.id_slike = s.id');
 				$query->where("sv.id_vsebine = $data->id");
 				$query->where("sv.mesto_prikaza = 2");
 				$query->order("sv.zp_st ASC");
@@ -191,9 +191,9 @@ protected function populateState()
 				$data->slike = $slike;
 				
 				$query = $db->getQuery(true);
-				$query->from('vs_slike AS s');
+				$query->from('nize01_zelnik.vs_slike AS s');
 				$query->select('s.*, sv.*');
-				$query->join('INNER', 'vs_slike_vsebine as sv ON sv.id_slike = s.id');
+				$query->join('INNER', 'nize01_zelnik.vs_slike_vsebine as sv ON sv.id_slike = s.id');
 				$query->where("sv.id_vsebine = $data->id");
 				$query->where("sv.mesto_prikaza = 3");
 				$query->order("sv.zp_st ASC");

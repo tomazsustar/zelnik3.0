@@ -21,7 +21,7 @@ class VsebineTableprispevek extends JTable {
      * @param JDatabase A database connector object
      */
     public function __construct(&$db) {
-        parent::__construct('#__vsebine', 'id', $db);
+        parent::__construct('nize01_zelnik.vs_vsebine', 'id', $db);
     }
 
     /**
