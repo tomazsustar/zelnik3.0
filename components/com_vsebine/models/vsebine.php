@@ -83,7 +83,7 @@ class VsebineModelVsebine extends JModelList {
         
         $query->from('`nize01_zelnik`.`vs_vsebine` AS a');
         
-        $query->where('a.state = 2');
+        
         $query->where('a.publish_up < current_timestamp');
         
         
@@ -92,6 +92,7 @@ class VsebineModelVsebine extends JModelList {
         $query->join('INNER', '`nize01_zelnik`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
         $query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
         $query->where("p.domena = '".$app->getParams('com_vsebine')->get('portal')."'");
+        $query->where('pv.status = 2');
         
         if($tags){
         	$tags = explode(',', $tags);
