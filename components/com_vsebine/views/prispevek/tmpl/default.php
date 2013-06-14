@@ -13,6 +13,12 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 JHtml::_('behavior.caption');
 
+$document = JFactory::getDocument();
+
+$document->addScript(JPATH_BASE.'/plugins/content/boxplus/js/boxplus.min.js');
+$document->addScript(JPATH_BASE.'/plugins/content/boxplus/js/boxplus.lang.min.js?lang=en-GB');
+$document->addStyleSheet(JPATH_BASE.'/plugins/content/boxplus/css/boxplus.min.css');
+$document->addStyleSheet(JPATH_BASE.'/plugins/content/boxplus/css/boxplus.darksquare.css');
 // If the page class is defined, add to class as suffix.
 // It will be a separate class if the user starts it with a space
 /*?>
@@ -43,7 +49,7 @@ $item=&$this->item?>
 	
 	<h3>Slike</h3>
 	<?php foreach ($item->slike as $slika):?>
-		<a href="<?php echo $slika->url;?>"><img src="<?php echo $slika->url2;?>" /></a>
+		<a href="<?php echo $slika->url;?>" rel="boxplus"><img src="<?php echo $slika->url2;?>" /></a>
 	<?php endforeach?>
 	
 	<h3>Video</h3>

@@ -13,6 +13,32 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 JHtml::_('behavior.caption');
 
+$document = JFactory::getDocument();
+$document->addScript(JUri::base().'/plugins/content/boxplus/js/boxplus.min.js');
+$document->addScript(JUri::base().'/plugins/content/boxplus/js/boxplus.lang.min.js?lang=en-GB');
+$document->addStyleSheet(JUri::base().'/plugins/content/boxplus/css/boxplus.min.css');
+$document->addStyleSheet(JUri::base().'/plugins/content/boxplus/css/boxplus.darksquare.css');
+
+$document->addScriptDeclaration('window.addEvent("load", function() {
+												new JCaption("img.caption");
+											});
+			boxplus.autodiscover(
+			false,
+			{"theme":"darksquare",
+			"autocenter":true,
+			"autofit":true,
+			"slideshow":0,
+			"loop":false,
+			"captions":"bottom",
+			"thumbs":"inside",
+			"width":800,
+			"height":600,
+			"duration":250,
+			"transition":"linear",
+			"contextmenu":true});'
+);
+
+
 // If the page class is defined, add to class as suffix.
 // It will be a separate class if the user starts it with a space
 /*?>
@@ -42,7 +68,7 @@ $item=&$this->item?>
 	<div class="besedilo">
 		<div class=prispevek-slike> 
 			<?php foreach ($item->slike as $slika):?>
-				<div><a href="<?php echo $slika->url;?>" target="_blank"><img style="width:220px;" src="<?php echo $slika->url2;?>" /></a></div>
+				<div><a href="<?php echo $slika->url;?>" rel="boxplus" target="_blank"><img style="width:220px;" src="<?php echo $slika->url2;?>" /></a></div>
 			<?php endforeach?>
 		</div>
 		<?php echo $item->fulltext;?>
