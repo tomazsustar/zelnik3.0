@@ -36,6 +36,7 @@ JHtml::_('bootstrap.framework');
 
 // Add Stylesheets
 $doc->addStyleSheet('templates/'.$this->template.'/css/template.css');
+$doc->addStyleSheet('templates/'.$this->template.'/css/vsebine.css');
 
 // Load optional rtl Bootstrap css and Bootstrap bugfixes
 JHtmlBootstrap::loadCss($includeMaincss = false, $this->direction);
@@ -43,23 +44,7 @@ JHtmlBootstrap::loadCss($includeMaincss = false, $this->direction);
 // Add current user information
 $user = JFactory::getUser();
 
-// Adjusting content width
-if ($this->countModules('position-7') && $this->countModules('position-8'))
-{
-	$span = "span6";
-}
-elseif ($this->countModules('position-7') && !$this->countModules('position-8'))
-{
-	$span = "span9";
-}
-elseif (!$this->countModules('position-7') && $this->countModules('position-8'))
-{
-	$span = "span9";
-}
-else
-{
-	$span = "span12";
-}
+
 
 // Logo file or site title param
 if ($this->params->get('logoFile'))
@@ -179,12 +164,26 @@ else
 		var element = document.getElementById('body'),
 			style = window.getComputedStyle(element),
 			sirinaBody = parseInt(style.getPropertyValue('max-width'));
+		var levaReklama = document.getElementById('leva-reklama'),
+			visinaLevaReklama = $('#leva-reklama').height();
 		
-		if (window.innerWidth < sirinaBody) {
+		if (window.innerWidth < sirinaBody || window.innerHeight < visinaLevaReklama) //skrivanje leve reklame (pokoncne)
+		{ 
 		$("#leva-reklama").css("display", "none");
 		}
 		else {
 		$("#leva-reklama").css("display", "block");
+		}
+		
+		var levaReklama = document.getElementById('desna-reklama'),
+			visinaLevaReklama = $('#desna-reklama').height();
+		
+		if (window.innerHeight < (visinaLevaReklama + 400)) //skrivanje desne reklame
+		{ 
+		$("#desna-reklama").css("display", "none");
+		}
+		else {
+		$("#desna-reklama").css("display", "block");
 		}
 		//skrolanje
 		$(function() {
@@ -199,6 +198,13 @@ $('.jspScrollable').mouseleave(function(){
     $(this).find('.jspDrag').stop(true, true).fadeOut('slow');
 });	
 	});
+	
+function skrijReklamo() //zapiranje desne reklame
+{
+var reklama = document.getElementById("desna-reklama");
+$("#desna-reklama").css("display", "none");
+return false;
+}
 	</script>
 	
 
@@ -249,30 +255,32 @@ $('.jspScrollable').mouseleave(function(){
 		</div>
 	</div>	
 	<!-- Body -->
-	<div class="body-background"></div>	
-	<div id="body" class="body">		
-		<div id="leva-reklama"></div>
-		<div class="container">
-			<div id="glavno-okno" class="sticky">
-				<div id="rob-levi"></div>				
-				<div class="sredina"></div>
-				<div id="rob-desni"></div>
-			</div>
-			<div id="desno-okno" class="sticky">
-				<div id="rob-levi-right"></div>
-				<div class="sredina"></div>
-				<div id="rob-desni-right"></div>
-			</div>	
-			<div id="content">
+		<div class="body-background"></div>	
+		<div id="body" class="body">		
+			<div id="leva-reklama"><jdoc:include type="modules" name="position-8" style="xhtml" /></div>
+			<div class="container">
+				<div id="glavno-okno" class="sticky">
+					<div id="rob-levi"></div>				
+					<div class="sredina"></div>
+					<div id="rob-desni"></div>
+				</div>
+				<div id="desno-okno" class="sticky">
+					<div id="rob-levi-right"></div>
+					<div class="sredina">
+						<jdoc:include type="modules" name="position-10" style="xhtml" />
+					</div>
+					<div id="rob-desni-right"></div>
+				</div>	
+				<div id="content">
 				<!-- Begin Content -->
-				<jdoc:include type="modules" name="position-3" style="xhtml" />
-				<jdoc:include type="message" />
 				<jdoc:include type="component" />
-				<jdoc:include type="modules" name="position-2" style="none" />
 				<!-- End Content -->
-			</div> 
-			<div id="desna-reklama"></div>
-		</div>
+				</div> 
+				<div id="desna-reklama">
+				<div id="skrij-reklamo" onclick="skrijReklamo();"></div>
+				<jdoc:include type="modules" name="position-7" style="xhtml" />	
+				</div>	
+			</div>
 		<div id="element"></div>
 	</div>
 	<!-- Footer -->

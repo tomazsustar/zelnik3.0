@@ -9,15 +9,14 @@
  */
 defined('_JEXEC') or die;
 
-
 jimport('joomla.application.component.modellist');
+include_once JPATH_SITE.'/components/com_vsebine/helpers/ZDate.php';
 
 /**
  * Methods supporting a list of Vsebine records.
  */
-class VsebineModelVsebine extends JModelList {
+class VsebineModelKoledar extends JModelList {
 
-	var $sotredTags=array();
     /**
      * Constructor.
      *
@@ -26,9 +25,7 @@ class VsebineModelVsebine extends JModelList {
      * @since    1.6
      */
     public function __construct($config = array()) {
-    	
         parent::__construct($config);
-        $this->setSortedTags();
     }
 
     /**
@@ -64,7 +61,6 @@ class VsebineModelVsebine extends JModelList {
      */
     protected function getListQuery() {
         // Create a new query object.
-        $app = JFactory::getApplication('site');
         $db = $this->getDbo();
         $query = $db->getQuery(true);
         $tags = JRequest::getVar('tags', false);
@@ -77,22 +73,18 @@ class VsebineModelVsebine extends JModelList {
         // Select the required fields from the table.
         $query->select(
                 $this->getState(
-                        'list.select', 'a.*'
+                        'list.select', 'a.lokacija, a.id, a.title_url, k.naslov, k.zacetek, k.konec '
                 )
         );
         
         $query->from('`nize01_zelnik`.`vs_vsebine` AS a');
         
+        $query->where('a.state = 2');
+        $query->where('k.zacetek > current_timestamp ');
         
-        $query->where('a.publish_up < current_timestamp');
+        $query->join('INNER', 'nize01_zelnik.vs_koledar as k ON k.id_vsebine = a.id');
         
-        
-        $query->order('a.publish_up DESC');
-        
-        $query->join('INNER', '`nize01_zelnik`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
-        $query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
-        $query->where("p.domena = '".$app->getParams('com_vsebine')->get('portal')."'");
-        $query->where('pv.status = 2');
+        $query->order('k.zacetek ASC');
         
         if($tags){
         	$tags = explode(',', $tags);
@@ -100,21 +92,20 @@ class VsebineModelVsebine extends JModelList {
         	foreach($tags as $tag){$qTags[]=$db->quote($tag); }
         	$tags=implode(',', $qTags);
         	//echo $tags;
-        	$query->join('INNER', '`nize01_zelnik`.vs_tags_vsebina as tv ON tv.id_vsebine = a.id');
-        	$query->join('INNER', '`nize01_zelnik`.vs_tags as t ON tv.id_tag = t.id');
+        	$query->join('INNER', 'nize01_zelnik.vs_tags_vsebina as tv ON tv.id_vsebine = a.id');
+        	$query->join('INNER', 'nize01_zelnik.vs_tags as t ON tv.id_tag = t.id');
         	$query->where("t.tag IN ($tags)");
-        }else{
-        	$query->where('(a.publish_down > current_timestamp or a.publish_down is null)');
-        	$query->where('(a.frontpage = 1)');
+        	$query=str_replace("SELECT", "SELECT DISTINCT", $query);
         }
         
-        $query=str_replace("SELECT", "SELECT DISTINCT", $query);
+        
+        //echo $query;
         return $query;
     }
     
     
     protected function populateState($ordering = null, $direction = null){
-       $this->setState('list.limit', 100);
+       $this->setState('list.limit', 25);
         $this->setState('list.offset', 0);
     }
     	/**
@@ -127,72 +118,38 @@ class VsebineModelVsebine extends JModelList {
 	 */
 	public function getItems()
 	{
-		$podstr = JRequest::getVar('tags', false);
-		$zdruzi = JRequest::getVar('zdruzi', 0);
-
+		$dates=array();
 		$items	= parent::getItems();
 		$i=0;
-		$blocks=array();
-		//echo count($items);
-		foreach ($items as $item){
-			//značke
-			$item->tags = explode(',',$item->tags);
-			$item->tags=$this->sortItemTags($item->tags);
-			$item->tag = $item->tags[0];
-			$item->tagUrl = JRoute::_("index.php?option=com_vsebine&tags=".$item->tag);
-			if($item->title_url=="")
-				$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id);
-			else
-				 $item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->title_url);
-			if(!$podstr && $zdruzi){
-			 	if($i<5){
-			 		$blocks[0][]=$item;
-			 		
-			 	}else{
-			 		foreach ($this->sotredTags as $st){
-			 			if(in_array($st->tag, $item->tags)){
-			 				if(!isset($blocks[$st->tag]) || 
-			 					count($blocks[$st->tag])<5){
-			 					$blocks[$st->tag][]=$item;
-			 				}
-			 			}
-			 		}		 		
-			 	}
+		if(count($items)){
+			$zac = new ZDate($items[0]->zacetek);
+			$dan = $zac->datumDB();
+			//echo "DAAAAN:".$dan;
+			foreach ($items as $item){
+				//datumi
+				$item->zacetek=new ZDate($item->zacetek);
+				
+				if($item->konec)
+					$item->konec=new ZDate($item->konec);
+				
+				if($item->title_url=="")
+					$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id);
+				else
+					 $item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->title_url);
+				
+					 
+				if($dan != $item->zacetek->datumDB()) {
+					$dan = $item->zacetek->datumDB(); 
+					$i=0;
+				}
+				$dates[$dan][$i]=$item;
+				
+				$i++;
+				
 			}
-		 	$i++;
 		}
-		$return=array();
-		if(!$podstr && $zdruzi){
-			foreach ($blocks as $key => $block){
-				//echo $key.':'.count($block).',';
-				if(count($block)==5)
-					$return=array_merge($return, $block);
-			}
-			//echo "<pre>".print_r($blocks)."</pre>";
-			return $return;
-		}
-		else return $items;
-	}
-	
-	private function setSortedTags(){
-		$q="SELECT count(t.id) as cnt, t.tag, t.id FROM `nize01_zelnik`.`vs_tags_vsebina` ts
-			inner join `nize01_zelnik`.vs_tags t on t.id=ts.id_tag group by t.id order by cnt desc limit 1, 20"; //preštej značke
-		$db = $this->getDbo();
-		$db->setQuery($q);
-		$this->sotredTags=$db->loadObjectList();
-	}
-	
-	public function sortItemTags($tags){
-		$return=array();
-		foreach ($this->sotredTags as $ct){
-			if(in_array($ct->tag, $tags)){
-					$return[]=$ct->tag;
-			}	
-		}		
-		//pripni še ostale
-		$diff=array_diff($tags, $return); 
-		$return=array_merge($return, $diff);
-		return $return;
+		//echo "<pre>";print_r($dates);echo "</pre>";
+		return $dates;
 	}
 
 }

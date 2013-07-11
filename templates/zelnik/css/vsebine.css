@@ -1,0 +1,106 @@
+.naslovna-novica {
+width: 265px;
+*min-height: 290px;
+float: left;
+margin: 0 10px 20px 10px;
+}
+.naslovna-novica-pomozna {
+width: 122px;
+*min-height: 140px;
+margin: 0 10px 20px 10px;
+float: left;
+font-size: 12px;
+line-height: 13px;
+font-weight: bold;
+}
+.stolpec .naslovna-novica-pomozna {
+*height: 125px;
+}
+#content img{
+*width: 100%;
+*margin: 2px 0;
+max-width: none;
+}
+.crop-veliki{
+width: 265px;
+height: 177px;
+overflow: hidden;
+margin: 2px 0;
+}
+.crop-mali{
+width: 122px;
+height: 81px;
+overflow: hidden;
+margin: 2px 0;
+}
+#content a{
+color: black;
+}
+#content a:hover{
+color: #78be46;
+color: #0c4885;
+}
+
+#content h1{
+font-size: 20px;
+line-height: 24px;
+margin: 2px 0;
+font-family: Arial;
+}
+#content {
+font-size: 12px;
+line-height: 14px;
+}
+
+#content .znacka {
+height: 14px;
+font-size: 12px;
+line-height: 14px;
+font-weight: normal;
+text-transform: uppercase;
+font-family: Verdana, Sans-Serif;
+*letter-spacing: -0.2ex;
+*word-spacing: 0ex;
+}
+#content hr {
+border: 0px none;
+width: 550px;
+background-color: #98bbd2;
+height: 2px;
+color: #98bbd2;
+}
+#reklama {
+*background-image: url('../images/banner468x60.gif');
+float: left;
+width: 570px;
+*width: 468px;
+*height: 60px;
+text-align: center;
+margin-bottom: 20px;
+}
+.stolpec {
+width: 285px;
+float: left;
+}
+.stolpec-precno {
+width: 570px;
+float: left;
+}
+.besedilo{
+	width:100%;
+	overflow: hidden;
+}
+.prispevek-slike{
+	float:right;
+}
+.prispevek-slike div{
+	margin:5px;
+}
+.prispevek-video{
+	margin-top:30px;
+	width:100%;
+}
+.prispevek-galerija{
+	margin-top:30px;
+	width:100%;
+}

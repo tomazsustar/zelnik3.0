@@ -9,7 +9,7 @@
  */
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modellist');
+jimport('joomla.application.component.modelitem');
 
 /**
  * Methods supporting a list of Vsebine records.
@@ -61,9 +61,7 @@ protected function populateState()
 				$query = $db->getQuery(true);
 
 
-				$query->from('vs_vsebine AS a');
-
-				// Join on category table.
+				$query->from('nize01_zelnik.vs_vsebine AS a');
 				$query->select('a.*');
 
 				// Join on user table.
@@ -164,6 +162,49 @@ protected function populateState()
 //					}
 //				}
 
+				// ZNAČKE
+				$query = $db->getQuery(true);
+				$query->from('nize01_zelnik.vs_tags AS t');
+				$query->select('t.*, tv.*');
+				$query->join('INNER', 'nize01_zelnik.vs_tags_vsebina as tv ON tv.id_tag = t.id');
+				$query->where("tv.id_vsebine = $data->id");
+				$query->where("t.tag <> ''");
+				$db->setQuery($query);
+				$tags = $db->loadObjectList();
+//				print_r($tags);
+				foreach ($tags as &$tag){
+					$tag->tagUrl = JRoute::_("index.php?option=com_vsebine&tags=".$tag->tag);
+				}
+				
+				$data->tags=$tags;
+				
+				// SLIKE
+				$query = $db->getQuery(true);
+				$query->from('nize01_zelnik.vs_slike AS s');
+				$query->select('s.*, sv.*');
+				$query->join('INNER', 'nize01_zelnik.vs_slike_vsebine as sv ON sv.id_slike = s.id');
+				$query->where("sv.id_vsebine = $data->id");
+				$query->where("sv.mesto_prikaza = 2");
+				$query->order("sv.zp_st ASC");
+				$db->setQuery($query);
+				$slike = $db->loadObjectList();
+				$data->slike = $slike;
+				
+				$query = $db->getQuery(true);
+				$query->from('nize01_zelnik.vs_slike AS s');
+				$query->select('s.*, sv.*');
+				$query->join('INNER', 'nize01_zelnik.vs_slike_vsebine as sv ON sv.id_slike = s.id');
+				$query->where("sv.id_vsebine = $data->id");
+				$query->where("sv.mesto_prikaza = 3");
+				$query->order("sv.zp_st ASC");
+				$db->setQuery($query);
+				$slike = $db->loadObjectList();
+				$data->galerija = $slike;
+				
+				//VIDEO
+				require_once JPATH_COMPONENT.'/helpers/ZVideoHelper.php';
+				$data->video=ZVideoHelper::insertVideo($data->video);
+				
 				$this->_item = $data;
 			}
 			catch (Exception $e)

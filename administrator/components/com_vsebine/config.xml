@@ -5,13 +5,11 @@
 		description="COM_VSEBINE_COMPONENT_DESC"
 	>
 
-        <field name="test"
-             type="radio"
-             default="1"
-             label="COM_VSEBINE_TEST_LABEL"
-             description="COM_VSEBINE_TEST_DESC">
-                 <option value="0">JHIDE</option>
-                 <option value="1">JSHOW</option>
+        <field name="portal"
+             type="text"
+             default=""
+             label="Portal - domena"
+             description="">
          </field>
 
 	</fieldset>

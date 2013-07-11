@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 //jimport('joomla.application.component.modellist');
-require_once __DIR__ . '/vsebine.php';
+require_once   JPATH_BASE.'/components/com_vsebine/models/vsebine.php';
 
 /**
  * Methods supporting a list of Vsebine records.

@@ -32,13 +32,19 @@ class VsebineController extends JControllerLegacy
 //					(($vName == 'category' && $this->input->get('layout') != 'blog') || $vName == 'archive' ))) {
 //				$cachable = false;
 //			}
+			if(JRequest::getVar('tags')){
+				JRequest::setVar('view', 'vsebine');
+			}
+			if(JRequest::getVar('prispevek')){
+				JRequest::setVar('view', 'prispevek');
+			}
 
-			if($this->input->getString('tags')){
-				$this->input->set('view', 'vsebine');
-			}
-			if($this->input->getString('prispevek')){
-				$this->input->set('view', 'prispevek');
-			}
+//			if($this->input->getString('tags')){
+//				$this->input->set('view', 'vsebine');
+//			}
+//			if($this->input->getString('prispevek')){
+//				$this->input->set('view', 'prispevek');
+//			}
 	
 //			$safeurlparams = array('catid' => 'INT', 'id' => 'INT', 'cid' => 'ARRAY', 'year' => 'INT', 'month' => 'INT', 'limit' => 'UINT', 'limitstart' => 'UINT',
 //				'showall' => 'INT', 'return' => 'BASE64', 'filter' => 'STRING', 'filter_order' => 'CMD', 'filter_order_Dir' => 'CMD', 'filter-search' => 'STRING', 'print' => 'BOOLEAN', 'lang' => 'CMD', 'Itemid' => 'INT');
@@ -52,6 +58,18 @@ class VsebineController extends JControllerLegacy
 			parent::display($cachable);
 	
 			return $this;
+		}
+		
+		public function module($cachable = false, $urlparams = false){
+//			//echo "<pre>";print_r($this->paths);echo "</pre>";
+			$view = $this->getView('Modul', 'html');
+			$mdl=$this->getModel('Koledar', 'VsebineModel');
+			$view->setModel($mdl, true);
+			$view->addTemplatePath(JPATH_SITE.'/components/com_vsebine/views/modul/tmpl');
+			$view->setLayout('koledar');
+//			//echo "<pre>bbb ";print_r($mdl->getState());echo "</pre>";
+			echo $view->display();
+			
 		}
 	
 }

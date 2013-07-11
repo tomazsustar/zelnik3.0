@@ -20,11 +20,11 @@ class VsebineHelper
 	 */
 	public static function addSubmenu($vName = '')
 	{
-		JHtmlSidebar::addEntry(
-			JText::_('COM_VSEBINE_TITLE_VSEBINE'),
-			'index.php?option=com_vsebine&view=vsebine',
-			$vName == 'vsebine'
-		);
+//		JHtmlSidebar::addEntry(
+//			JText::_('COM_VSEBINE_TITLE_VSEBINE'),
+//			'index.php?option=com_vsebine&view=vsebine',
+//			$vName == 'vsebine'
+//		);
 
 	}
 
