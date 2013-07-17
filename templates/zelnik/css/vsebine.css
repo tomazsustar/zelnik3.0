@@ -33,13 +33,7 @@ height: 81px;
 overflow: hidden;
 margin: 2px 0;
 }
-#content a{
-color: black;
-}
-#content a:hover{
-color: #78be46;
-color: #0c4885;
-}
+
 
 #content h1{
 font-size: 20px;
@@ -111,4 +105,12 @@ float: left;
 	border-bottom: solid 2px;
 	border-color: #98bbd2;
 	padding:5px; 
+
+}
+.koledar table td:first-child {
+	background-color: #98bbd2;
+
+}
+.koledar a {
+	font-weight: bold;
 }

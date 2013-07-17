@@ -134,6 +134,12 @@ body {
 	color: #333;
 	background-color: #fff;
 }
+ a{
+color: black;
+}
+ a:hover{
+color: #0c4885;
+}
 
 --------------------------------------------------------------------------
 body.site {
