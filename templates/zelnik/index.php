@@ -128,7 +128,7 @@ else
 		  if (!!$('.sticky').offset()) { // make sure ".sticky" element exists
 
 		    var stickyTop = $('.sticky').offset().top; // returns number 
-
+			
 		    $(window).scroll(function(){ // scroll event
 
 		      var windowTop = $(window).scrollTop(); // returns number 
@@ -142,6 +142,8 @@ else
 				$('.body-background').css({ position: 'absolute',bottom: '-200px'});
 		      }
 		      if (window.innerHeight > 900){
+			 
+				$(".koledar").css("height", (window.innerHeight - 300) + "px");
 		        $('.sticky').css({ position: 'fixed',top: '200px'});
 				$('.body-background').css({ position: 'fixed',bottom: '-200px'});
 				$('.logo').css({ position: 'fixed', top: 0 });
@@ -156,11 +158,10 @@ else
 		  });
 		  
 		  
-		 // višina okna 
-		 $(window.onresize = function() {
-		$(".body-background").css("height", (window.innerHeight) + "px");
-		$(".container").css("height", (window.innerHeight) + "px");
-		
+		 
+		 
+		 $(window).scroll(function() {
+			
 		var element = document.getElementById('body'),
 			style = window.getComputedStyle(element),
 			sirinaBody = parseInt(style.getPropertyValue('max-width'));
@@ -175,20 +176,29 @@ else
 		$("#leva-reklama").css("display", "block");
 		}
 		
-		var levaReklama = document.getElementById('desna-reklama'),
-			visinaLevaReklama = $('#desna-reklama').height();
+		var visinaDesnaReklama = $('#desna-reklama').height();
 		
-		if (window.innerHeight < (visinaLevaReklama + 400)) //skrivanje desne reklame
+		if (window.innerHeight < (visinaDesnaReklama + 400)) //skrivanje desne reklame
 		{ 
 		$("#desna-reklama").css("display", "none");
 		}
 		else {
 		$("#desna-reklama").css("display", "block");
-		}
+		}});
+		
+	// višina, širina okna 
+		 
+		  $(window.onresize = function() {
+		 $(".body-background").css("height", (window.innerHeight) + "px");
+		$(".container").css("height", (window.innerHeight) + "px");
+		$(".koledar").css("height", (window.innerHeight - 100) + "px");
+		 	
 		//skrolanje
-		$(function() {
-    $('.content-area').jScrollPane();
-});
+		$(function()
+{
+	$('.koledar').jScrollPane();
+
+
 
 $('.jspDrag').hide();
 $('.jspScrollable').mouseenter(function(){
@@ -198,13 +208,16 @@ $('.jspScrollable').mouseleave(function(){
     $(this).find('.jspDrag').stop(true, true).fadeOut('slow');
 });	
 	});
-	
+	});
 function skrijReklamo() //zapiranje desne reklame
 {
 var reklama = document.getElementById("desna-reklama");
 $("#desna-reklama").css("display", "none");
 return false;
 }
+
+
+		
 	</script>
 	
 
@@ -267,7 +280,9 @@ return false;
 				<div id="desno-okno" class="sticky">
 					<div id="rob-levi-right"></div>
 					<div class="sredina">
+						<div class="koledar">
 						<jdoc:include type="modules" name="position-10" style="xhtml" />
+						</div>
 					</div>
 					<div id="rob-desni-right"></div>
 				</div>	
@@ -277,7 +292,7 @@ return false;
 				<!-- End Content -->
 				</div> 
 				<div id="desna-reklama">
-				<div id="skrij-reklamo" onclick="skrijReklamo();"></div>
+				<!--<div id="skrij-reklamo" onclick="skrijReklamo();"></div>-->
 				<jdoc:include type="modules" name="position-7" style="xhtml" />	
 				</div>	
 			</div>
