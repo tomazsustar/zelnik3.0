@@ -104,3 +104,11 @@ float: left;
 	margin-top:30px;
 	width:100%;
 }
+.koledar table { 
+	border-collapse:collapse; 
+}
+.koledar table td, .koledar table tr { 
+	border-bottom: solid 2px;
+	border-color: #98bbd2;
+	padding:5px; 
+}
