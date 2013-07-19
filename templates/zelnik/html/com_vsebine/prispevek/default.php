@@ -75,11 +75,11 @@ $item=&$this->item?>
 	</div>
 	
 	<div class="prispevek-video"><?php echo $item->video; ?></div>
-	<?php if(count($item->galerija)):?> 
+	
+	<?php if(count($item->galerija)):?> <hr />
 		<div class="prispevek-galerija">
-			<h3>Galerija</h3>
 			<?php foreach ($item->galerija as $slika):?>
-				<a rel="boxplus-slike" href="<?php echo $slika->url;?>" target="blank"><img src="<?php echo $slika->url2;?>" style="width:130px;" /></a>
+				<a rel="boxplus-slike" href="<?php echo $slika->url;?>" target="blank"><img src="<?php echo $slika->url2;?>" /></a>
 			<?php endforeach?>
 		</div>
 	<?php endif;?>

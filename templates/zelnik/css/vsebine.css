@@ -10,17 +10,13 @@ width: 122px;
 margin: 0 10px 20px 10px;
 float: left;
 font-size: 12px;
-line-height: 13px;
+line-height: 14px;
 font-weight: bold;
 }
 .stolpec .naslovna-novica-pomozna {
 *height: 125px;
 }
-#content img{
-width: 100%;
-*margin: 2px 0;
-max-width: none;
-}
+
 .crop-veliki{
 width: 265px;
 height: 177px;
@@ -33,8 +29,9 @@ height: 81px;
 overflow: hidden;
 margin: 2px 0;
 }
-
-
+.crop-mali img{
+	width: 100%;
+}
 #content h1{
 font-size: 20px;
 line-height: 24px;
@@ -87,7 +84,7 @@ float: left;
 }
 .prispevek-slike{
 	float:right;
-
+	margin-top: 1em;
 }
 
 .prispevek-slike img{
@@ -96,8 +93,9 @@ float: left;
 	height: 177px;
 }
 .prispevek-video{
-	margin-top:30px;
+	margin-top:20px;
 	width:100%;
+	margin-bottom: 20px;
 }
 .prispevek-video iframe{
 	width: 480px;
@@ -105,11 +103,16 @@ float: left;
 }
 
 .prispevek-galerija{
-	margin-top:30px;
 	width:100%;
+}
+.prispevek-galerija img{
+	margin: 10px;
+	width: 160px;
 }
 .koledar table { 
 	border-collapse:collapse; 
+	font-size: 12px;
+	line-height: 14px;
 }
 .koledar table td, .koledar table tr { 
 	border-bottom: solid 2px;
@@ -118,8 +121,15 @@ float: left;
 
 }
 .koledar table td:first-child {
-	background-color: #98bbd2;
+	background-color: #397EC3;
+	color: white;
+	font-weight: bold;
+	text-align: center;
 
+}
+.koledar table td:first-child::first-line {
+	font-size: 16px;
+	line-height: 20px;
 }
 .koledar a {
 	font-weight: bold;
