@@ -152,7 +152,7 @@ class VsebineModelVsebine extends JModelList {
 			 		foreach ($this->sotredTags as $st){
 			 			if(in_array($st->tag, $item->tags)){
 			 				if(!isset($blocks[$st->tag]) || 
-			 					count($blocks[$st->tag])<5){
+			 					count($blocks[$st->tag])<3){
 			 					$blocks[$st->tag][]=$item;
 			 				}
 			 			}
@@ -164,8 +164,8 @@ class VsebineModelVsebine extends JModelList {
 		$return=array();
 		if(!$podstr && $zdruzi){
 			foreach ($blocks as $key => $block){
-				//echo $key.':'.count($block).',';
-				if(count($block)==5)
+				$count = count($block);
+				if($count==5 || $count==3)
 					$return=array_merge($return, $block);
 			}
 			//echo "<pre>".print_r($blocks)."</pre>";
