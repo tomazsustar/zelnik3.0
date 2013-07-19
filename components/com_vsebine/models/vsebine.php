@@ -129,7 +129,7 @@ class VsebineModelVsebine extends JModelList {
 	{
 		$podstr = JRequest::getVar('tags', false);
 		$zdruzi = JRequest::getVar('zdruzi', 0);
-
+		//echo " zdruzi: ".$zdruzi;
 		$items	= parent::getItems();
 		$i=0;
 		$blocks=array();
