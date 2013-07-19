@@ -289,6 +289,7 @@ return false;
 				<div id="content">
 				<!-- Begin Content -->
 				<jdoc:include type="component" />
+				<div class="konec-scrolla"></div>
 				<!-- End Content -->
 				</div> 
 				<div id="desna-reklama">

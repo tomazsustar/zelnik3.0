@@ -68,7 +68,7 @@ $item=&$this->item?>
 	<div class="besedilo">
 		<div class=prispevek-slike> 
 			<?php foreach ($item->slike as $slika):?>
-				<div><a href="<?php echo $slika->url;?>" rel="boxplus" target="_blank"><img style="width:220px;" src="<?php echo $slika->url2;?>" /></a></div>
+				<div><a href="<?php echo $slika->url;?>" rel="boxplus-slike" target="_blank"><img src="<?php echo $slika->url2;?>" /></a></div>
 			<?php endforeach?>
 		</div>
 		<?php echo $item->fulltext;?>
@@ -79,7 +79,7 @@ $item=&$this->item?>
 		<div class="prispevek-galerija">
 			<h3>Galerija</h3>
 			<?php foreach ($item->galerija as $slika):?>
-				<a href="<?php echo $slika->url;?>" target="blank"><img src="<?php echo $slika->url2;?>" style="width:130px;" /></a>
+				<a rel="boxplus-slike" href="<?php echo $slika->url;?>" target="blank"><img src="<?php echo $slika->url2;?>" style="width:130px;" /></a>
 			<?php endforeach?>
 		</div>
 	<?php endif;?>
