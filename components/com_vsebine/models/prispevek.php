@@ -201,6 +201,18 @@ protected function populateState()
 				$slike = $db->loadObjectList();
 				$data->galerija = $slike;
 				
+				// PRIPONKE
+				$query = $db->getQuery(true);
+				$query->from('nize01_zelnik.vs_slike AS s');
+				$query->select('s.*, sv.*');
+				$query->join('INNER', 'nize01_zelnik.vs_slike_vsebine as sv ON sv.id_slike = s.id');
+				$query->where("sv.id_vsebine = $data->id");
+				$query->where("sv.mesto_prikaza = 4");
+				$query->order("sv.zp_st ASC");
+				$db->setQuery($query);
+				$slike = $db->loadObjectList();
+				$data->priponke = $slike;
+				
 				//VIDEO
 				require_once JPATH_COMPONENT.'/helpers/ZVideoHelper.php';
 				$data->video=ZVideoHelper::insertVideo($data->video);
