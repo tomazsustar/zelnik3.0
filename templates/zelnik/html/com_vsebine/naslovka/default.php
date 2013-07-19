@@ -29,25 +29,13 @@ JHtml::_('behavior.caption');
 <?php 
 $count = count($this->items);
 $item=&$this->items[0];
-//list($width, $height) = @getimagesize($item->slika);
-//if($height!=0){
-//$razmerje = $width / $height;
-//if($razmerje>1.5) {
-//$visek = (1-$width/($height*1.5))*50;
-//$izbira="height: 100%; margin-left: ".$visek."%";
-//}
-//else  {
-//$visek = (1-$height/($width/1.5))*25;
-//$izbira="width: 100%; margin-top: ".$visek."%";
-//}
-//}
-$izbira="width: 100%;";
+
 ?>
 <div class="naslovna-novica">
 	<div class="znacka"><a href="<?php echo $item->tagUrl?>"><?php echo mb_strtoupper($item->tag); ?></a></div>
 	<h1><a href="<?php echo $item->url?>">
 	<div class="crop-veliki">
-	<img alt="" src="<?php echo $item->slika;?> "  style="<?php echo $izbira?>"/>
+	<img alt="" src="<?php echo $item->slika;?>" />
 	</div>
 	<?php echo $item->title;?></a></h1>
 	<div class="uvodni-text"><?php echo $item->introtext;?></div>
@@ -61,25 +49,13 @@ if($i&1) { ?>
 <?php 
 	}
 if($count>$i){ $item=&$this->items[$i];
-//list($width, $height) = @getimagesize($item->slika);
-//if($height!=0){
-//$razmerje = $width / $height;
-//if($razmerje>1.5) {
-//$visek = (1-$width/($height*1.5))*50;
-//$izbira="height: 100%; margin-left: ".$visek."%";
-//}
-//else  {
-//$visek = (1-$height/($width/1.5))*25;
-//$izbira="width: 100%; margin-top: ".$visek."%";
-//}
-//}
-$izbira="width: 100%;";
+
 ?>
 <div class="naslovna-novica-pomozna">
 	<div class="znacka"><a href="<?php echo $item->tagUrl?>"><?php echo mb_strtoupper($item->tag); ?></a></div>
 	<a href="<?php echo $item->url?>">
 		<div class="crop-mali">
-			<img alt="" src="<?php echo $item->slika;?> " style="<?php echo $izbira?>"/>
+			<img alt="" src="<?php echo $item->slika;?> "/>
 		</div>
 	<?php echo $item->title;?>
 	</a>
@@ -104,7 +80,7 @@ if (!isset($module)) {echo "<hr />";}
 </div>
 
 <?php
-for($j = 1; $j <= 100; $j += 5) { 
+for($j = 1; $j <= 100; $j += 3) { 
 	if($j&1) { ?>
 	<div class="stolpec-precno"> 
 <?php 
@@ -112,25 +88,13 @@ for($j = 1; $j <= 100; $j += 5) {
 <div class="stolpec">
 <?php
 if($count>(4+$j)){ $item=&$this->items[4+$j]; 
-//list($width, $height) = @getimagesize($item->slika);
-//if($height!=0){
-//$razmerje = $width / $height;
-//if($razmerje>1.5) {
-//$visek = (1-$width/($height*1.5))*50;
-//$izbira="height: 100%; margin-left: ".$visek."%";
-//}
-//else  {
-//$visek = (1-$height/($width/1.5))*25;
-//$izbira="width: 100%; margin-top: ".$visek."%";
-//}
-//}
-$izbira="width: 100%;";
+
 ?>
 <div class="naslovna-novica">
 	<div class="znacka"><a href="<?php echo $item->tagUrl?>"><?php echo mb_strtoupper($item->tag); ?></a></div>
 	<h1><a href="<?php echo $item->url?>">
 	<div class="crop-veliki">
-	<img alt="" src="<?php echo $item->slika;?> " style="<?php echo $izbira?>"/>
+	<img alt="" src="<?php echo $item->slika;?> "/>
 	</div>
 	<?php echo $item->title;?></a></h1>
 	<div class="uvodni-text"><?php echo $item->introtext;?></div>
@@ -138,30 +102,18 @@ $izbira="width: 100%;";
 
 <?php  } 
 
-for($i = (5+$j); $i <= (8+$j); $i += 1) {
+for($i = (5+$j); $i <= (6+$j); $i += 1) {
 	if(($i+$j)&1) { ?>
 	<div class="stolpec"> 
 <?php 
 	}
 if($count>$i){ $item=&$this->items[$i];
-//list($width, $height) = @getimagesize($item->slika);
-//if($height!=0){
-//$razmerje = $width / $height;
-//if($razmerje>1.5) {
-//$visek = (1-$width/($height*1.5))*50;
-//$izbira="height: 100%; margin-left: ".$visek."%";
-//}
-//else  {
-//$visek = (1-$height/($width/1.5))*25;
-//$izbira="width: 100%; margin-top: ".$visek."%";
-//}
-//}
-$izbira="width: 100%;";
+
 ?>
 <div class="naslovna-novica-pomozna">
 	<a href="<?php echo $item->url?>">
 		<div class="crop-mali">
-			<img alt="" src="<?php echo $item->slika;?> " style="<?php echo $izbira?>"/>
+			<img alt="" src="<?php echo $item->slika;?>" />
 		</div>
 	<?php echo $item->title;?>
 	</a>

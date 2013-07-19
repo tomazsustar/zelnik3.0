@@ -17,7 +17,7 @@ font-weight: bold;
 *height: 125px;
 }
 #content img{
-*width: 100%;
+width: 100%;
 *margin: 2px 0;
 max-width: none;
 }
