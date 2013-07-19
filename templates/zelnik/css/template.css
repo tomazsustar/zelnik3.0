@@ -496,3 +496,8 @@ margin-left: 1140px;
 	height: 200px;
 	overflow: auto;
 	}
+.konec-scrolla {
+	height: 30px;
+	float: left;
+	width: 100%;
+}
