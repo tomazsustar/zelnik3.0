@@ -136,10 +136,16 @@ else
 		      if (stickyTop < windowTop){
 		        $('.sticky').css({ position: 'fixed',top: '10px'});
 				$('.body-background').css({ position: 'fixed',bottom: '0px'});
+				$(window).scroll(function(){
+					$('.sticky').css('margin-left',-$(window).scrollLeft());
+					});
 		      }
 		      else {
 		        $('.sticky').css({ position: 'absolute',top: '200px'});
 				$('.body-background').css({ position: 'absolute',bottom: '-200px'});
+				$(window).scroll(function(){
+					$('.sticky').css('margin-left',0);
+					});
 		      }
 		      if (window.innerHeight > 900){
 			 

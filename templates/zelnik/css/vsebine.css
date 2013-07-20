@@ -106,8 +106,8 @@ float: left;
 	width:100%;
 }
 .prispevek-galerija img{
-	margin: 10px;
-	width: 160px;
+	margin: 5px;
+	width: 171px;
 }
 .koledar table { 
 	border-collapse:collapse; 
@@ -117,7 +117,10 @@ float: left;
 .koledar table td, .koledar table tr { 
 	border-bottom: solid 2px;
 	border-color: #98bbd2;
-	padding:5px; 
+
+}
+.koledar table td div {
+	margin: 5px;
 
 }
 .koledar table td:first-child {
@@ -125,7 +128,7 @@ float: left;
 	color: white;
 	font-weight: bold;
 	text-align: center;
-
+	padding: 5px;
 }
 .koledar table td:first-child::first-line {
 	font-size: 16px;
