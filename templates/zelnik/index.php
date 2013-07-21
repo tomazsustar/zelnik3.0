@@ -134,22 +134,17 @@ else
 		      var windowTop = $(window).scrollTop(); // returns number 
 
 		      if (stickyTop < windowTop){
+				$('.sticky').css('margin-left',-$(window).scrollLeft());
 		        $('.sticky').css({ position: 'fixed',top: '10px'});
 				$('.body-background').css({ position: 'fixed',bottom: '0px'});
-				$(window).scroll(function(){
-					$('.sticky').css('margin-left',-$(window).scrollLeft());
-					});
 		      }
 		      else {
+				$('.sticky').css('margin-left',0);
 		        $('.sticky').css({ position: 'absolute',top: '200px'});
 				$('.body-background').css({ position: 'absolute',bottom: '-200px'});
-				$(window).scroll(function(){
-					$('.sticky').css('margin-left',0);
-					});
 		      }
 		      if (window.innerHeight > 900){
 			 
-				$(".koledar").css("height", (window.innerHeight - 300) + "px");
 		        $('.sticky').css({ position: 'fixed',top: '200px'});
 				$('.body-background').css({ position: 'fixed',bottom: '-200px'});
 				$('.logo').css({ position: 'fixed', top: 0 });
@@ -158,6 +153,7 @@ else
 			  else {
 			  $('.logo').css({ position: 'relative'});
 			  $('.body').css({ margin: '60px auto auto auto' });
+			  
 			  }
 		    });
 		  }
@@ -197,7 +193,11 @@ else
 		  $(window.onresize = function() {
 		 $(".body-background").css("height", (window.innerHeight) + "px");
 		$(".container").css("height", (window.innerHeight) + "px");
+		$("#desno-okno .sredina, .vrh-desni .sredina").css("width", (window.innerWidth - 680) + "px");
 		$(".koledar").css("height", (window.innerHeight - 100) + "px");
+		if (window.innerHeight > 900){
+		$(".koledar").css("height", (window.innerHeight - 290) + "px");
+		}
 		 	
 		//skrolanje
 		$(function()

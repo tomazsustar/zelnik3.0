@@ -146,7 +146,8 @@ body.site {
 background: #397ec3;
 }
 .header {
-width: 960px;
+max-width: 960px;
+min-width: 840px;
 margin-left: auto;
 margin-right: auto;
 }
@@ -362,14 +363,14 @@ float: left;
 }
 .vrh-desni {
 padding: 10px 0 0 0;
-width: 340px;
 float: left;
 }
 .vrh-levi .sredina {
 width: 570px;
 }
 .vrh-desni .sredina {
-width: 300px;
+max-width: 300px;
+min-width: 180px;
 }
 .sredina {
 	background-image: url('../images/grad-vrh.png');
@@ -459,7 +460,8 @@ float: left;
 	background-repeat:no-repeat;
 }
 #desno-okno .sredina {
-width: 300px;
+max-width: 300px;
+min-width: 180px;
 float: left;
 	background-image: url('../images/gradient.png');
 	height: 100%;
