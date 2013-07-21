@@ -83,6 +83,14 @@ $item=&$this->item?>
 			<?php endforeach?>
 		</div>
 	<?php endif;?>
+	<?php if(count($item->priponke)):?> 
+		<div class="prispevek-galerija">
+			<h3>Priponke:</h3>
+			<?php foreach ($item->priponke as $priponka):?>
+				<a href="<?php echo $priponka->url;?>" target="blank"><?php echo $priponka->ime_slike?></a><br>
+			<?php endforeach?>
+		</div>
+	<?php endif;?>
 </div>
 
 
