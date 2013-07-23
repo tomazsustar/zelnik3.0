@@ -166,7 +166,7 @@ background-repeat: repeat-x;
 width: 100%;
 height: 800px;
 z-index: -1;
-min-width: 960px;
+min-width: 840px;
 }
 .footer
 {
@@ -174,6 +174,7 @@ background-image: url('../images/grass1.png');
 position: fixed;
 bottom: 0px;
 background-repeat: repeat-x;
+width: 100%;
 width: 100%;
 height: 80px;
 z-index: -1;
@@ -320,7 +321,8 @@ text-align: right;
 float: right;
 }
 .container {
-width: 960px;
+min-width: 840px;
+max-width: 960px;
 margin: 0 auto auto auto;
 height: 800px;
 }
@@ -476,8 +478,9 @@ top: 200px;
 margin-top: 60px
 }
 #desno-okno {
+max-width: 340px;
+min-width: 220px;
 float: left;
-width: 340px;
 padding-left: 620px
 }
 .body {

@@ -193,7 +193,10 @@ else
 		  $(window.onresize = function() {
 		 $(".body-background").css("height", (window.innerHeight) + "px");
 		$(".container").css("height", (window.innerHeight) + "px");
-		$("#desno-okno .sredina, .vrh-desni .sredina").css("width", (window.innerWidth - 680) + "px");
+		$("#desno-okno .sredina, .vrh-desni .sredina").css("width", (window.innerWidth - 680) + "px"); //ozanje strani
+		//$(".header").css("width", (window.innerWidth - 20) + "px");
+		//$(".container, .body-background").css("width", (window.innerWidth - 20) + "px");
+		//$("#desno-okno").css("width", (window.innerWidth - 630) + "px");
 		$(".koledar").css("height", (window.innerHeight - 100) + "px");
 		if (window.innerHeight > 900){
 		$(".koledar").css("height", (window.innerHeight - 290) + "px");
