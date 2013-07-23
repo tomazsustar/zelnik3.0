@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="3.0" client="administrator" method="upgrade" >
+	<tag>sl-SI</tag>
+	<name>Slovenian (sl-SI)</name>
+	<description>slojoomla prevod</description>
+	<version>3.0 v1</version>
+	<creationDate>2012-01-25</creationDate>
+	<author>slo-team, chico</author>
+	<authorEmail>kosec.dusan@gmail.com</authorEmail>
+	<authorUrl>www.slo-team.si</authorUrl>
+	<copyright>Copyright (C) 2005 - 2011 Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<description>Slovenian sl-SI admin pack for Joomla! 1.7.x / Joomla 2.5.x / Joomla 3.0.x</description>
+	<metadata>
+		<name>Slovenian (Slovenija)</name>
+		<tag>sl-SI</tag>
+		<rtl>0</rtl>
+		<locale>sl, si, slv-SI, sl-SI, slovenian, Slovenian, slovenščina, slovenija, slovensko</locale>
+		<firstDay>1</firstDay>
+	</metadata>
+	<params />
+</metafile>
