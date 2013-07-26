@@ -73,7 +73,7 @@ class VsebineModelKoledar extends JModelList {
         // Select the required fields from the table.
         $query->select(
                 $this->getState(
-                        'list.select', 'a.lokacija, a.id, a.title_url, k.naslov, k.zacetek, k.konec '
+                        'list.select', 'k.lokacija, a.id, a.title_url, k.naslov, k.zacetek, k.konec '
                 )
         );
         
