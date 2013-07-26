@@ -130,7 +130,7 @@ body {
 	margin: 0;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 13px;
-	line-height: 18px;
+	*line-height: 18px;
 	color: #333;
 	background-color: #fff;
 }
@@ -146,7 +146,8 @@ body.site {
 background: #397ec3;
 }
 .header {
-width: 960px;
+max-width: 960px;
+min-width: 840px;
 margin-left: auto;
 margin-right: auto;
 }
@@ -165,6 +166,7 @@ background-repeat: repeat-x;
 width: 100%;
 height: 800px;
 z-index: -1;
+min-width: 840px;
 }
 .footer
 {
@@ -172,6 +174,7 @@ background-image: url('../images/grass1.png');
 position: fixed;
 bottom: 0px;
 background-repeat: repeat-x;
+width: 100%;
 width: 100%;
 height: 80px;
 z-index: -1;
@@ -240,6 +243,7 @@ background: linear-gradient(to bottom, rgba(255,254,250,0.15) 0%,rgba(254,251,24
 	{
 	color: #fff;
 	font-size: 16px;	
+	line-height: 20px;
 	text-decoration: none;
 	display: inline-block;
 	margin: 0;
@@ -317,7 +321,8 @@ text-align: right;
 float: right;
 }
 .container {
-width: 960px;
+min-width: 840px;
+max-width: 960px;
 margin: 0 auto auto auto;
 height: 800px;
 }
@@ -360,14 +365,14 @@ float: left;
 }
 .vrh-desni {
 padding: 10px 0 0 0;
-width: 340px;
 float: left;
 }
 .vrh-levi .sredina {
 width: 570px;
 }
 .vrh-desni .sredina {
-width: 300px;
+max-width: 300px;
+min-width: 180px;
 }
 .sredina {
 	background-image: url('../images/grad-vrh.png');
@@ -457,7 +462,8 @@ float: left;
 	background-repeat:no-repeat;
 }
 #desno-okno .sredina {
-width: 300px;
+max-width: 300px;
+min-width: 180px;
 float: left;
 	background-image: url('../images/gradient.png');
 	height: 100%;
@@ -472,9 +478,10 @@ top: 200px;
 margin-top: 60px
 }
 #desno-okno {
+max-width: 340px;
+min-width: 220px;
 float: left;
-width: 340px;
-margin-left: 620px
+padding-left: 620px
 }
 .body {
 margin-right: auto;
@@ -496,3 +503,8 @@ margin-left: 1140px;
 	height: 200px;
 	overflow: auto;
 	}
+.konec-scrolla {
+	height: 30px;
+	float: left;
+	width: 100%;
+}

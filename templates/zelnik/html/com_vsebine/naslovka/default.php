@@ -80,7 +80,7 @@ if (!isset($module)) {echo "<hr />";}
 </div>
 
 <?php
-for($j = 1; $j <= 100; $j += 3) { 
+for($j = 1; $j <= 24; $j += 3) { 
 	if($j&1) { ?>
 	<div class="stolpec-precno"> 
 <?php 
