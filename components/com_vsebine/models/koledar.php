@@ -61,6 +61,7 @@ class VsebineModelKoledar extends JModelList {
      */
     protected function getListQuery() {
         // Create a new query object.
+        $app = JFactory::getApplication('site');
         $db = $this->getDbo();
         $query = $db->getQuery(true);
         $tags = JRequest::getVar('tags', false);
@@ -83,6 +84,11 @@ class VsebineModelKoledar extends JModelList {
         $query->where('k.zacetek > current_timestamp ');
         
         $query->join('INNER', 'nize01_zelnik.vs_koledar as k ON k.id_vsebine = a.id');
+        
+        $query->join('INNER', '`nize01_zelnik`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
+        $query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
+        $query->where("p.domena = '".$app->getParams('com_vsebine')->get('portal')."'");
+        $query->where('pv.status = 2');
         
         $query->order('k.zacetek ASC');
         
