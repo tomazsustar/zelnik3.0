@@ -80,7 +80,6 @@ class VsebineModelKoledar extends JModelList {
         
         $query->from('`nize01_zelnik`.`vs_vsebine` AS a');
         
-        $query->where('a.state = 2');
         $query->where('k.zacetek > current_timestamp ');
         
         $query->join('INNER', 'nize01_zelnik.vs_koledar as k ON k.id_vsebine = a.id');

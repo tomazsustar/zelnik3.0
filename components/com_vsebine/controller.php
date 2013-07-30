@@ -71,8 +71,9 @@ class VsebineController extends JControllerLegacy
 			$template_path=JPATH_SITE.'/templates/'.$template.'/html/com_vsebine/modul';
 			if(!file_exists($template_path.'/koledar.php')){
 				$view->addTemplatePath(JPATH_SITE.'/components/com_vsebine/views/modul/tmpl');
+			}else{
+				$view->addTemplatePath($template_path);
 			}
-			
 			$view->setLayout('koledar');
 			//echo "<pre>".print_r($view)."</pre>";
 //			//echo "<pre>bbb ";print_r($mdl->getState());echo "</pre>";
