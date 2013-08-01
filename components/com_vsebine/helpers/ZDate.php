@@ -15,8 +15,11 @@ class ZDate extends DateTime{
 	const DATETIME_REGEX ="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d.\d\d:\d\d^"; // [- /\.](0[1-9]|1[012])[- /\.](19|20)\d\d/";
 	const DATE_REGEX ="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d^";
 	
-	public function __construct($datetime){
-		parent::__construct($datetime);
+	public function __construct($datetime, $timezone = false){
+		if(!$timezone){
+			$timezone = new DateTimeZone('Europe/Ljubljana');
+		}
+		parent::__construct($datetime, $timezone);
 	}
 	
 	public static function translateFormat_php($strdate, $format){	
