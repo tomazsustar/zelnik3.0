@@ -1,4 +1,4 @@
-	<?php
+<?php
 /**
  * @package     Joomla.Site
  * @subpackage  com_content
@@ -58,7 +58,6 @@ class VsebineViewKoledar extends JViewLegacy
 //		END:VCALENDAR';
 		
 ?>
-
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//zelnik.net/novicomat//EN
@@ -68,17 +67,17 @@ foreach ($dnevi as $dogodki):
 foreach ($dogodki as $dogodek):
 ?>
 BEGIN:VEVENT
+SUMMARY:<?= $dogodek->naslov ?>
+
 UID:<?= $dogodek->koledar_id.'-koledar@novicomat.si' ?>
 
 DTSTAMP:<?= gmdate('Ymd\THis\Z', time()) ?>
 
 LOCATION:<?= $dogodek->lokacija ?>
 
-DESCRIPTION:<?= $dogodek->fulltext ?>
+DESCRIPTION:<?= '<img src="'.$dogodek->slika.'" alt="slika" style="float:left;margin:5px;" />'.$dogodek->fulltext ?>
 
 URL;VALUE=URI:<?= $dogodek->url ?>
-
-SUMMARY:<?= $dogodek->naslov ?>
 
 <?php if($dogodek->zacetek->format('His')=="000000"):?>
 DTSTART;VALUE=DATE:<?= $dogodek->zacetek->format('Ymd') ?>
