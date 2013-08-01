@@ -32,13 +32,14 @@ class VsebineController extends JControllerLegacy
 //					(($vName == 'category' && $this->input->get('layout') != 'blog') || $vName == 'archive' ))) {
 //				$cachable = false;
 //			}
-			if(JRequest::getVar('tags')){
-				JRequest::setVar('view', 'vsebine');
+			if(JRequest::getVar('view')!='koledar'){ //če view ni določen
+				if(JRequest::getVar('tags')){
+					JRequest::setVar('view', 'vsebine');
+				}
+				if(JRequest::getVar('prispevek')){
+					JRequest::setVar('view', 'prispevek');
+				}
 			}
-			if(JRequest::getVar('prispevek')){
-				JRequest::setVar('view', 'prispevek');
-			}
-
 //			if($this->input->getString('tags')){
 //				$this->input->set('view', 'vsebine');
 //			}

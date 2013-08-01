@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+include_once JPATH_SITE.'/components/com_vsebine/helpers/vsebine.php';
+
 /**
  * HTML View class for the Content component
  *
@@ -67,17 +69,17 @@ foreach ($dnevi as $dogodki):
 foreach ($dogodki as $dogodek):
 ?>
 BEGIN:VEVENT
-SUMMARY:<?= $dogodek->naslov ?>
+SUMMARY:<?= preg_replace('/([\,;])/','\\\$1', $dogodek->naslov) ?>
 
 UID:<?= $dogodek->koledar_id.'-koledar@novicomat.si' ?>
 
 DTSTAMP:<?= gmdate('Ymd\THis\Z', time()) ?>
 
-LOCATION:<?= $dogodek->lokacija ?>
+LOCATION:<?= preg_replace('/([\,;])/','\\\$1', $dogodek->lokacija) ?>
 
-DESCRIPTION:<?= '<img src="'.$dogodek->slika.'" alt="slika" style="float:left;margin:5px;" />'.$dogodek->fulltext ?>
+DESCRIPTION;ENCODING=QUOTED-PRINTABLE:<?= VsebineHelper::wraplines('<img src="'.$dogodek->slika.'" alt="slika" style="float:left;margin:5px;" />'.$dogodek->fulltext) // preg_replace('/([\,;])/','\\\$1', strip_tags($dogodek->fulltext)), 76, true  ?>
 
-URL;VALUE=URI:<?= $dogodek->url ?>
+URL;VALUE=URI:<?= "http://".$_SERVER['HTTP_HOST'].$dogodek->url ?>
 
 <?php if($dogodek->zacetek->format('His')=="000000"):?>
 DTSTART;VALUE=DATE:<?= $dogodek->zacetek->format('Ymd') ?>
@@ -95,7 +97,7 @@ DTEND;VALUE=DATE:<?= $dogodek->konec->modify("+1 day")->format('Ymd') ?>
 DTEND:<?= $dogodek->konec->format('Ymd\THis\Z') ?>
 <?php endif;?>
 
-END:VEVENT		
+END:VEVENT
 <?php endforeach;
 endforeach;?>
 END:VCALENDAR

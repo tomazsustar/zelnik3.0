@@ -30,7 +30,6 @@ JHtml::_('behavior.caption');
 <table>
   
 		<?php 
-			//echo __FILE__;
 			foreach ($this->items as $datum => $dogodki) : 
 				list($leto, $mesec, $dan) = explode('-', $datum);
 				?>
