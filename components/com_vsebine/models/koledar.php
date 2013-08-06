@@ -65,6 +65,7 @@ class VsebineModelKoledar extends JModelList {
         $db = $this->getDbo();
         $query = $db->getQuery(true);
         $tags = JRequest::getVar('tags', false);
+        $prispevek = JRequest::getInt('prispevek', false);
         $portal = JRequest::getVar('portal', false);
         if(!$portal) $portal = $app->getParams('com_vsebine')->get('portal');
         
@@ -83,6 +84,7 @@ class VsebineModelKoledar extends JModelList {
                         'list.select', 'k.lokacija, a.id, a.title_url, k.naslov, k.zacetek, k.konec, k.id as koledar_id '
                 )
         );
+    
         
         if ($format=="ical"){
         	$query->select('a.fulltext, a.slika');
@@ -90,16 +92,19 @@ class VsebineModelKoledar extends JModelList {
         
         $query->from('`nize01_zelnik`.`vs_vsebine` AS a');
         
-        $query->where('k.zacetek > current_timestamp ');
-        
         $query->join('INNER', 'nize01_zelnik.vs_koledar as k ON k.id_vsebine = a.id');
         
         $query->join('INNER', '`nize01_zelnik`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
         $query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
-        $query->where("p.domena = '".$portal."'");
+        $query->where("p.domena = ".$db->quote($portal));
         $query->where('pv.status = 2');
         
         $query->order('k.zacetek ASC');
+    	if($prispevek){
+        	$query->where("a.id = $prispevek");
+        }else{
+        	$query->where('k.zacetek > current_timestamp ');
+        }
         
         if($tags){
         	$tags = explode(',', $tags);
@@ -112,7 +117,6 @@ class VsebineModelKoledar extends JModelList {
         	$query->where("t.tag IN ($tags)");
         	$query=str_replace("SELECT", "SELECT DISTINCT", $query);
         }
-        
         
         //echo $query;
         return $query;

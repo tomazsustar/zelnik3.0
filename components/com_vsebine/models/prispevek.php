@@ -172,10 +172,12 @@ protected function populateState()
 				$db->setQuery($query);
 				$tags = $db->loadObjectList();
 //				print_r($tags);
+				$arr=array();
 				foreach ($tags as &$tag){
 					$tag->tagUrl = JRoute::_("index.php?option=com_vsebine&tags=".$tag->tag);
+					$arr[]=$tag->tag;
 				}
-				
+				$data->str_tags=implode(', ', $arr);
 				$data->tags=$tags;
 				
 				// SLIKE
