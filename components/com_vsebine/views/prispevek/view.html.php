@@ -219,21 +219,21 @@ protected $item;
 //		if (empty($title)) {
 //			$title = $this->item->title;
 //		}
-//		$this->document->setTitle($title);
+		$this->document->setTitle($this->item->title);
 //
 //		if ($this->item->metadesc)
-//		{
-//			$this->document->setDescription($this->item->metadesc);
-//		}
+		{
+			$this->document->setDescription($this->item->introtext);
+		}
 //		elseif (!$this->item->metadesc && $this->params->get('menu-meta_description'))
 //		{
 //			$this->document->setDescription($this->params->get('menu-meta_description'));
 //		}
 //
 //		if ($this->item->metakey)
-//		{
-//			$this->document->setMetadata('keywords', $this->item->metakey);
-//		}
+		{
+			$this->document->setMetadata('keywords',  $this->item->str_tags);
+		}
 //		elseif (!$this->item->metakey && $this->params->get('menu-meta_keywords'))
 //		{
 //			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
@@ -244,10 +244,10 @@ protected $item;
 //			$this->document->setMetadata('robots', $this->params->get('robots'));
 //		}
 //
-//		if ($app->getCfg('MetaAuthor') == '1')
-//		{
-//			$this->document->setMetaData('author', $this->item->author);
-//		}
+		if ($this->item->author_alias)
+		{
+			$this->document->setMetaData('author', $this->item->author_alias);
+		}
 //
 //		$mdata = $this->item->metadata->toArray();
 //		foreach ($mdata as $k => $v)

@@ -61,9 +61,17 @@ class VsebineModelKoledar extends JModelList {
      */
     protected function getListQuery() {
         // Create a new query object.
+        $app = JFactory::getApplication('site');
         $db = $this->getDbo();
         $query = $db->getQuery(true);
         $tags = JRequest::getVar('tags', false);
+        $prispevek = JRequest::getInt('prispevek', false);
+        $portal = JRequest::getVar('portal', false);
+        if(!$portal) $portal = $app->getParams('com_vsebine')->get('portal');
+        
+        $format = JRequest::getVar('format', false);
+        
+        
 //        $app = JFactory::getApplication();
 //        echo "<pre>";
 //        print_r($tags);
@@ -73,18 +81,30 @@ class VsebineModelKoledar extends JModelList {
         // Select the required fields from the table.
         $query->select(
                 $this->getState(
-                        'list.select', 'a.lokacija, a.id, a.title_url, k.naslov, k.zacetek, k.konec '
+                        'list.select', 'k.lokacija, a.id, a.title_url, k.naslov, k.zacetek, k.konec, k.id as koledar_id '
                 )
         );
+    
+        
+        if ($format=="ical"){
+        	$query->select('a.fulltext, a.slika');
+        }
         
         $query->from('`nize01_zelnik`.`vs_vsebine` AS a');
         
-        $query->where('a.state = 2');
-        $query->where('k.zacetek > current_timestamp ');
-        
         $query->join('INNER', 'nize01_zelnik.vs_koledar as k ON k.id_vsebine = a.id');
         
+        $query->join('INNER', '`nize01_zelnik`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
+        $query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
+        $query->where("p.domena = ".$db->quote($portal));
+        $query->where('pv.status = 2');
+        
         $query->order('k.zacetek ASC');
+    	if($prispevek){
+        	$query->where("a.id = $prispevek");
+        }else{
+        	$query->where('k.zacetek > current_timestamp ');
+        }
         
         if($tags){
         	$tags = explode(',', $tags);
@@ -97,7 +117,6 @@ class VsebineModelKoledar extends JModelList {
         	$query->where("t.tag IN ($tags)");
         	$query=str_replace("SELECT", "SELECT DISTINCT", $query);
         }
-        
         
         //echo $query;
         return $query;

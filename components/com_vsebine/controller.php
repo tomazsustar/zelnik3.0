@@ -32,13 +32,14 @@ class VsebineController extends JControllerLegacy
 //					(($vName == 'category' && $this->input->get('layout') != 'blog') || $vName == 'archive' ))) {
 //				$cachable = false;
 //			}
-			if(JRequest::getVar('tags')){
-				JRequest::setVar('view', 'vsebine');
+			if(JRequest::getVar('view')!='koledar'){ //če view ni določen
+				if(JRequest::getVar('tags')){
+					JRequest::setVar('view', 'vsebine');
+				}
+				if(JRequest::getVar('prispevek')){
+					JRequest::setVar('view', 'prispevek');
+				}
 			}
-			if(JRequest::getVar('prispevek')){
-				JRequest::setVar('view', 'prispevek');
-			}
-
 //			if($this->input->getString('tags')){
 //				$this->input->set('view', 'vsebine');
 //			}
@@ -62,11 +63,19 @@ class VsebineController extends JControllerLegacy
 		
 		public function module($cachable = false, $urlparams = false){
 //			//echo "<pre>";print_r($this->paths);echo "</pre>";
-			$view = $this->getView('Modul', 'html');
+			$view = $this->getView('Koledar', 'html');
 			$mdl=$this->getModel('Koledar', 'VsebineModel');
 			$view->setModel($mdl, true);
-			$view->addTemplatePath(JPATH_SITE.'/components/com_vsebine/views/modul/tmpl');
-			$view->setLayout('koledar');
+			//$view->addTemplatePath(JPATH_SITE.'/components/com_vsebine/views/modul/tmpl');
+			$app = JFactory::getApplication();
+			$template = $app->getTemplate();
+			$template_path=JPATH_SITE.'/templates/'.$template.'/html/com_vsebine/koledar';
+			if(!file_exists($template_path.'/default.php')){
+				$view->addTemplatePath(JPATH_SITE.'/components/com_vsebine/views/koledar/tmpl');
+			}else{
+				$view->addTemplatePath($template_path);
+			}
+			//echo "<pre>".print_r($view)."</pre>";
 //			//echo "<pre>bbb ";print_r($mdl->getState());echo "</pre>";
 			echo $view->display();
 			

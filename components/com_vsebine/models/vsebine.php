@@ -136,8 +136,10 @@ class VsebineModelVsebine extends JModelList {
 		//echo count($items);
 		foreach ($items as $item){
 			//značke
-			$item->tags = explode(',',$item->tags);
+			
+			$item->tags = array_map('trim',(explode(',',$item->tags)));
 			$item->tags=$this->sortItemTags($item->tags);
+			$tagsLower=array_map('mb_strtolower', $item->tags);
 			$item->tag = $item->tags[0];
 			$item->tagUrl = JRoute::_("index.php?option=com_vsebine&tags=".$item->tag);
 			if($item->title_url=="")
@@ -149,11 +151,15 @@ class VsebineModelVsebine extends JModelList {
 			 		$blocks[0][]=$item;
 			 		
 			 	}else{
+			 		//if ($item->id == 2576){echo "AAA".in_array("Kultura", $item->tags);}//echo "AAAAAAAA";} 
 			 		foreach ($this->sotredTags as $st){
-			 			if(in_array($st->tag, $item->tags)){
+			 		
+			 			if(in_array(mb_strtolower($st->tag), $tagsLower)){
+			 				//if ($item->id == 2591){echo $st->tag;}//echo "AAAAAAAA";}
 			 				if(!isset($blocks[$st->tag]) || 
 			 					count($blocks[$st->tag])<3){
 			 					$blocks[$st->tag][]=$item;
+			 					break;
 			 				}
 			 			}
 			 		}		 		
