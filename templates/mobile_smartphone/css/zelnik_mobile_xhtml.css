@@ -35,6 +35,9 @@ ul#mainlevel, ul.hmenu, ul.hsubmenu {
 	padding: 5px 10px !important;
 	border-bottom: 1px solid #d8d8d8;
 	list-style: none !important;
+	background-color: #73a1ca;
+	text-align: center;
+
 }
 
 ul.vmenu, ul.vsubmenu {
@@ -63,17 +66,21 @@ ul.hmenu li a, ul.hmenu li span {
 }
 
 ul#mainlevel li a, ul.hmenu li a, ul.vmenu li a, ul.hsubmenu li a, ul.vsubmenu li a {
-	color: #006600;
+	color: white;
+	font-weight: bold;
+	line-height: 18px;
+	text-decoration: none;
+
 }
 
 ul#mainlevel li a#active_menu, ul.hmenu li.current a, ul.vmenu li.current a {
-	color: #000;
+	color: #fff;
 	text-decoration: none;
 	font-weight: bold;
 }
 
 #content {
-	margin: 10px 2px 2px;
+*	margin: 10px 2px 2px;
 }
 
 #content h5 {
@@ -121,9 +128,10 @@ p {
 
 /* patches to nokia styles */
 #header {
-	background: url('../resources/images/img-branding-background.png') repeat-x top;
-	padding: 17px 10px 0;
-	height: 53px;
+*	background: url('../resources/images/img-branding-background.png') repeat-x top;
+	background-color: #397EC3;
+	padding: 10px 20px;
+*	height: 53px;
 }
 
 #header h1 a {
@@ -160,15 +168,19 @@ span.markupchooser {
 }
 
 #footer {
+	background: url(../resources/images/grass.png) repeat-x top;
 	height: auto;
-	padding: 0.7em;
-	color: #fff;
+	padding: 2em 0 0.7em;
+	color: #000;
+	text-align: center;
+	
 }
 
 #footer ul {
 	margin: 0;
 	padding: 0;
 	list-style: none;
+	
 }
 
 #footer ul li {
@@ -176,19 +188,20 @@ span.markupchooser {
 }
 
 #footer ul li a {
-	color: white;
+	color: black;
 	text-decoration: none;
 }
 
 #footer a {
-	color: white;
+	color: black;
 }
 
 #footer p.jfooter {
 	margin: 15px 0;
 	font-size: 12px;
 	line-height: 120%;
-	color: #ddd;
+	color: #000;
+	display: inline;
 }
 
 ol {

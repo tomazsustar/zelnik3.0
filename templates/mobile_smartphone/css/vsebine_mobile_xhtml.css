@@ -1,0 +1,143 @@
+.naslovna-novica {
+width: 265px;
+*min-height: 290px;
+float: left;
+margin: 0 10px 20px 10px;
+}
+.naslovna-novica-pomozna {
+width: 122px;
+*min-height: 140px;
+margin: 0 10px 20px 10px;
+float: left;
+font-size: 12px;
+line-height: 14px;
+font-weight: bold;
+}
+.stolpec .naslovna-novica-pomozna {
+*height: 125px;
+}
+
+.crop-veliki{
+width: 265px;
+height: 177px;
+overflow: hidden;
+margin: 2px 0;
+}
+.crop-mali{
+width: 122px;
+height: 81px;
+overflow: hidden;
+margin: 2px 0;
+}
+.crop-mali img{
+	width: 100%;
+}
+#content h1{
+font-size: 20px;
+line-height: 24px;
+margin: 2px 0;
+font-family: Arial;
+}
+#content {
+font-size: 12px;
+line-height: 14px;
+}
+
+#content .znacka {
+height: 14px;
+font-size: 12px;
+line-height: 14px;
+font-weight: normal;
+text-transform: uppercase;
+font-family: Verdana, Sans-Serif;
+*letter-spacing: -0.2ex;
+*word-spacing: 0ex;
+}
+#content hr {
+border: 0px none;
+width: 100%;
+background-color: #98bbd2;
+height: 2px;
+color: #98bbd2;
+}
+#reklama {
+*background-image: url('../images/banner468x60.gif');
+float: left;
+width: 100%;
+*width: 468px;
+*height: 60px;
+text-align: center;
+margin-bottom: 20px;
+}
+.stolpec {
+width: 285px;
+float: left;
+}
+.stolpec-precno {
+width: 100%;
+float: left;
+}
+.besedilo{
+	width:100%;
+	overflow: hidden;
+	text-align: justify;
+}
+.prispevek-slike{
+*	float:right;
+	margin-top: 1em;
+}
+
+.prispevek-slike img{
+	margin: 0 0 20px 20px;	
+	width: 265px;
+	height: 177px;
+}
+.prispevek-video{
+	margin-top:20px;
+	width:100%;
+	margin-bottom: 20px;
+}
+.prispevek-video iframe{
+	width: 480px;
+	height: 360px;
+}
+
+.prispevek-galerija{
+	width:100%;
+}
+.prispevek-galerija img{
+	margin: 5px;
+	width: 171px;
+}
+.koledar table { 
+	border-collapse:collapse; 
+	font-size: 12px;
+	line-height: 14px;
+}
+.koledar table td, .koledar table tr { 
+	border-bottom: solid 2px;
+	border-color: #98bbd2;
+
+}
+.koledar table td div {
+	margin: 5px;
+
+}
+.koledar table td:first-child {
+	background-color: #397EC3;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+	padding: 5px;
+}
+.koledar table td:first-child::first-line {
+	font-size: 16px;
+	line-height: 20px;
+}
+.koledar a {
+	font-weight: bold;
+}
+.novica {
+	margin: 10px;
+
+}
