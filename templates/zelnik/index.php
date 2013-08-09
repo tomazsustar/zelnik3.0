@@ -112,9 +112,12 @@ else
 <link type="text/css" href="templates/zelnik/css/jquery.jscrollpane.css" rel="stylesheet" media="all" />
  
 <!-- latest jQuery direct from google's CDN -->
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7./jquery.min.js">
 </script>
- 
+
+
+
+
 <!-- the mousewheel plugin - optional to provide mousewheel support -->
 <script type="text/javascript" src="templates/zelnik/js/jquery.mousewheel.js"></script>
  
@@ -253,6 +256,9 @@ return false;
 			<div class="social">
 				<div> 
 					<div style="float: left; z-index:1000;">
+						<a  href="mailto:ekipa@zelnik.net"><img style="width: 16px; height: 16px; margin:5px;" <?php echo 'src="'.$this->baseurl .'/templates/zelnik/images/at_button.png"'; ?> alt="Facebook" title="Pišite nam"></a>
+					</div>
+					<div style="float: left; z-index:1000;">
 						<a rel="nofollow" href="https://www.facebook.com/zelnik.net" target="_blank"><img style="width: 8px; height: 16px; margin:5px;" <?php echo 'src="'.$this->baseurl .'/templates/zelnik/images/fb_button.png"'; ?> alt="Facebook" title="Sledite nam na Facebooku"></a>
 					</div>
 					<div style="float: left; z-index:1000;">
@@ -312,7 +318,10 @@ return false;
 	<div class="footer"></div>
 	<div id="front-footer">
 		<div id="footer-text">
-			&copy; <?php echo $sitename; ?> <?php echo date('Y');?>
+		<div>&copy; <?php echo $sitename; ?> <?php echo date('Y');?> | </div>
+		<div id="piskotki"> | </div>
+		<jdoc:include type="modules" name="footer" style="xhtml" />	
+			
 		</div>
 	</div>
 </body>

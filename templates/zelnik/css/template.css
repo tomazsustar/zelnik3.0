@@ -179,6 +179,10 @@ width: 100%;
 height: 80px;
 z-index: -1;
 }
+#footer-text .moduletable
+{
+display: inline;
+}
 #front-footer
 {
 position: fixed;
@@ -189,6 +193,12 @@ background-repeat: repeat-x;
 width: 100%;
 z-index: 500;
 }
+#front-footer:hover
+{
+
+height: 50px;
+
+}
 #footer-text {
 position: absolute;
 bottom: 0px;
@@ -196,6 +206,9 @@ text-align: center;
 vertical-align: bottom;
 width: 100%;
 z-index: 1000;
+}
+#footer-text div {
+display: inline;
 }
 .logo {
 *text-align: center;
@@ -315,7 +328,7 @@ margin: -25px auto 6px 50px;
 }
 .social {
 margin: -29px 15px auto auto;
-width: 68px;
+width: 94px;
 height: 25px;
 text-align: right;
 float: right;
