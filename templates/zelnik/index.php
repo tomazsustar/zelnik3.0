@@ -303,6 +303,7 @@ return false;
 				</div>	
 				<div id="content">
 				<!-- Begin Content -->
+				<jdoc:include type="message" />
 				<jdoc:include type="component" />
 				<div class="konec-scrolla"></div>
 				<!-- End Content -->
@@ -319,7 +320,7 @@ return false;
 	<div id="front-footer">
 		<div id="footer-text">
 		<div>&copy; <?php echo $sitename; ?> <?php echo date('Y');?> | </div>
-		<div id="piskotki"> | </div>
+		<a class="cc-privacy-link" href="#">Zasebnost |</a>
 		<jdoc:include type="modules" name="footer" style="xhtml" />	
 			
 		</div>
