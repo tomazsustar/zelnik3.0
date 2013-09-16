@@ -303,6 +303,7 @@ return false;
 				</div>	
 				<div id="content">
 				<!-- Begin Content -->
+				<jdoc:include type="message" />
 				<jdoc:include type="component" />
 				<div class="konec-scrolla"></div>
 				<!-- End Content -->
