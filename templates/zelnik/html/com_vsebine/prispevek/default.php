@@ -54,8 +54,11 @@ $document->addScriptDeclaration('window.addEvent("load", function() {
 <?php */ //if (!empty($this->intro_items)) : ?>
 <?php 
 $item=&$this->item?>
-
+<!--publish_up
+created
+author_alias-->
 <div class="novica">
+	
 	<div class="znacke">
 		<?php 
 			$tagsArray=array();
@@ -64,6 +67,7 @@ $item=&$this->item?>
 			}
 		 	echo implode(', ',$tagsArray); ?>
 	 </div>
+	 <p>Prispeval: <?php if (!empty($item->author_alias)) {echo $item->author_alias;} else {echo $item->author;} if (($item->publish_up) <= date('Y-m-d H:i:s')) {?>, <?php echo $item->publish_up;}?></p>
 	<h1><?php echo $item->title;?></h1>
 	<div class="besedilo">
 		<div class=prispevek-slike> 

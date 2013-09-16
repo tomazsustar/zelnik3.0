@@ -44,14 +44,15 @@ line-height: 14px;
 }
 
 #content .znacka {
-height: 14px;
+height: 12px;
 font-size: 12px;
-line-height: 14px;
+line-height: 12px;
 font-weight: normal;
 text-transform: uppercase;
 font-family: Verdana, Sans-Serif;
 *letter-spacing: -0.2ex;
 *word-spacing: 0ex;
+padding-top: 2px;
 }
 #content hr {
 border: 0px none;
@@ -140,4 +141,7 @@ float: left;
 .novica {
 	margin: 10px;
 
+}
+.znacke {
+	padding-top: 3px;
 }
