@@ -234,6 +234,9 @@ protected $item;
 		{
 			$this->document->setMetadata('keywords',  $this->item->str_tags);
 		}
+		{
+			$this->document->setMetadata('og:image',  $this->item->slika);
+		}
 //		elseif (!$this->item->metakey && $this->params->get('menu-meta_keywords'))
 //		{
 //			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));

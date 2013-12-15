@@ -67,7 +67,7 @@ author_alias-->
 			}
 		 	echo implode(', ',$tagsArray); ?>
 	 </div>
-	 <p>Prispeval: <?php if (!empty($item->author_alias)) {echo $item->author_alias;} else {echo $item->author;} if (($item->publish_up) <= date('Y-m-d H:i:s')) {?>, <?php echo $item->publish_up;}?></p>
+	 <p><strong> <?php if (!empty($item->author_alias)) {echo $item->author_alias;} else {echo $item->author;}?> </strong> <?php if (($item->publish_up) <= date('Y-m-d H:i:s')) {?>, <?php echo $item->publish_up;}?></p>
 	<h1><?php echo $item->title;?></h1>
 	<div class="besedilo">
 		<div class=prispevek-slike> 
