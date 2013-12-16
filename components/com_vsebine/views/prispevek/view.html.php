@@ -235,7 +235,9 @@ protected $item;
 			$this->document->setMetadata('keywords',  $this->item->str_tags);
 		}
 		{
-			$this->document->setMetadata('og:image',  $this->item->slika);
+			$this->document->addCustomTag('<meta property="og:title" content="'.$this->item->title.'"/>');
+			$this->document->addCustomTag('<meta property="og:description" content="'.$this->item->introtext.'"/>');
+			$this->document->addCustomTag('<meta property="og:image" content="'.$this->item->slika.'"/>');
 		}
 //		elseif (!$this->item->metakey && $this->params->get('menu-meta_keywords'))
 //		{
