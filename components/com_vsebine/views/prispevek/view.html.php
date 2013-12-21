@@ -219,7 +219,7 @@ protected $item;
 //		if (empty($title)) {
 //			$title = $this->item->title;
 //		}
-		$this->document->setTitle($this->item->title);
+		$this->document->setTitle($this->item->title." | ". preg_replace('/^www\./i', '', $_SERVER['HTTP_HOST']));
 //
 //		if ($this->item->metadesc)
 		{

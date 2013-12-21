@@ -43,7 +43,7 @@ class VsebineViewNaslovka extends JViewLegacy
 			$row->slug = $row->title ? ($row->id . ':' . $row->title) : $row->id;
 
 			// Url link to article
-			$link = $row->vir_url;
+			$link = JURI::base()."index.php/component/vsebine/?prispevek=".$row->id;
 
 			// Get row fulltext
 			$db = JFactory::getDbo();
