@@ -264,8 +264,12 @@ return false;
 					<div style="float: left; z-index:1000;">
 						<a rel="nofollow" href="https://twitter.com/zelniknet" target="_blank"><img style=" width: 12px; height: 16px; margin:5px;" <?php echo 'src="'.$this->baseurl .'/templates/zelnik/images/twitter_button.png"'; ?> alt="Twitter" title="Sledite nam na Twitterju"></a>
 					</div>
-					<div style="float: left; z-index:1000;">
-						<a rel="nofollow" <?php echo 'href="'.$this->baseurl .'/index.php?format=feed&type=rss"'; ?> target="_blank"><img style=" width: 16px; height: 16px; margin:5px;" <?php echo 'src="'.$this->baseurl .'/templates/zelnik/images/rss_button.png"'; ?> alt="Rss" title="Pregled RSS spletne strani"></a>
+					<div style="float: left; z-index:1000;"> <!-- FEED BUTTON -->
+                    	<?php 
+							$param = "?format=feed&type=rss";
+							$param .= isset($_GET["tags"]) ? "&tags=".$_GET["tags"] : "";   
+							?>
+						<a rel="nofollow" <?php echo 'href="'.JURI::current().$param.'"'; ?> target="_blank"><img style=" width: 16px; height: 16px; margin:5px;" <?php echo 'src="'.$this->baseurl .'/templates/zelnik/images/rss_button.png"'; ?> alt="Rss" title="Pregled RSS spletne strani"></a>
 					</div>
 				</div>
 			<jdoc:include type="modules" name="position-0" />	
