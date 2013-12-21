@@ -103,7 +103,6 @@ class VsebineModelKoledar extends JModelList {
     	if($prispevek){
         	$query->where("a.id = $prispevek");
         }else{
-			/* TODO !!!!!! */
 			$today = date("Y-m-d")." 00:00:00.000";
         	$query->where("k.zacetek >= '".$today."'");
         }
