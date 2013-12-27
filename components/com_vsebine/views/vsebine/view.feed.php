@@ -52,7 +52,7 @@ class VsebineViewVsebine extends JViewLegacy
 			$row->fulltext = $db->loadResult();
 
 			// Get description, author and date
-			$description = ($params->get('feed_summary', 0) ? $row->introtext.$row->fulltext : $row->introtext);
+			$description = ($params->get('feed_summary', 0) ? $row->fulltext : "<img src='".$row->slika."' style='vertical-align:bottom; max-height:100px; margin-right:20px; width:auto;' alt='slika vsebine'>".$row->introtext);
 			$author = $row->created_by_alias ? $row->created_by_alias : $row->author;
 			@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 
