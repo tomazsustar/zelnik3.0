@@ -60,9 +60,12 @@ protected function populateState()
 				$db = $this->getDbo();
 				$query = $db->getQuery(true);
 
-
 				$query->from('nize01_zelnik.vs_vsebine AS a');
 				$query->select('a.*');
+				$query->join('INNER', '`nize01_zelnik`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
+				$query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
+				$query->where("p.domena = '".preg_replace('/^www\./i', '', $_SERVER['HTTP_HOST'])."'");
+				$query->where('pv.status = 2');
 
 				// Join on user table.
 //				$query->select('u.name AS author');
