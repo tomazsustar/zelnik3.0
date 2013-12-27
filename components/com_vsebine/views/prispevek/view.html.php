@@ -164,7 +164,7 @@ protected $item;
 	 */
 	protected function _prepareDocument()
 	{
-//		$app	= JFactory::getApplication();
+		$app = JFactory::getApplication('site');
 //		$menus	= $app->getMenu();
 //		$pathway = $app->getPathway();
 //		$title = null;
@@ -219,7 +219,7 @@ protected $item;
 //		if (empty($title)) {
 //			$title = $this->item->title;
 //		}
-		$this->document->setTitle($this->item->title." | ". preg_replace('/^www\./i', '', $_SERVER['HTTP_HOST']));
+		$this->document->setTitle($this->item->title." | ".$app->getParams('com_vsebine')->get('portal'));
 //
 //		if ($this->item->metadesc)
 		{

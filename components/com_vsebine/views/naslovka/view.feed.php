@@ -60,6 +60,7 @@ class VsebineViewNaslovka extends JViewLegacy
 			$item           = new JFeedItem;
 			$item->title    = $title;
 			$item->link     = $link;
+			$item->image = $row->slika;
 			$item->date     = $date;
 			$item->category = $row->category_title;
 			$item->author   = $author;

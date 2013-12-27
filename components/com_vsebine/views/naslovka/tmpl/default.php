@@ -28,6 +28,7 @@ JHtml::_('behavior.caption');
 <?php */ //if (!empty($this->intro_items)) : ?>
 <?php 
 $count = count($this->items);
+if($count>0) {
 $item=&$this->items[0]?>
 <div class="naslovna-novica">
 	<div class="znacka"><a href="<?php echo $item->tagUrl?>"><?php echo mb_strtoupper($item->tag); ?></a></div>
@@ -75,6 +76,9 @@ foreach ($this->items as $key => $item) : ?>
 				</div>
 			
 
-		<?php endforeach; ?>
-<?php //endif; ?>
+<?php 
+endforeach; 
+}
+?>
+
 

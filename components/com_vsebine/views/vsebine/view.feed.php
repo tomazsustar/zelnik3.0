@@ -55,11 +55,12 @@ class VsebineViewVsebine extends JViewLegacy
 			$description = ($params->get('feed_summary', 0) ? $row->fulltext : "<img src='".$row->slika."' style='vertical-align:bottom; max-height:100px; margin-right:20px; width:auto;' alt='slika vsebine'>".$row->introtext);
 			$author = $row->created_by_alias ? $row->created_by_alias : $row->author;
 			@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
-
+			
 			// Load individual item creator class
 			$item           = new JFeedItem;
 			$item->title    = $title;
 			$item->link     = $link;
+			$item->image = $row->slika;
 			$item->date     = $date;
 			$item->category = $row->category_title;
 			$item->author   = $author;

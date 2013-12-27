@@ -32,7 +32,7 @@ class VsebineController extends JControllerLegacy
 //					(($vName == 'category' && $this->input->get('layout') != 'blog') || $vName == 'archive' ))) {
 //				$cachable = false;
 //			}
-			if(JRequest::getVar('view')!='koledar'){ //če view ni določen
+			if(JRequest::getVar('view')!='koledar'){ //če koledar view ni določen
 				if(JRequest::getVar('tags')){
 					JRequest::setVar('view', 'vsebine');
 				}
