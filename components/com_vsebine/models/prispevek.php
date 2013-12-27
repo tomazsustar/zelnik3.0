@@ -49,7 +49,8 @@ protected function populateState()
 	public function &getItem($prispevek = false)
 	{
 		$prispevek = JRequest::getVar('prispevek', false);
-
+		$app = JFactory::getApplication('site');
+		
 //		if ($this->_item === null) {
 //			$this->_item = array();
 //		}
@@ -59,12 +60,12 @@ protected function populateState()
 			try {
 				$db = $this->getDbo();
 				$query = $db->getQuery(true);
-
+				
 				$query->from('nize01_zelnik.vs_vsebine AS a');
 				$query->select('a.*');
 				$query->join('INNER', '`nize01_zelnik`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
 				$query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
-				$query->where("p.domena = '".preg_replace('/^www\./i', '', $_SERVER['HTTP_HOST'])."'");
+				$query->where("p.domena = '".$app->getParams('com_vsebine')->get('portal')."'");
 				$query->where('pv.status = 2');
 
 				// Join on user table.
