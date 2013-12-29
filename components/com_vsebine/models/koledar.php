@@ -87,7 +87,7 @@ class VsebineModelKoledar extends JModelList {
     
         
         if ($format=="ical"){
-        	$query->select('a.fulltext, a.slika');
+        	$query->select('a.fulltext, a.slika, a.id as vsebina_id, a.introtext');
         }
         
         $query->from('`nize01_zelnik`.`vs_vsebine` AS a');
