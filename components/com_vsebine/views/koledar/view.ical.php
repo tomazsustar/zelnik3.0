@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 include_once JPATH_SITE.'/components/com_vsebine/helpers/vsebine.php';
-
+//include_once JPATH_SITE.'/components/com_vsebine/helpers/html2text.php';
 /**
  * HTML View class for the Content component
  *
@@ -29,10 +29,10 @@ class VsebineViewKoledar extends JViewLegacy
 		//$siteEmail = $app->getCfg('mailfrom');
 
 		// Get some data from the model
-		//$app->input->set('limit', $app->getCfg('feed_limit'));
+		$standard = $app->input->get('standard', 0);
+		$full = $app->input->get('full', 0);
 		//$category = $this->get('Category');
 		$dnevi     = $this->get('Items');
-
 		//$doc->link = JRoute::_(ContentHelperRoute::getCategoryRoute($category->id));
 		
 		header('Content-type: text/calendar; charset=utf-8');
@@ -71,13 +71,23 @@ foreach ($dogodki as $dogodek):
 BEGIN:VEVENT
 SUMMARY:<?= preg_replace('/([\,;])/','\\\$1', $dogodek->naslov) ?>
 
+ATTACH:<?= $dogodek->slika ?>
+
 UID:<?= $dogodek->koledar_id.'-koledar@novicomat.si' ?>
 
 DTSTAMP:<?= gmdate('Ymd\THis\Z', time()) ?>
 
 LOCATION:<?= preg_replace('/([\,;])/','\\\$1', $dogodek->lokacija) ?>
 
+<?php if(!$standard):?>
 DESCRIPTION;ENCODING=QUOTED-PRINTABLE:<?= VsebineHelper::wraplines('<img src="'.$dogodek->slika.'" alt="slika" style="float:left;margin:5px;" />'.$dogodek->fulltext) // preg_replace('/([\,;])/','\\\$1', strip_tags($dogodek->fulltext)), 76, true  ?>
+<?php else:?>
+<?php if($full):?>
+DESCRIPTION:<?= preg_replace('/([\,;])/','\\\$1', strip_tags($dogodek->fulltext)) ?>
+<?php else:?>
+DESCRIPTION:<?= preg_replace('/([\,;])/','\\\$1', strip_tags($dogodek->introtext)). ' - ' . "http://".$_SERVER['HTTP_HOST'].$dogodek->url ?>
+<?php endif;?>
+<?php endif;?>
 
 URL;VALUE=URI:<?= "http://".$_SERVER['HTTP_HOST'].$dogodek->url ?>
 
