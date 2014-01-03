@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 
 jimport('joomla.application.component.modellist');
-
+include_once JPATH_SITE.'/components/com_vsebine/helpers/ZDate.php';
 /**
  * Methods supporting a list of Vsebine records.
  */
@@ -136,7 +136,7 @@ class VsebineModelVsebine extends JModelList {
 		//echo count($items);
 		foreach ($items as $item){
 			//značke
-			
+			$item->publish_up=new ZDate($item->publish_up);
 			$item->tags = array_map('trim',(explode(',',$item->tags)));
 			$item->tags=$this->sortItemTags($item->tags);
 			$tagsLower=array_map('mb_strtolower', $item->tags);

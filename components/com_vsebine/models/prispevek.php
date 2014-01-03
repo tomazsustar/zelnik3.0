@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modelitem');
+include_once JPATH_SITE.'/components/com_vsebine/helpers/ZDate.php';
 
 /**
  * Methods supporting a list of Vsebine records.
@@ -165,6 +166,12 @@ protected function populateState()
 //						$data->params->set('access-view', in_array($data->access, $groups) && in_array($data->category_access, $groups));
 //					}
 //				}
+				//DATUMI
+				$data->publish_up=new ZDate($data->publish_up);
+				$data->publish_down=new ZDate($data->publish_down);
+				$data->checked_out_time=new ZDate($data->checked_out_time);
+				$data->edited=new ZDate($data->edited);
+				$data->edited=new ZDate($data->edited);
 
 				// ZNAČKE
 				$query = $db->getQuery(true);
