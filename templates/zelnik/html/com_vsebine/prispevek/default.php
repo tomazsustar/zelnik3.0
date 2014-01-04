@@ -67,7 +67,7 @@ author_alias-->
 			}
 		 	echo implode(', ',$tagsArray); ?>
 	 </div>
-	 <p><strong> <?php if (!empty($item->author_alias)) {echo $item->author_alias;} else {echo $item->author;}?> </strong> <?php if ($item->publish_up <= new Datetime()) {?>, <?php echo $item->publish_up->format('j. n. Y');}?></p>
+	 <p><strong><?php if (!empty($item->author_alias)) {echo $item->author_alias;} else {echo $item->author;}?></strong><?php if ($item->publish_up <= new Datetime()) {?>, <?php echo $item->publish_up->format('j. n. Y');}?></p>
 	<h1><?php echo $item->title;?></h1>
 	<div class="besedilo">
 		<div class=prispevek-slike> 
