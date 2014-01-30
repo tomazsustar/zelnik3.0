@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="1.0" client="site" method="install">
+	<name>Povezani prispevki</name> 
+	<author>Tilen Poje</author> 
+	<creationDate>2014</creationDate> 
+	<copyright>All rights reserved by Tilen Poje.</copyright> 
+	<license>zelnik.net</license> 
+	<authorEmail>poje.tilen@gmail.com</authorEmail> 
+	<authorUrl>www.tilenpoje.info</authorUrl> 
+	<version>1.0.0</version> 
+	<description>Prikaže prispevke povezane na določeno značko.</description>
+    <!-- Listing of all files that should be installed for the module to function -->
+	<files>
+        <!-- The "module" attribute signifies that this is the main controller file -->
+		<filename module="mod_pprispevki">mod_pprispevki.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<filename>tmpl/default.php</filename>
+        <filename>tmpl/ordered_list.php</filename>
+		<filename>tmpl/index.html</filename>
+	</files>
+	
+	<languages>
+        <!-- Any language files included with the module -->
+        <language tag="sl-SI">sl-SI.mod_siteusers.ini</language>
+    </languages>
+
+ 
+    <!-- Optional parameters -->
+	<config>
+            <fields name="params">
+                <fieldset name="basic">
+                     <field 
+                        name="stprispevkov" 
+                        type="text" 
+                        default="5" 
+                        label="LABEL_ST_PRISPEVKOV" 
+                        description="DESC_ST_PRISPEVKOV">
+                    </field>
+					<field 
+                        name="layout" 
+                        type="list" 
+                        default="default" 
+                        label="LABEL_PRISPEVKI_LAYOUT" 
+                        description="DESC_PRISPEVKI_LAYOUT">
+                       <option
+						value="default">Unordered List</option>
+					<option
+					value="ordered_list">Ordered List</option>
+                    </field>
+
+                </fieldset>
+            </fields>
+    </config>
+</extension>
