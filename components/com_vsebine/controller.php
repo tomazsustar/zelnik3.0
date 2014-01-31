@@ -14,11 +14,6 @@ jimport('joomla.application.component.controller');
 
 class VsebineController extends JControllerLegacy
 {
-		public function hehe(&$vars) {
-			$view = $this->getView('temp', 'html');
-			echo $view->display();
-		}
-		
 		public function display($cachable = false, $urlparams = false)
 		{
 			$cachable = true;
