@@ -37,17 +37,6 @@
                         label="LABEL_ST_PRISPEVKOV" 
                         description="DESC_ST_PRISPEVKOV">
                     </field>
-					<field 
-                        name="layout" 
-                        type="list" 
-                        default="default" 
-                        label="LABEL_PRISPEVKI_LAYOUT" 
-                        description="DESC_PRISPEVKI_LAYOUT">
-                       <option
-						value="default">Unordered List</option>
-					<option
-					value="ordered_list">Ordered List</option>
-                    </field>
 
                 </fieldset>
             </fields>

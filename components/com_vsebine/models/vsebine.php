@@ -141,9 +141,9 @@ class VsebineModelVsebine extends JModelList {
 			$item->tags=$this->sortItemTags($item->tags);
 			$tagsLower=array_map('mb_strtolower', $item->tags);
 			$item->tag = $item->tags[0];
-			$item->tagUrl = JRoute::_("component/vsebine/".$item->tag);
+			$item->tagUrl = JRoute::_("index.php?option=com_vsebine&tag=".$item->tag);
 			if($item->title_url=="")
-				$item->url = JRoute::_("component/vsebine/".$item->id."/".JFilterOutput::stringURLSafe($item->title));
+				$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id."&title=".JFilterOutput::stringURLSafe($item->title));
 			else
 				 $item->url = JRoute::_("component/vsebine/prispevek/".JFilterOutput::stringURLSafe($item->title));
 			if(!$podstr && $zdruzi){

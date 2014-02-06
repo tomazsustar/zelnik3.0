@@ -29,12 +29,15 @@ JHtml::_('behavior.caption');
 <?php 
 $count = count($this->items);
 $item=&$this->items[0]?>
-<div class="naslovna-novica">
-	<div class="znacka"><a href="<?php echo $item->tagUrl?>"><?php echo mb_strtoupper($item->tag); ?></a></div>
-	<img alt="" src="<?php echo $item->slika;?> ">
-	<h1><a href="<?php echo $item->url?>"><?php echo $item->title;?></a></h1>
-	<div class="uvodni-text"><?php echo $item->introtext;?></div>
-</div>
+<article class="naslovna-novica">
+	<header class="znacka">
+    	<a href="<?php echo $item->tagUrl?>"><?php echo mb_strtoupper($item->tag); ?></a>
+		<img alt="" src="<?php echo $item->slika;?> ">
+        <h1><a href="<?php echo $item->url?>"><?php echo $item->title;?></a></h1>
+    </header>
+	
+	<p class="uvodni-text"><?php echo $item->introtext;?></p>
+</article>
 
 <?php if($count>1){ $item=&$this->items[1];?>
 <div class="naslovna-novica">

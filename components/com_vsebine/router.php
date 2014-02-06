@@ -15,8 +15,7 @@ defined('_JEXEC') or die;
  * @return	array
  */
  
-function GetTitle($PrispevekId)
-{
+function GetTitle($PrispevekId) {
 	$db = JFactory::getDbo();
 	$query = $db->getQuery(true);
 	
@@ -35,16 +34,35 @@ function VsebineBuildRoute(&$query)
 {
 	$segments = array();
 	
-	if (isset($query['prispevek'])) {
-		$segments[0] = $query['prispevek'];
-		$segments[1] = GetTitle($query['prispevek']);
-		unset($query['prispevek']);
+	$app = JFactory::getApplication();
+	$params = JComponentHelper::getParams('com_content');
+	$advanced = $params->get('sef_advanced_link', 0);
+	
+	if($advanced != 0) {
+		if(isset($query['prispevek'])) {
+			$segments[] = $query['prispevek'];
+			$segments[] = GetTitle($query['prispevek']);
+			unset($query['prispevek']);
+		}
+		else if(isset($query['tag']))
+		{
+			$segments[] = $query['tag'];
+			unset($query['tag']);
+		}
 	}
-	else if(isset($query['tags']))
- 	{
-		$segments[0] = $query['tags'];
-		unset($query['tags']);
+	else {
+		if(isset($query['prispevek'])) {
+			$segments[] = "?prispevek=".$query['prispevek']."&title=".GetTitle($query['prispevek']); 
+			unset($query['prispevek']);
+			unset($query['title']);
+		}
+		else if(isset($query['tag']))
+		{
+			$segments[] = "?tags=".$query['tag'];
+			unset($query['tag']);
+		}
 	}
+
 	return $segments;
 }
 
@@ -54,13 +72,14 @@ function VsebineParseRoute($segments)
 	
 	if(is_numeric($segments[0])) {
 		$vars['view'] = 'prispevek';
-		$vars['prispevek'] = (int)$segments[0];	 
+		$vars['prispevek'] = (int)$segments[0];
+		$vars['title'] = $segments[1];	 
 	}
 	else {
 		$vars['view'] = 'vsebine';
 		$vars['tags'] = $segments[0];	 
 	}
-		
+
 	return $vars;
 }
 

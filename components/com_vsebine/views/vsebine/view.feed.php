@@ -43,7 +43,7 @@ class VsebineViewVsebine extends JViewLegacy
 			$row->slug = $row->title ? ($row->id . ':' . $row->title) : $row->id;
 
 			// Url link to article
-			$link = JURI::base()."index.php/component/vsebine/?prispevek=".$row->id;
+			$link = JRoute::_("index.php?option=com_vsebine&prispevek=".$row->id."&title=".JFilterOutput::stringURLSafe($row->title));
 
 			// Get row fulltext
 			$db = JFactory::getDbo();
