@@ -34,33 +34,18 @@ function VsebineBuildRoute(&$query)
 {
 	$segments = array();
 	
-	$app = JFactory::getApplication();
-	$params = JComponentHelper::getParams('com_content');
-	$advanced = $params->get('sef_advanced_link', 0);
-	
-	if($advanced != 0) {
-		if(isset($query['prispevek'])) {
-			$segments[] = $query['prispevek'];
-			$segments[] = GetTitle($query['prispevek']);
-			unset($query['prispevek']);
-		}
-		else if(isset($query['tag']))
-		{
-			$segments[] = $query['tag'];
-			unset($query['tag']);
-		}
-	}
-	else {
-		if(isset($query['prispevek'])) {
-			$segments[] = "?prispevek=".$query['prispevek']."&title=".GetTitle($query['prispevek']); 
-			unset($query['prispevek']);
+	if(isset($query['prispevek'])) {
+		$segments[] = $query['prispevek'];
+		unset($query['prispevek']);
+		
+		if(isset($query['title'])) {
+			$segments[] = $query['title'];
 			unset($query['title']);
 		}
-		else if(isset($query['tag']))
-		{
-			$segments[] = "?tags=".$query['tag'];
-			unset($query['tag']);
-		}
+	}
+	else if(isset($query['tag'])) {
+		$segments[] = $query['tag'];
+		unset($query['tag']);
 	}
 
 	return $segments;
@@ -71,71 +56,15 @@ function VsebineParseRoute($segments)
 	$vars = array();
 	
 	if(is_numeric($segments[0])) {
+		$vars['prispevek'] = $segments[0];
+		if(isset($segments[1]))
+			$vars['title'] = $segments[1];
 		$vars['view'] = 'prispevek';
-		$vars['prispevek'] = (int)$segments[0];
-		$vars['title'] = $segments[1];	 
 	}
 	else {
+		$vars['tags'] = $segments[0];
 		$vars['view'] = 'vsebine';
-		$vars['tags'] = $segments[0];	 
 	}
 
 	return $vars;
 }
-
-/*
-function VsebineBuildRoute(&$query)
-{
-	$segments = array();
-    
-	if (isset($query['task'])) {
-		$segments[] = implode('/',explode('.',$query['task']));
-		unset($query['task']);
-	}
-	if (isset($query['id'])) {
-		$segments[] = $query['id'];
-		unset($query['id']);
-	}
-
-	return $segments;
-}
-*/
-/**
- * @param	array	A named array
- * @param	array
- *
- * Formats:
- *
- * index.php?/vsebine/task/id/Itemid
- *
- * index.php?/vsebine/id/Itemid
- */
-
-/*
-function VsebineParseRoute($segments)
-{
-	$vars = array();
-    
-	// view is always the first element of the array
-	$count = count($segments);
-    
-    if ($count)
-	{
-		$count--;
-		$segment = array_pop($segments) ;
-		if (is_numeric($segment)) {
-			$vars['id'] = $segment;
-		}
-        else{
-            $count--;
-            $vars['task'] = array_pop($segments) . '.' . $segment;
-        }
-	}
-
-	if ($count)
-	{   
-        $vars['task'] = implode('.',$segments);
-	}
-	return $vars;
-}
-*/

@@ -81,7 +81,7 @@ class VsebineModelKoledar extends JModelList {
         // Select the required fields from the table.
         $query->select(
                 $this->getState(
-                        'list.select', 'k.lokacija, a.id, a.title_url, k.naslov, k.zacetek, k.konec, k.id as koledar_id '
+                        'list.select', 'k.lokacija, a.id, a.title, a.title_url, k.naslov, k.zacetek, k.konec, k.id as koledar_id '
                 )
         );
     
@@ -153,7 +153,7 @@ class VsebineModelKoledar extends JModelList {
 					$item->konec=new ZDate($item->konec);
 				
 				if($item->title_url=="")
-					$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id);
+					$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id."&title=".JFilterOutput::stringURLSafe($item->title));
 				else
 					 $item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->title_url);
 				

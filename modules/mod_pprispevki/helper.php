@@ -100,10 +100,17 @@ class PovezaniPrispevki {
 	private function CompareTags($Tags1,$Tags2) {
 		$Count1 = count($Tags1);
 		$Count2 = count($Tags2);
-		$Sum = array_merge($Tags1,$Tags2);
-		$Count = count(array_unique($Sum));
 		
-		return $Count;
+		if($Count2<$Count1) {
+			$Less = $Count1-$Count2;
+			for($i=0;$i<$Less;$i++)
+				$Tags2[] = -1;
+		}
+		
+		$Tags = array_merge($Tags1,$Tags2);
+		$UniqueArray = count(array_unique($Tags));
+		
+		return $UniqueArray - $Count1;
 	}
 
 	private function PridobiPovezane($Tags, $Prispeveki) {
@@ -116,45 +123,19 @@ class PovezaniPrispevki {
 				array_push($Seznam,$Prispevek);
 			}
 		}
-
-		$Seznam =  $this->SortConnected($Seznam, 'comp', SORT_ASC);
-		//usort($Seznam,"my_sort");
+		
+		
+		usort($Seznam,array("PovezaniPrispevki","RazvrstiSeznam"));
 		return array_unique($Seznam,SORT_REGULAR);
 	}
-
-	private function SortConnected($array, $on, $order=SORT_ASC) {
-		$new_array = array();
-		$sortable_array = array();
-		
-		if (count($array) > 0) {
-		 foreach ($array as $k => $v) {
-			 if (is_array($v)) {
-				 foreach ($v as $k2 => $v2) {
-					 if ($k2 == $on) {
-						 $sortable_array[$k] = $v2;
-					 }
-				 }
-			 } else {
-				 $sortable_array[$k] = $v;
-			 }
-		 }
-		
-		 switch ($order) {
-			 case SORT_ASC:
-				 asort($sortable_array);
-			 break;
-			 case SORT_DESC:
-				 arsort($sortable_array);
-			 break;
-		 }
-		
-		 foreach ($sortable_array as $k => $v) {
-			 $new_array[$k] = $array[$k];
-		 }
-		}
 	
-		return $new_array;
+	private function RazvrstiSeznam($a, $b) {
+		if ($a->comp == $b->comp) {
+			return 0;
+		}
+		return ($a->comp < $b->comp) ? -1 : 1;
 	}
+
 }
 
 function my_sort($a,$b) {
