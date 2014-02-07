@@ -114,6 +114,7 @@ float: left;
 	border-collapse:collapse; 
 	font-size: 12px;
 	line-height: 14px;
+	width: 100%;
 }
 .koledar table td, .koledar table tr { 
 	border-bottom: solid 2px;

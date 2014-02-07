@@ -8,7 +8,7 @@ class Prispevek {
 	public $url;
 	public $introtext;
 	public $tags;
-	private $comp;
+	public $comp;
 	
 	function __construct($PrispevekId) {
 		$db = JFactory::getDBO();
@@ -100,10 +100,10 @@ class PovezaniPrispevki {
 	private function CompareTags($Tags1,$Tags2) {
 		$Count1 = count($Tags1);
 		$Count2 = count($Tags2);
-		$Tags = array_merge($Tags1,$Tags2);
-		$Count = count($Tags)-$Count1;
+		$Sum = array_merge($Tags1,$Tags2);
+		$Count = count(array_unique($Sum));
 		
-		return count(array_unique($Tags));
+		return $Count;
 	}
 
 	private function PridobiPovezane($Tags, $Prispeveki) {
@@ -118,6 +118,7 @@ class PovezaniPrispevki {
 		}
 
 		$Seznam =  $this->SortConnected($Seznam, 'comp', SORT_ASC);
+		//usort($Seznam,"my_sort");
 		return array_unique($Seznam,SORT_REGULAR);
 	}
 
@@ -153,6 +154,14 @@ class PovezaniPrispevki {
 		}
 	
 		return $new_array;
+	}
+}
+
+function my_sort($a,$b) {
+	if($a->comp == $b->comp) {
+		return 0;
+	} else {
+		return $a->comp < $b-comp ? 1 : -1;
 	}
 }
 ?>

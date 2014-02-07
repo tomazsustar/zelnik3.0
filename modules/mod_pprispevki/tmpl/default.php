@@ -11,7 +11,7 @@
 	$i = 0;
 	if(count($Povezani) > 0) {
 		echo "<h3>Preberite tudi:</h3>";
-		foreach($Povezani->Seznam as $Prispevek) { if($i == $stPrispevkov) break; ?>
+		foreach($Povezani->Seznam as $Prispevek) {if($i == $stPrispevkov) break; ?>
 			<li class='PovezaniPrispevek'>
 				<a href='<?php echo JRoute::_("index.php?option=com_vsebine&prispevek=".$Prispevek->id."&title=".$Prispevek->url); ?>'>
 					<span>
