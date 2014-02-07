@@ -47,6 +47,10 @@ function VsebineBuildRoute(&$query)
 		$segments[] = $query['tag'];
 		unset($query['tag']);
 	}
+	else if(isset($query['tags'])) {
+		$segments[] = $query['tags'];
+		unset($query['tags']);
+	}
 
 	return $segments;
 }
@@ -65,6 +69,7 @@ function VsebineParseRoute($segments)
 		$vars['tags'] = $segments[0];
 		$vars['view'] = 'vsebine';
 	}
+	
 
 	return $vars;
 }
