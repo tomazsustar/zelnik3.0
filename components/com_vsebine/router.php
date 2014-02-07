@@ -43,9 +43,9 @@ function VsebineBuildRoute(&$query)
 			unset($query['title']);
 		}
 	}
-	else if(isset($query['tags'])) {
-		$segments[] = $query['tags'];
-		unset($query['tags']);
+	else if(isset($query['tag'])) {
+		$segments[] = $query['tag'];
+		unset($query['tag']);
 	}
 
 	return $segments;
@@ -62,7 +62,7 @@ function VsebineParseRoute($segments)
 		$vars['view'] = 'prispevek';
 	}
 	else {
-		$vars['tag'] = $segments[0];
+		$vars['tags'] = $segments[0];
 		$vars['view'] = 'vsebine';
 	}
 
