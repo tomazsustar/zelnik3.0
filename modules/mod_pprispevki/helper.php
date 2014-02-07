@@ -83,7 +83,7 @@ class PovezaniPrispevki {
 		JOIN vs_tags AS t ON vt.id_tag = t.id
 		JOIN vs_portali_vsebine AS pv ON pv.id_vsebine = v.id
 		JOIN vs_portali AS p ON pv.id_portala = p.id
-		WHERE  v.id != ".$Prispevek->id." AND v.state = 2 AND (".implode(" OR ",$QueryTags).") AND p.domena = '".$params->get('portal')."'
+		WHERE  v.id != ".$Prispevek->id." AND pv.status = 2 AND (".implode(" OR ",$QueryTags).") AND p.domena = '".$params->get('portal')."'
 		ORDER BY v.id DESC;";
 		$db->setQuery($query);
 
