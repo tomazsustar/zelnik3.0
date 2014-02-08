@@ -133,6 +133,9 @@ class VsebineModelVsebine extends JModelList {
 		$items	= parent::getItems();
 		$i=0;
 		$blocks=array();
+		$app = JFactory::getApplication('site');
+		$menu   = $app->getMenu();
+		$activeId = $menu->getActive()->id;
 		//echo count($items);
 		foreach ($items as $item){
 			//značke
@@ -141,11 +144,13 @@ class VsebineModelVsebine extends JModelList {
 			$item->tags=$this->sortItemTags($item->tags);
 			$tagsLower=array_map('mb_strtolower', $item->tags);
 			$item->tag = $item->tags[0];
-			$item->tagUrl = JRoute::_("index.php?option=com_vsebine&tag=".$item->tag);
-			if($item->title_url=="")
-				$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id."&title=".JFilterOutput::stringURLSafe($item->title));
-			else
-				 $item->url = JRoute::_("component/vsebine/prispevek/".JFilterOutput::stringURLSafe($item->title));
+			$item->tagUrl = JRoute::_("index.php?option=com_vsebine&tag=".$item->tag."&Itemid=".$activeId);
+			//if($item->title_url=="")
+				$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id.
+						"&title=".JFilterOutput::stringURLSafe($item->title).
+						"&Itemid=".$activeId);
+			//else
+			//	 $item->url = JRoute::_("component/vsebine/prispevek/".JFilterOutput::stringURLSafe($item->title));
 			if(!$podstr && $zdruzi){
 			 	if($i<5){
 			 		$blocks[0][]=$item;
