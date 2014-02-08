@@ -37,14 +37,7 @@ class Prispevek {
 	}
 	
 	private function MakeUrl() {
-		$Url = trim($this->title);
-		$Url = str_replace("%C4%8D","c",$Url);
-		$Url = str_replace("%C5%A1","s",$Url);
-		$Url = str_replace("%C5%BE","z",$Url);
-		$Url = str_replace("%20","-",$Url);
-		$Url = str_replace(" ","-",$Url);
-		
-		return strtolower($Url);
+		return JFilterOutput::stringUrlSafe($this->title);
 	}
 	
 	private function GetAllTags() {
@@ -90,7 +83,7 @@ class PovezaniPrispevki {
 		JOIN vs_tags AS t ON vt.id_tag = t.id
 		JOIN vs_portali_vsebine AS pv ON pv.id_vsebine = v.id
 		JOIN vs_portali AS p ON pv.id_portala = p.id
-		WHERE  v.id != ".$Prispevek->id." AND v.state = 2 AND (".implode(" OR ",$QueryTags).") AND p.domena = '".$params->get('portal')."'
+		WHERE  v.id != ".$Prispevek->id." AND pv.status = 2 AND (".implode(" OR ",$QueryTags).") AND p.domena = '".$params->get('portal')."'
 		ORDER BY v.id DESC;";
 		$db->setQuery($query);
 
@@ -103,8 +96,9 @@ class PovezaniPrispevki {
 		
 		if($Count2<$Count1) {
 			$Less = $Count1-$Count2;
-			for($i=0;$i<$Less;$i++)
-				$Tags2[] = -1;
+			for($i=0;$i<$Less;$i++) {
+				$Tags2[] = $i;
+			}
 		}
 		
 		$Tags = array_merge($Tags1,$Tags2);
