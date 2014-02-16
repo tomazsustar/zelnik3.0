@@ -11,7 +11,7 @@ if(JRequest::getVar('prispevek')) {
 	$PrispevekId = JRequest::getVar('prispevek');
 	
 	$Prispevek = new Prispevek($PrispevekId);
-	$Povezani = new PovezaniPrispevki($Prispevek);
+	$Povezani = new PovezaniPrispevki($Prispevek,$stPrispevkov);
 }
 else {
 	$Povezani = array();

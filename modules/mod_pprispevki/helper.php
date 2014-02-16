@@ -8,11 +8,9 @@ class Prispevek {
 	public $url;
 	public $introtext;
 	public $tags;
-	public $comp;
 	
 	function __construct($PrispevekId) {
 		$db = JFactory::getDBO();
-		//$Tag = JRequest::getVar('tags', false);
 
 		$query = "SELECT v.id, v.title, v.slika, v.introtext, s.url
 					FROM vs_vsebine AS v
@@ -30,10 +28,6 @@ class Prispevek {
 		$this->slika = (isset($Row->slika) ? $Row->slika : "");
 		$this->url = $this->MakeUrl($this->title);
 		$this->tags = $this->GetAllTags();
-	}
-	
-	public function SetComp($Comp) {
-		$this->comp = $Comp;
 	}
 	
 	private function MakeUrl() {
@@ -57,86 +51,29 @@ class Prispevek {
 		
 		return $Tags;
 	}
-	
-	public function Check() {
-		if($this->introtext != "" && $this->slika != "" && $this->title != "")
-			return true;
-		else return false;
-	}
 }
 
 class PovezaniPrispevki {
 	public $Seznam;
 	
-	function __construct($Prispevek) {
-		$db = JFactory::getDBO();
-		$QueryTags = array();
-		
-		foreach($Prispevek->tags as $Tag)
-			array_push($QueryTags,"t.tag = '".$Tag."'");
-			
+	function __construct($Prispevek, $Omejitev) {
+		$db = JFactory::getDBO();	
 		$app = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_vsebine');
 
-		$query = "SELECT v.id FROM vs_vsebine AS v
-		JOIN vs_tags_vsebina AS vt ON vt.id_vsebine = v.id
-		JOIN vs_tags AS t ON vt.id_tag = t.id
-		JOIN vs_portali_vsebine AS pv ON pv.id_vsebine = v.id
-		JOIN vs_portali AS p ON pv.id_portala = p.id
-		WHERE  v.id != ".$Prispevek->id." AND pv.status = 2 AND (".implode(" OR ",$QueryTags).") AND p.domena = '".$params->get('portal')."'
-		ORDER BY v.id DESC;";
+		$query = "select common_tags, all_tags - common_tags as not_common_tags, v.id, v.title, v.slika from vs_vsebine as v
+					inner join (select A.id_vsebine, count(*) as common_tags from vs_tags_vsebina as A
+						inner join vs_tags_vsebina as B on A.id_tag = B.id_tag and B.id_vsebine=".$Prispevek->id."
+						where A.id_vsebine <> ".$Prispevek->id."
+						group by A.id_vsebine having common_tags > 1) as pov on pov.id_vsebine=v.id
+					inner join (select A.id_vsebine, count(*) as all_tags from vs_tags_vsebina as A
+						group by A.id_vsebine) as nepov on nepov.id_vsebine=v.id
+					inner JOIN vs_portali_vsebine AS pv ON pv.id_vsebine = v.id AND pv.status = 2
+					inner JOIN vs_portali AS p ON pv.id_portala = p.id AND p.domena = '".$params->get('portal')."'	  
+					order by common_tags DESC, not_common_tags asc, publish_up desc limit ".$Omejitev;
+		
 		$db->setQuery($query);
-
-		$this->Seznam = $this->PridobiPovezane($Prispevek->tags, $db->loadObjectList());
-	}
-
-	private function CompareTags($Tags1,$Tags2) {
-		$Count1 = count($Tags1);
-		$Count2 = count($Tags2);
-		
-		if($Count2<$Count1) {
-			$Less = $Count1-$Count2;
-			for($i=0;$i<$Less;$i++) {
-				$Tags2[] = $i;
-			}
-		}
-		
-		$Tags = array_merge($Tags1,$Tags2);
-		$UniqueArray = count(array_unique($Tags));
-		
-		return $UniqueArray - $Count1;
-	}
-
-	private function PridobiPovezane($Tags, $Prispeveki) {
-		$Seznam = array();
-		
-		foreach($Prispeveki as $Item) {
-			$Prispevek = new Prispevek($Item->id);
-			if($Prispevek->Check()) {
-				$Prispevek->SetComp($this->CompareTags($Tags,$Prispevek->tags));
-				array_push($Seznam,$Prispevek);
-			}
-		}
-		
-		
-		usort($Seznam,array("PovezaniPrispevki","RazvrstiSeznam"));
-		return array_unique($Seznam,SORT_REGULAR);
-	}
-	
-	private function RazvrstiSeznam($a, $b) {
-		if ($a->comp == $b->comp) {
-			return 0;
-		}
-		return ($a->comp < $b->comp) ? -1 : 1;
-	}
-
-}
-
-function my_sort($a,$b) {
-	if($a->comp == $b->comp) {
-		return 0;
-	} else {
-		return $a->comp < $b-comp ? 1 : -1;
+		$this->Seznam = $db->loadObjectList();
 	}
 }
 ?>

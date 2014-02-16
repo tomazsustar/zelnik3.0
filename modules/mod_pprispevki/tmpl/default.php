@@ -8,17 +8,16 @@
 
 <ul style="list-style:none; padding:0px; ">
 <?php
-	$i = 0;
 	if(count($Povezani) > 0) {
 		echo "<h3>Preberite tudi:</h3>";
-		foreach($Povezani->Seznam as $Prispevek) {if($i == $stPrispevkov) break; ?>
+		foreach($Povezani->Seznam as $Prispevek) { ?>
 			<li class='PovezaniPrispevek'>
-				<a href='<?php echo JRoute::_("index.php?option=com_vsebine&prispevek=".$Prispevek->id."&title=".$Prispevek->url); ?>'>
+				<a href='<?php echo JRoute::_("index.php?option=com_vsebine&Itemid=3&prispevek=".$Prispevek->id."&title=".JFilterOutput::stringUrlSafe($Prispevek->title)); ?>'>
 					<span>
 					<img src='<?php echo $Prispevek->slika; ?>' alt='Uvodna slika <?php echo $Prispevek->title; ?>'>
 					</span>
 					<span>
-					<h4 style="margin-bottom:5px;"><?php echo $Prispevek->title; $i++; ?></h4>
+					<h4 style="margin-bottom:5px;"><?php echo $Prispevek->title; ?></h4>
 					</span>
 				</a>
 			</li>
