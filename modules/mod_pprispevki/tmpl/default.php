@@ -12,7 +12,7 @@
 		echo "<h3>Preberite tudi:</h3>";
 		foreach($Povezani->Seznam as $Prispevek) { ?>
 			<li class='PovezaniPrispevek'>
-				<a href='<?php echo JRoute::_("index.php?option=com_vsebine&Itemid=3&prispevek=".$Prispevek->id."&title=".JFilterOutput::stringUrlSafe($Prispevek->title)); ?>'>
+				<a href='<?php echo JRoute::_("index.php?option=com_vsebine&prispevek=".$Prispevek->id."&title=".JFilterOutput::stringUrlSafe($Prispevek->title)); ?>'>
 					<span>
 					<img src='<?php echo $Prispevek->slika; ?>' alt='Uvodna slika <?php echo $Prispevek->title; ?>'>
 					</span>
