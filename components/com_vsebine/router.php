@@ -29,13 +29,13 @@ function GetTag($Tag) {
     return $Row;
 }
 
-function ParseOutTag($TagId) {
+function ParseOutTag($TagAlias) {
 	$db = JFactory::getDbo();
 	$query = $db->getQuery(true);
 	
 	$query->from('nize01_zelnik.vs_tags AS t');
 	$query->select('t.tag');
-	$query->where('t.id = "'.$TagId.'"');
+	$query->where('t.alias = "'.$TagAlias.'"');
 	
 	$db->setQuery($query);
 	$Row = $db->loadObject();
@@ -63,7 +63,6 @@ function VsebineBuildRoute(&$query)
 		$segments[] = 'Tag';
 		$Tag = (isset($query['tag']) ? GetTag($query['tag']) : GetTag($query['tags']));
 		
-		$segments[] = $Tag->id;
 		$segments[] = $Tag->alias;
 		
 		if(isset($query['tag'])) unset($query['tag']);
