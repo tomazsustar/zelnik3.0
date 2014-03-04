@@ -15,18 +15,18 @@ defined('_JEXEC') or die;
  * @return	array
  */
  
-function GetTagId($Tag) {
+function GetTag($Tag) {
 	$db = JFactory::getDbo();
 	$query = $db->getQuery(true);
 	
 	$query->from('nize01_zelnik.vs_tags AS t');
-	$query->select('t.id');
+	$query->select('t.*');
 	$query->where('t.tag = "'.$Tag.'"');
 	
 	$db->setQuery($query);
 	$Row = $db->loadObject();
 	
-    return $Row->id;
+    return $Row;
 }
 
 function ParseOutTag($TagId) {
@@ -46,6 +46,8 @@ function ParseOutTag($TagId) {
 function VsebineBuildRoute(&$query)
 {
 	$segments = array();
+	$app  = JApplication::getInstance('site');
+	$menu = $app->getMenu();
 	
 	if(isset($query['prispevek'])) {
 		$segments[] = 'Prispevek';
@@ -59,8 +61,10 @@ function VsebineBuildRoute(&$query)
 	}
 	else if(isset($query['tag']) || isset($query['tags'])) {
 		$segments[] = 'Tag';
-		$segments[] = (isset($query['tag']) ? GetTagId($query['tag']) : GetTagId($query['tags']));
-		$segments[] = (isset($query['tag']) ? JFilterOutput::stringURLSafe($query['tag']) : JFilterOutput::stringURLSafe($query['tags']));
+		$Tag = (isset($query['tag']) ? GetTag($query['tag']) : GetTag($query['tags']));
+		
+		$segments[] = $Tag->id;
+		$segments[] = $Tag->alias;
 		
 		if(isset($query['tag'])) unset($query['tag']);
 		else unset($query['tags']);
