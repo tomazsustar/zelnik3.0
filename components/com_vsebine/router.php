@@ -29,6 +29,21 @@ function GetTag($Tag) {
     return $Row;
 }
 
+function GetPrispevek($Alias) {
+
+	$db = JFactory::getDbo();
+	$query = $db->getQuery(true);
+	
+	$query->from('nize01_zelnik.vs_vsebine AS v');
+	$query->select('v.id');
+	$query->where('v.title_url = "'.str_replace(':','-',$Alias).'"');
+	
+	$db->setQuery($query);
+	$Row = $db->loadObject();
+	
+    return $Row->id;
+}
+
 function ParseOutTag($TagAlias) {
 	$db = JFactory::getDbo();
 	$query = $db->getQuery(true);
@@ -39,28 +54,44 @@ function ParseOutTag($TagAlias) {
 	
 	$db->setQuery($query);
 	$Row = $db->loadObject();
-
+	
     return $Row->tag;
 }
 
-function VsebineBuildRoute(&$query)
-{
+function ParseOutPrispevek($PrispevekId) {
+	$db = JFactory::getDbo();
+	$query = $db->getQuery(true);
+	
+	$query->from('nize01_zelnik.vs_vsebine AS v');
+	$query->select('v.title_url');
+	$query->where('v.id = '.$PrispevekId.'');
+	
+	$db->setQuery($query);
+	$Row = $db->loadObject();
+
+    return $Row->title_url;
+}
+
+function VsebineBuildRoute(&$query) {
 	$segments = array();
 	$app  = JApplication::getInstance('site');
 	$menu = $app->getMenu();
 	
 	if(isset($query['prispevek'])) {
 		$segments[] = 'Prispevek';
-		$segments[] = $query['prispevek'];
+		$PrispevekUrl = ParseOutPrispevek($query['prispevek']);
 		
-		if(isset($query['title'])) {
+		if($PrispevekUrl == "") {
+			$segments[] = $query['prispevek'];
 			$segments[] = $query['title'];
-			unset($query['title']);
 		}
+		else
+			$segments[]= $PrispevekUrl;
+		
+		unset($query['title']);
 		unset($query['prispevek']);
 	}
 	else if(isset($query['tag']) || isset($query['tags'])) {
-		$segments[] = 'Tag';
 		$Tag = (isset($query['tag']) ? GetTag($query['tag']) : GetTag($query['tags']));
 		
 		$segments[] = $Tag->alias;
@@ -77,14 +108,21 @@ function VsebineParseRoute($segments)
 	$vars = array();
 	
 	if($segments[0] == 'Prispevek') {
-		$vars['prispevek'] = $segments[1];
-		if(isset($segments[2]))
+		if(is_numeric($segments[1])) {
+			$vars['prispevek'] = $segments[1];
 			$vars['title'] = $segments[2];
+		}
+		else {
+			$vars['prispevek'] = GetPrispevek($segments[1]);
+			$vars['title'] = $segments[1];
+		}
+		
 		$vars['view'] = 'prispevek';
 	}
-	else if($segments[0] == 'Tag'){
-		$var['tag'] = ParseOutTag($segments[1]);
-		$vars['tags'] = ParseOutTag($segments[1]);
+	else {
+		$vars['tag'] = ParseOutTag($segments[0]);
+		$vars['tags'] = ParseOutTag($segments[0]);
+		
 		$vars['view'] = 'vsebine';
 	}
 	
