@@ -32,7 +32,7 @@ $item=&$this->items[0];
 
 ?>
 <div class="naslovna-novica">
-	<div class="znacka"><a href="<?php echo $item->tagUrl?>"><?php echo mb_strtoupper($item->tag); ?></a></div>
+	<div class="znacka"><a href="<?php echo $item->tagUrl;?>"><?php echo mb_strtoupper($item->tag); ?></a></div>
 	<h1><a href="<?php echo $item->url?>">
 	<div class="crop-veliki">
 	<img alt="" src="<?php echo $item->slika;?>" />
