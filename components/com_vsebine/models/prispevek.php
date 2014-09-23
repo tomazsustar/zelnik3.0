@@ -51,7 +51,7 @@ protected function populateState()
 	{
 		$prispevek = JRequest::getVar('prispevek', false);
 		$app = JFactory::getApplication('site');
-		
+		$version = $app->getParams('com_vsebine')->get('version');
 //		if ($this->_item === null) {
 //			$this->_item = array();
 //		}
@@ -59,16 +59,37 @@ protected function populateState()
 		if ($prispevek) {
 
 			try {
+				
 				$db = $this->getDbo();
 				$query = $db->getQuery(true);
 				
-				$query->from('nize01_zelnik.vs_vsebine AS a');
-				$query->select('a.*');
-				$query->join('INNER', '`nize01_zelnik`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
-				$query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
-				$query->where("p.domena = '".$app->getParams('com_vsebine')->get('portal')."'");
-				$query->where('pv.status = 2');
-
+				if($version){
+					$query->from('nize01_cinovicomat.vs_content AS c');
+					$query->select('c.*');
+					$query->join('INNER', '`nize01_cinovicomat`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
+					$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id');
+        			$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id');
+        			$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id 
+        			AND domain = '".$app->getParams('com_vsebine')->get('portal')."'");
+					$query->join('INNER', '`nize01_cinovicomat`.vs_articles as a ON c.ref_id = a.id AND a.state=2');
+					
+					$query->where("c.id = $prispevek");
+					}
+				else{
+					$query->from('nize01_zelnik.vs_vsebine AS a');
+					$query->select('a.*');
+					$query->join('INNER', '`nize01_zelnik`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
+					$query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
+					$query->where("p.domena = '".$app->getParams('com_vsebine')->get('portal')."'");
+					$query->where('pv.status = 2');
+					
+					if (is_numeric($prispevek)) {
+						$query->where("a.id = $prispevek");
+					}else{
+						$query->where("a.title_url = '$prispevek'");
+					}
+				}
+				
 				// Join on user table.
 //				$query->select('u.name AS author');
 //				$query->join('LEFT', '#__users AS u on u.id = a.created_by');
@@ -97,11 +118,7 @@ protected function populateState()
 //				$published = $this->getState('filter.published');
 //				$archived = $this->getState('filter.archived');
 //
-				if (is_numeric($prispevek)) {
-					$query->where("a.id = $prispevek");
-				}else{
-					$query->where("a.title_url = '$prispevek'");
-				}
+				
 				
 				
 				$db->setQuery($query);
@@ -174,14 +191,27 @@ protected function populateState()
 				$data->edited=new ZDate($data->edited);
 
 				// ZNAČKE
-				$query = $db->getQuery(true);
-				$query->from('nize01_zelnik.vs_tags AS t');
-				$query->select('t.*, tv.*');
-				$query->join('INNER', 'nize01_zelnik.vs_tags_vsebina as tv ON tv.id_tag = t.id');
-				$query->where("tv.id_vsebine = $data->id");
-				$query->where("t.tag <> ''");
-				$db->setQuery($query);
-				$tags = $db->loadObjectList();
+				if($version){
+					$query = $db->getQuery(true);
+					$query->from('nize01_cinovicomat.vs_tags AS t');
+					$query->select('t.*, tv.*');
+					$query->join('INNER', 'nize01_cinovicomat.vs_tags_vsebina as tv ON tv.id_tag = t.id');
+					$query->where("tv.id_vsebine = $data->id");
+					$query->where("t.tag <> ''");
+					$db->setQuery($query);
+					$tags = $db->loadObjectList();
+				}
+				else{
+					$query = $db->getQuery(true);
+					$query->from('nize01_zelnik.vs_tags AS t');
+					$query->select('t.*, tv.*');
+					$query->join('INNER', 'nize01_zelnik.vs_tags_vsebina as tv ON tv.id_tag = t.id');
+					$query->where("tv.id_vsebine = $data->id");
+					$query->where("t.tag <> ''");
+					$db->setQuery($query);
+					$tags = $db->loadObjectList();
+					
+				}
 //				print_r($tags);
 				$arr=array();
 				foreach ($tags as &$tag){
