@@ -195,11 +195,68 @@ protected function populateState()
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_tags AS t');
 					$query->select('t.*, tv.*');
-					$query->join('INNER', 'nize01_cinovicomat.vs_tags_vsebina as tv ON tv.id_tag = t.id');
-					$query->where("tv.id_vsebine = $data->id");
-					$query->where("t.tag <> ''");
+					$query->join('INNER', "nize01_cinovicomat.vs_tags_content as tc ON tc.tag id = t.id AND tc.content_id=$data->id");
 					$db->setQuery($query);
 					$tags = $db->loadObjectList();
+					
+					print_r($tags);
+					$arr=array();
+					foreach ($tags as &$tag){
+						$tag->tagUrl = JRoute::_("index.php?option=com_vsebine&tags=".$tag->tag);
+						$arr[]=$tag->tag;
+					}
+					$data->str_tags=implode(', ', $arr);
+					$data->tags=$tags;
+						
+					// SLIKE
+					
+					$query = $db->getQuery(true);
+					$query->from('nize01_cinovicomat.vs_multimedias AS s');
+					$query->select('*');
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c2.ref_id = s.id " );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='right' AND cc.content_id=$data->id");
+        			$query->order("cc.ordering ASC");
+					$db->setQuery($query);
+					$slike = $db->loadObjectList();
+					$data->slike = $slike;
+						
+					$query = $db->getQuery(true);
+					$query->from('nize01_cinovicomat.vs_multimedias AS s');
+					$query->select('*');
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c2.ref_id = s.id " );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='bottom' AND cc.content_id=$data->id");
+        			$query->order("cc.ordering ASC");
+					$db->setQuery($query);
+					$slike = $db->loadObjectList();
+					$data->galerija = $slike;
+						
+					// PRIPONKE
+					$query = $db->getQuery(true);
+					$query->from('nize01_cinovicomat.vs_multimedias AS s');
+					$query->select('*');
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c2.ref_id = s.id " );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='file' AND cc.content_id=$data->id");
+        			$query->order("cc.ordering ASC");
+					$db->setQuery($query);
+					$slike = $db->loadObjectList();
+					$data->priponke = $slike;
+						
+						
+					//VIDEO
+					$query = $db->getQuery(true);
+					$query->from('nize01_cinovicomat.vs_multimedias AS s');
+					$query->select('*');
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c2.ref_id = s.id " );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='file' AND cc.content_id=$data->id");
+					$query->where("s.format='mp4'");
+					$query->order("cc.ordering ASC");
+					$db->setQuery($query);
+					$video = $db->loadObject();
+					
+					require_once JPATH_COMPONENT.'/helpers/ZVideoHelper.php';
+					$data->video=ZVideoHelper::insertVideo($video->url);
+						
+					$this->_item = $data;
 				}
 				else{
 					$query = $db->getQuery(true);
@@ -210,57 +267,58 @@ protected function populateState()
 					$query->where("t.tag <> ''");
 					$db->setQuery($query);
 					$tags = $db->loadObjectList();
+	//				print_r($tags);
+					$arr=array();
+					foreach ($tags as &$tag){
+						$tag->tagUrl = JRoute::_("index.php?option=com_vsebine&tags=".$tag->tag);
+						$arr[]=$tag->tag;
+					}
+					$data->str_tags=implode(', ', $arr);
+					$data->tags=$tags;
 					
+					// SLIKE
+				
+					$query = $db->getQuery(true);
+					$query->from('nize01_zelnik.vs_slike AS s');
+					$query->select('s.*, sv.*');
+					$query->join('INNER', 'nize01_zelnik.vs_slike_vsebine as sv ON sv.id_slike = s.id');
+					$query->where("sv.id_vsebine = $data->id");
+					$query->where("sv.mesto_prikaza = 2");
+					$query->order("sv.zp_st ASC");
+					$db->setQuery($query);
+					$slike = $db->loadObjectList();
+					$data->slike = $slike;
+					
+					$query = $db->getQuery(true);
+					$query->from('nize01_zelnik.vs_slike AS s');
+					$query->select('s.*, sv.*');
+					$query->join('INNER', 'nize01_zelnik.vs_slike_vsebine as sv ON sv.id_slike = s.id');
+					$query->where("sv.id_vsebine = $data->id");
+					$query->where("sv.mesto_prikaza = 3");
+					$query->order("sv.zp_st ASC");
+					$db->setQuery($query);
+					$slike = $db->loadObjectList();
+					$data->galerija = $slike;
+					
+					// PRIPONKE
+					$query = $db->getQuery(true);
+					$query->from('nize01_zelnik.vs_slike AS s');
+					$query->select('s.*, sv.*');
+					$query->join('INNER', 'nize01_zelnik.vs_slike_vsebine as sv ON sv.id_slike = s.id');
+					$query->where("sv.id_vsebine = $data->id");
+					$query->where("sv.mesto_prikaza = 4");
+					$query->order("sv.zp_st ASC");
+					$db->setQuery($query);
+					$slike = $db->loadObjectList();
+					$data->priponke = $slike;
+					
+					
+					//VIDEO
+					require_once JPATH_COMPONENT.'/helpers/ZVideoHelper.php';
+					$data->video=ZVideoHelper::insertVideo($data->video);
+					
+					$this->_item = $data;
 				}
-//				print_r($tags);
-				$arr=array();
-				foreach ($tags as &$tag){
-					$tag->tagUrl = JRoute::_("index.php?option=com_vsebine&tags=".$tag->tag);
-					$arr[]=$tag->tag;
-				}
-				$data->str_tags=implode(', ', $arr);
-				$data->tags=$tags;
-				
-				// SLIKE
-				$query = $db->getQuery(true);
-				$query->from('nize01_zelnik.vs_slike AS s');
-				$query->select('s.*, sv.*');
-				$query->join('INNER', 'nize01_zelnik.vs_slike_vsebine as sv ON sv.id_slike = s.id');
-				$query->where("sv.id_vsebine = $data->id");
-				$query->where("sv.mesto_prikaza = 2");
-				$query->order("sv.zp_st ASC");
-				$db->setQuery($query);
-				$slike = $db->loadObjectList();
-				$data->slike = $slike;
-				
-				$query = $db->getQuery(true);
-				$query->from('nize01_zelnik.vs_slike AS s');
-				$query->select('s.*, sv.*');
-				$query->join('INNER', 'nize01_zelnik.vs_slike_vsebine as sv ON sv.id_slike = s.id');
-				$query->where("sv.id_vsebine = $data->id");
-				$query->where("sv.mesto_prikaza = 3");
-				$query->order("sv.zp_st ASC");
-				$db->setQuery($query);
-				$slike = $db->loadObjectList();
-				$data->galerija = $slike;
-				
-				// PRIPONKE
-				$query = $db->getQuery(true);
-				$query->from('nize01_zelnik.vs_slike AS s');
-				$query->select('s.*, sv.*');
-				$query->join('INNER', 'nize01_zelnik.vs_slike_vsebine as sv ON sv.id_slike = s.id');
-				$query->where("sv.id_vsebine = $data->id");
-				$query->where("sv.mesto_prikaza = 4");
-				$query->order("sv.zp_st ASC");
-				$db->setQuery($query);
-				$slike = $db->loadObjectList();
-				$data->priponke = $slike;
-				
-				//VIDEO
-				require_once JPATH_COMPONENT.'/helpers/ZVideoHelper.php';
-				$data->video=ZVideoHelper::insertVideo($data->video);
-				
-				$this->_item = $data;
 			}
 			catch (Exception $e)
 			{

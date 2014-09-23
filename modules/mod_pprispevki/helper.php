@@ -10,6 +10,10 @@ class Prispevek {
 	public $tags;
 	
 	function __construct($PrispevekId) {
+		$app = JFactory::getApplication();
+		$params = JComponentHelper::getParams('com_vsebine');
+		$version = $params->get('version');
+		
 		$db = JFactory::getDBO();
 
 		$query = "SELECT v.id, v.title, v.slika, v.introtext, s.url
@@ -35,6 +39,10 @@ class Prispevek {
 	}
 	
 	private function GetAllTags() {
+		$app = JFactory::getApplication();
+		$params = JComponentHelper::getParams('com_vsebine');
+		$version = $params->get('version');
+		
 		$query = "SELECT v.id, t.tag FROM vs_vsebine AS v
 		JOIN vs_tags_vsebina AS vt ON vt.id_vsebine = v.id
 		JOIN vs_tags AS t ON vt.id_tag = t.id
@@ -60,6 +68,7 @@ class PovezaniPrispevki {
 		$db = JFactory::getDBO();	
 		$app = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_vsebine');
+		$version = $params->get('version');
 
 		$query = "select common_tags, all_tags - common_tags as not_common_tags, v.id, v.title, v.slika from vs_vsebine as v
 					inner join (select A.id_vsebine, count(*) as common_tags from vs_tags_vsebina as A

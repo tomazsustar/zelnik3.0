@@ -81,7 +81,12 @@ class VsebineModelVsebine extends JModelList {
         if($version){
         	$query->select(
         			$this->getState(
-        					'list.select', 'c.*'
+        					'list.select', "c.description as introtext, 
+        					CONCAT('http://ci.novicomat.si/',mm.url) as slika, 
+        					c.name as title,
+        					a.publish_up,
+        					c.id
+        					"
         			)
         	);
         	 
@@ -97,7 +102,7 @@ class VsebineModelVsebine extends JModelList {
         	$query->join('INNER', '`nize01_cinovicomat`.vs_articles as a ON c.ref_id = a.id AND a.state=2');			
         	$query->order('a.publish_up DESC');
         	
-        	$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='header-image'");
+        	$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.content_id AND cc.correlation='header-image'");
         	$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c2 ON c2.id = cc.content_id " );
         	$query->join('INNER', "`nize01_cinovicomat`.vs_multimedias AS mm ON c2.ref_id = mm.id " );
         	
@@ -111,7 +116,7 @@ class VsebineModelVsebine extends JModelList {
         		$query->join('INNER', '`nize01_cinovicomat`.vs_tags as t ON tc.tag_id = t.id');
         		$query->where("t.name IN ($tags)");
         	}else{
-        		$query->where('(a.publish_down > current_timestamp or a.publish_down is null)');
+        		$query->where("(a.publish_down > current_timestamp or a.publish_down is null or a.publish_down='0000-00-00')");
         		$query->where('(a.frontpage = 1)');
         	}
         	 
@@ -186,7 +191,7 @@ class VsebineModelVsebine extends JModelList {
 			foreach ($items as $item){
 				//značke
 				$item->publish_up=new ZDate($item->publish_up);
-				$item->tags = getTagsForContentID($item->id);
+				$item->tags = $this->getTagsForContentID($item->id);
 				$item->tags=$this->sortItemTags($item->tags);
 				$tagsLower=array_map('mb_strtolower', $item->tags);
 				$item->tag = $item->tags[0];
@@ -274,7 +279,7 @@ class VsebineModelVsebine extends JModelList {
 		$version = $params->get('version');
 		
 		if($version){
-			$q="SELECT count(t.id) as cnt, t.alias, t.id FROM `nize01_cinovicomat`.`vs_tags_content` tc
+			$q="SELECT count(t.id) as cnt, t.alias as tag, t.id FROM `nize01_cinovicomat`.`vs_tags_content` tc
 				inner join `nize01_cinovicomat`.vs_tags t on t.id=tc.tag_id group by t.id order by cnt desc limit 1, 20"; //preštej značke
 			$db = $this->getDbo();
 			$db->setQuery($q);
