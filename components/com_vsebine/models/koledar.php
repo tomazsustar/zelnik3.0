@@ -68,9 +68,8 @@ class VsebineModelKoledar extends JModelList {
         $prispevek = JRequest::getInt('prispevek', false);
         $portal = JRequest::getVar('portal', false);
         if(!$portal) $portal = $app->getParams('com_vsebine')->get('portal');
-        
         $format = JRequest::getVar('format', false);
-        
+        $version = $app->getParams('com_vsebine')->get('version');
         
 //        $app = JFactory::getApplication();
 //        echo "<pre>";
@@ -79,46 +78,88 @@ class VsebineModelKoledar extends JModelList {
 //        echo "</pre>";
 
         // Select the required fields from the table.
-        $query->select(
-                $this->getState(
-                        'list.select', 'k.lokacija, a.id, a.title, a.title_url, k.naslov, k.zacetek, k.konec, k.id as koledar_id '
-                )
-        );
-    
-        
-        if ($format=="ical"){
-        	$query->select('a.fulltext, a.slika, a.title, a.id as vsebina_id, a.introtext');
-        }
-        
-        $query->from('`nize01_zelnik`.`vs_vsebine` AS a');
-        
-        $query->join('INNER', 'nize01_zelnik.vs_koledar as k ON k.id_vsebine = a.id');
-        
-        $query->join('INNER', '`nize01_zelnik`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
-        $query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
-        $query->where("p.domena = ".$db->quote($portal));
-        $query->where('pv.status = 2');
-        
-        $query->order('k.zacetek ASC');
-    	if($prispevek){
-        	$query->where("a.id = $prispevek");
+        $params = JComponentHelper::getParams('com_vsebine');
+        $version = $params->get('version');
+        if($version){
+        	$query->select(
+        			$this->getState(
+        					'list.select', 'c.id, c.name as title, c.name as naslov, e.start_date as zacetek, e.end_date as konec, e.id as koledar_id '
+        			)
+        	);
+        	 
+        	 
+        	if ($format=="ical"){
+        		$query->select('a.fulltext, a.slika, a.title, a.id as vsebina_id, a.introtext');
+        	}
+        	 
+        	$query->from('`nize01_cinovicomat`.`vs_events` AS e');
+        	 
+        	$query->join('INNER', "nize01_cinovicomat.vs_content as c ON e.id = c.ref_id AND c.type = 'event' ");
+        	$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id');
+        	$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id');
+        	$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id 
+        			AND domain = '".$app->getParams('com_vsebine')->get('portal')."'");
+        	 
+        	$query->order('e.start_date ASC');
+        	if($prispevek){
+        		$query->join('INNER', '`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id');
+        		$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c2 ON c2.id = cc.content_id AND c2.id=$prispevek" );
+        	}else{
+        		$today = date("Y-m-d")." 00:00:00.000";
+        		$query->where("e.start_date >= '".$today."'");
+        	}
+        	 
+        	if($tags){
+        		$tags = explode(',', $tags);
+        		$qTags = array();
+        		foreach($tags as $tag){$qTags[]=$db->quote($tag); }
+        		$tags=implode(',', $qTags);
+        		//echo $tags;
+        		$query->join('INNER', '`nize01_cinovicomat`.vs_tags_content as tc ON tc.content_id = c.id');
+        		$query->join('INNER', '`nize01_cinovicomat`.vs_tags as t ON tc.tag_id = t.id');
+        		$query->where("t.name IN ($tags)");
+        	}
         }else{
-			$today = date("Y-m-d")." 00:00:00.000";
-        	$query->where("k.zacetek >= '".$today."'");
+	        $query->select(
+	                $this->getState(
+	                        'list.select', 'k.lokacija, a.id, a.title, a.title_url, k.naslov, k.zacetek, k.konec, k.id as koledar_id '
+	                )
+	        );
+	    
+	        
+	        if ($format=="ical"){
+	        	$query->select('a.fulltext, a.slika, a.title, a.id as vsebina_id, a.introtext');
+	        }
+	        
+	        $query->from('`nize01_zelnik`.`vs_vsebine` AS a');
+	        
+	        $query->join('INNER', 'nize01_zelnik.vs_koledar as k ON k.id_vsebine = a.id');
+	        
+	        $query->join('INNER', '`nize01_zelnik`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
+	        $query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
+	        $query->where("p.domena = ".$db->quote($portal));
+	        $query->where('pv.status = 2');
+	        
+	        $query->order('k.zacetek ASC');
+	    	if($prispevek){
+	        	$query->where("a.id = $prispevek");
+	        }else{
+				$today = date("Y-m-d")." 00:00:00.000";
+	        	$query->where("k.zacetek >= '".$today."'");
+	        }
+	        
+	        if($tags){
+	        	$tags = explode(',', $tags);
+	        	$qTags = array();
+	        	foreach($tags as $tag){$qTags[]=$db->quote($tag); }
+	        	$tags=implode(',', $qTags);
+	        	//echo $tags;
+	        	$query->join('INNER', 'nize01_zelnik.vs_tags_vsebina as tv ON tv.id_vsebine = a.id');
+	        	$query->join('INNER', 'nize01_zelnik.vs_tags as t ON tv.id_tag = t.id');
+	        	$query->where("t.tag IN ($tags)");
+	        	$query=str_replace("SELECT", "SELECT DISTINCT", $query);
+	        }
         }
-        
-        if($tags){
-        	$tags = explode(',', $tags);
-        	$qTags = array();
-        	foreach($tags as $tag){$qTags[]=$db->quote($tag); }
-        	$tags=implode(',', $qTags);
-        	//echo $tags;
-        	$query->join('INNER', 'nize01_zelnik.vs_tags_vsebina as tv ON tv.id_vsebine = a.id');
-        	$query->join('INNER', 'nize01_zelnik.vs_tags as t ON tv.id_tag = t.id');
-        	$query->where("t.tag IN ($tags)");
-        	$query=str_replace("SELECT", "SELECT DISTINCT", $query);
-        }
-        
         //echo $query;
         return $query;
     }

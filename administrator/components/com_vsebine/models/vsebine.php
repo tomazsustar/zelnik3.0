@@ -109,6 +109,14 @@ class VsebineModelvsebine extends JModelList
 	 */
 	protected function getListQuery()
 	{
+		$params = JComponentHelper::getParams('com_vsebine');
+		$version = $params->get('version');
+
+		// samo malo pofejkaj select, da gre skozi
+		return "SELECT 'a' as state, 'b' as title, '1' as id";
+
+		//TODO popravi za nize01_cinovicomat
+		if(!$version){
 		// Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -125,13 +133,13 @@ class VsebineModelvsebine extends JModelList
 
 
 
-    // Filter by published state
-    $published = $this->getState('filter.state');
-    if (is_numeric($published)) {
-        $query->where('a.state = '.(int) $published);
-    } else if ($published === '') {
-        $query->where('(a.state IN (0, 1))');
-    }
+		    // Filter by published state
+		    $published = $this->getState('filter.state');
+		    if (is_numeric($published)) {
+			$query->where('a.state = '.(int) $published);
+		    } else if ($published === '') {
+			$query->where('(a.state IN (0, 1))');
+		    }
     
 
 		// Filter by search in title
@@ -154,7 +162,58 @@ class VsebineModelvsebine extends JModelList
         if ($orderCol && $orderDirn) {
             $query->order($db->escape($orderCol.' '.$orderDirn));
         }
+	return $query;
+	}
+	else{
+		//ci novicomat	
 
-		return $query;
+	// Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+
+		// Select the required fields from the table.
+		$query->select(
+			$this->getState(
+				'list.select',
+				'a.*'
+			)
+		);
+		$query->from('nize01_cinovicomat.vs_vsebine AS a');
+
+
+
+
+		    // Filter by published state
+		    $published = $this->getState('filter.state');
+		    if (is_numeric($published)) {
+			$query->where('a.state = '.(int) $published);
+		    } else if ($published === '') {
+			$query->where('(a.state IN (0, 1))');
+		    }
+    
+
+		// Filter by search in title
+		$search = $this->getState('filter.search');
+		if (!empty($search)) {
+			if (stripos($search, 'id:') === 0) {
+				$query->where('a.id = '.(int) substr($search, 3));
+			} else {
+				$search = $db->Quote('%'.$db->escape($search, true).'%');
+                
+			}
+		}
+        
+        
+        
+        
+		// Add the list ordering clause.
+        $orderCol	= $this->state->get('list.ordering');
+        $orderDirn	= $this->state->get('list.direction');
+        if ($orderCol && $orderDirn) {
+            $query->order($db->escape($orderCol.' '.$orderDirn));
+        }
+	return $query;
+	}
+		
 	}
 }

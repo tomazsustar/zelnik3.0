@@ -18,11 +18,17 @@ defined('_JEXEC') or die;
 function GetTag($Tag) {
 	$db = JFactory::getDbo();
 	$query = $db->getQuery(true);
-	
-	$query->from('nize01_zelnik.vs_tags AS t');
-	$query->select('t.*');
-	$query->where('t.tag = "'.$Tag.'"');
-	
+	$params = JComponentHelper::getParams('com_vsebine');
+	$version = $params->get('version');	
+	if($version){
+		$query->from('nize01_cinovicomat.vs_tags AS t');
+		$query->select('t.*');
+		$query->where('t.name = "'.$Tag.'"');
+	}else{
+		$query->from('nize01_zelnik.vs_tags AS t');
+		$query->select('t.*');
+		$query->where('t.tag = "'.$Tag.'"');
+	}
 	$db->setQuery($query);
 	$Row = $db->loadObject();
 	

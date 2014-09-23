@@ -28,9 +28,9 @@ class VsebineController extends JControllerLegacy
 
 		$view		= JFactory::getApplication()->input->getCmd('view', 'vsebine');
         JFactory::getApplication()->input->set('view', $view);
-
+	
 		parent::display($cachable, $urlparams);
-
+		
 		return $this;
 	}
 }

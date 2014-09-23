@@ -5,7 +5,9 @@
  * @package     com_vsebine
  * @copyright   Copyright (C) 2013. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
- * @author      Tomaž Šuštar <tomaz@zelnik.net> - http://www.zelnik.net
+ * @author      Tomaž Šuštar <tomaz@zelnik.net> - http://www.zel
+        	
+        nik.net
  */
 defined('_JEXEC') or die;
 
@@ -68,6 +70,7 @@ class VsebineModelVsebine extends JModelList {
         $db = $this->getDbo();
         $query = $db->getQuery(true);
         $tags = JRequest::getVar('tags', false);
+        $version = $app->getParams('com_vsebine')->get('version');
 //        $app = JFactory::getApplication();
 //        echo "<pre>";
 //        print_r($tags);
@@ -75,40 +78,80 @@ class VsebineModelVsebine extends JModelList {
 //        echo "</pre>";
 
         // Select the required fields from the table.
-        $query->select(
-                $this->getState(
-                        'list.select', 'a.*'
-                )
-        );
-        
-        $query->from('`nize01_zelnik`.`vs_vsebine` AS a');
-        
-        
-        $query->where('a.publish_up < current_timestamp');
-        
-        
-        $query->order('a.publish_up DESC');
-        
-        $query->join('INNER', '`nize01_zelnik`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
-        $query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
-        $query->where("p.domena = '".$app->getParams('com_vsebine')->get('portal')."'");
-        $query->where('pv.status = 2');
-        
-        if($tags){
-        	$tags = explode(',', $tags);
-        	$qTags = array();
-        	foreach($tags as $tag){$qTags[]=$db->quote($tag); }
-        	$tags=implode(',', $qTags);
-        	//echo $tags;
-        	$query->join('INNER', '`nize01_zelnik`.vs_tags_vsebina as tv ON tv.id_vsebine = a.id');
-        	$query->join('INNER', '`nize01_zelnik`.vs_tags as t ON tv.id_tag = t.id');
-        	$query->where("t.tag IN ($tags)");
+        if($version){
+        	$query->select(
+        			$this->getState(
+        					'list.select', 'c.*'
+        			)
+        	);
+        	 
+        	$query->from('`nize01_cinovicomat`.`vs_content` AS c');
+        	 
+        	$query->where("c.type = 'article' ");
+        	
+        	$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id');
+        	$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id');
+        	$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id 
+        			AND domain = '".$app->getParams('com_vsebine')->get('portal')."'");
+        	
+        	$query->join('INNER', '`nize01_cinovicomat`.vs_articles as a ON c.ref_id = a.id AND a.state=2');			
+        	$query->order('a.publish_up DESC');
+        	
+        	$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='header-image'");
+        	$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c2 ON c2.id = cc.content_id " );
+        	$query->join('INNER', "`nize01_cinovicomat`.vs_multimedias AS mm ON c2.ref_id = mm.id " );
+        	
+        	if($tags){
+        		$tags = explode(',', $tags);
+        		$qTags = array();
+        		foreach($tags as $tag){$qTags[]=$db->quote($tag); }
+        		$tags=implode(',', $qTags);
+        		//echo $tags;
+        		$query->join('INNER', '`nize01_cinovicomat`.vs_tags_content as tc ON tc.content_id = c.id');
+        		$query->join('INNER', '`nize01_cinovicomat`.vs_tags as t ON tc.tag_id = t.id');
+        		$query->where("t.name IN ($tags)");
+        	}else{
+        		$query->where('(a.publish_down > current_timestamp or a.publish_down is null)');
+        		$query->where('(a.frontpage = 1)');
+        	}
+        	 
+        	$query=str_replace("SELECT", "SELECT DISTINCT", $query);
         }else{
-        	$query->where('(a.publish_down > current_timestamp or a.publish_down is null)');
-        	$query->where('(a.frontpage = 1)');
+	        $query->select(
+	                $this->getState(
+	                        'list.select', 'a.*'
+	                )
+	        );
+	        
+	        $query->from('`nize01_zelnik`.`vs_vsebine` AS a');
+	        
+	        
+	        $query->where('a.publish_up < current_timestamp');
+	        
+	        
+	        $query->order('a.publish_up DESC');
+	        
+	        $query->join('INNER', '`nize01_zelnik`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
+	        $query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
+	        $query->where("p.domena = '".$app->getParams('com_vsebine')->get('portal')."'");
+	        $query->where('pv.status = 2');
+	        
+	        if($tags){
+	        	$tags = explode(',', $tags);
+	        	$qTags = array();
+	        	foreach($tags as $tag){$qTags[]=$db->quote($tag); }
+	        	$tags=implode(',', $qTags);
+	        	//echo $tags;
+	        	$query->join('INNER', '`nize01_zelnik`.vs_tags_vsebina as tv ON tv.id_vsebine = a.id');
+	        	$query->join('INNER', '`nize01_zelnik`.vs_tags as t ON tv.id_tag = t.id');
+	        	$query->where("t.tag IN ($tags)");
+	        }else{
+	        	$query->where('(a.publish_down > current_timestamp or a.publish_down is null)');
+	        	$query->where('(a.frontpage = 1)');
+	        }
+	        
+	        $query=str_replace("SELECT", "SELECT DISTINCT", $query);
         }
-        
-        $query=str_replace("SELECT", "SELECT DISTINCT", $query);
         return $query;
     }
     
@@ -136,42 +179,83 @@ class VsebineModelVsebine extends JModelList {
 		$app = JFactory::getApplication('site');
 		$menu   = $app->getMenu();
 		$activeId = $menu->getActive()->id;
+		$params = JComponentHelper::getParams('com_vsebine');
+		$version = $params->get('version');
 		//echo count($items);
-		foreach ($items as $item){
-			//značke
-			$item->publish_up=new ZDate($item->publish_up);
-			$item->tags = array_map('trim',(explode(',',$item->tags)));
-			$item->tags=$this->sortItemTags($item->tags);
-			$tagsLower=array_map('mb_strtolower', $item->tags);
-			$item->tag = $item->tags[0];
-			$item->tagUrl = JRoute::_("index.php?option=com_vsebine&tag=".$item->tag."&Itemid=".$activeId);
-			//if($item->title_url=="")
+		if($version){
+			foreach ($items as $item){
+				//značke
+				$item->publish_up=new ZDate($item->publish_up);
+				$item->tags = getTagsForContentID($item->id);
+				$item->tags=$this->sortItemTags($item->tags);
+				$tagsLower=array_map('mb_strtolower', $item->tags);
+				$item->tag = $item->tags[0];
+				$item->tagUrl = JRoute::_("index.php?option=com_vsebine&tag=".$item->tag."&Itemid=".$activeId);
+				//if($item->title_url=="")
 				$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id.
 						"&title=".JFilterOutput::stringURLSafe($item->title).
 						"&Itemid=".$activeId);
-			//else
-			//	 $item->url = JRoute::_("component/vsebine/prispevek/".JFilterOutput::stringURLSafe($item->title));
-			if(!$podstr && $zdruzi){
-			 	if($i<5){
-			 		$blocks[0][]=$item;
-			 		
-			 	}else{
-			 		//if ($item->id == 2576){echo "AAA".in_array("Kultura", $item->tags);}//echo "AAAAAAAA";} 
-			 		foreach ($this->sotredTags as $st){
-			 		
-			 			if(in_array(mb_strtolower($st->tag), $tagsLower)){
-			 				//if ($item->id == 2591){echo $st->tag;}//echo "AAAAAAAA";}
-			 				if(!isset($blocks[$st->tag]) || 
-			 					count($blocks[$st->tag])<3){
-			 					$blocks[$st->tag][]=$item;
-			 					break;
-			 				}
-			 			}
-			 		}		 		
-			 	}
+				//else
+				//	 $item->url = JRoute::_("component/vsebine/prispevek/".JFilterOutput::stringURLSafe($item->title));
+				if(!$podstr && $zdruzi){
+					if($i<5){
+						$blocks[0][]=$item;
+			
+					}else{
+						//if ($item->id == 2576){echo "AAA".in_array("Kultura", $item->tags);}//echo "AAAAAAAA";}
+						foreach ($this->sotredTags as $st){
+			
+							if(in_array(mb_strtolower($st->tag), $tagsLower)){
+								//if ($item->id == 2591){echo $st->tag;}//echo "AAAAAAAA";}
+								if(!isset($blocks[$st->tag]) ||
+										count($blocks[$st->tag])<3){
+									$blocks[$st->tag][]=$item;
+									break;
+								}
+							}
+						}
+					}
+				}
+				$i++;
 			}
-		 	$i++;
+		}else {
+			foreach ($items as $item){
+				//značke
+				$item->publish_up=new ZDate($item->publish_up);
+				$item->tags = array_map('trim',(explode(',',$item->tags)));
+				$item->tags=$this->sortItemTags($item->tags);
+				$tagsLower=array_map('mb_strtolower', $item->tags);
+				$item->tag = $item->tags[0];
+				$item->tagUrl = JRoute::_("index.php?option=com_vsebine&tag=".$item->tag."&Itemid=".$activeId);
+				//if($item->title_url=="")
+				$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id.
+						"&title=".JFilterOutput::stringURLSafe($item->title).
+						"&Itemid=".$activeId);
+				//else
+				//	 $item->url = JRoute::_("component/vsebine/prispevek/".JFilterOutput::stringURLSafe($item->title));
+				if(!$podstr && $zdruzi){
+					if($i<5){
+						$blocks[0][]=$item;
+			
+					}else{
+						//if ($item->id == 2576){echo "AAA".in_array("Kultura", $item->tags);}//echo "AAAAAAAA";}
+						foreach ($this->sotredTags as $st){
+			
+							if(in_array(mb_strtolower($st->tag), $tagsLower)){
+								//if ($item->id == 2591){echo $st->tag;}//echo "AAAAAAAA";}
+								if(!isset($blocks[$st->tag]) ||
+										count($blocks[$st->tag])<3){
+									$blocks[$st->tag][]=$item;
+									break;
+								}
+							}
+						}
+					}
+				}
+				$i++;
+			}
 		}
+		
 		$return=array();
 		if(!$podstr && $zdruzi){
 			foreach ($blocks as $key => $block){
@@ -186,12 +270,39 @@ class VsebineModelVsebine extends JModelList {
 	}
 	
 	private function setSortedTags(){
-		$q="SELECT count(t.id) as cnt, t.tag, t.id FROM `nize01_zelnik`.`vs_tags_vsebina` ts
-			inner join `nize01_zelnik`.vs_tags t on t.id=ts.id_tag group by t.id order by cnt desc limit 1, 20"; //preštej značke
-		$db = $this->getDbo();
-		$db->setQuery($q);
-		$this->sotredTags=$db->loadObjectList();
+		$params = JComponentHelper::getParams('com_vsebine');
+		$version = $params->get('version');
+		
+		if($version){
+			$q="SELECT count(t.id) as cnt, t.alias, t.id FROM `nize01_cinovicomat`.`vs_tags_content` tc
+				inner join `nize01_cinovicomat`.vs_tags t on t.id=tc.tag_id group by t.id order by cnt desc limit 1, 20"; //preštej značke
+			$db = $this->getDbo();
+			$db->setQuery($q);
+			$this->sotredTags=$db->loadObjectList();
+		}else{
+			$q="SELECT count(t.id) as cnt, t.tag, t.id FROM `nize01_zelnik`.`vs_tags_vsebina` ts
+				inner join `nize01_zelnik`.vs_tags t on t.id=ts.id_tag group by t.id order by cnt desc limit 1, 20"; //preštej značke
+			$db = $this->getDbo();
+			$db->setQuery($q);
+			$this->sotredTags=$db->loadObjectList();
+		}
 	}
+	
+	private function getTagsForContentID($content_id){
+		$params = JComponentHelper::getParams('com_vsebine');
+		$version = $params->get('version');
+	
+		if($version){
+			$q="SELECT t.name from nize01_cinovicomat.vs_tags t
+				inner join `nize01_cinovicomat`.vs_tags_content tc on t.id=tc.tag_id and content_id=$content_id" ; 
+			$db = $this->getDbo();
+			$db->setQuery($q);
+			return $db->loadColumn();
+		}else{
+			return array();
+		}
+	}
+	
 	
 	public function sortItemTags($tags){
 		$return=array();

@@ -11,6 +11,11 @@
              label="Portal - domena"
              description="">
          </field>
+	
+	<field name="version" type="list" default="" label="Select an option" description="">
+	  <option value="0">Yii Novicomat</option>
+	  <option value="1">CI Novicomat</option>
+	</field>
 
 	</fieldset>
 
