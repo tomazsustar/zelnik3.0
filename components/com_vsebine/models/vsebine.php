@@ -103,7 +103,7 @@ class VsebineModelVsebine extends JModelList {
         	$query->order('a.publish_up DESC');
         	
         	$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.content_id AND cc.correlation='header-image'");
-        	$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c2 ON c2.id = cc.content_id " );
+        	$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c2 ON c2.id = cc.ref_content_id " );
         	$query->join('INNER', "`nize01_cinovicomat`.vs_multimedias AS mm ON c2.ref_id = mm.id " );
         	
         	if($tags){
