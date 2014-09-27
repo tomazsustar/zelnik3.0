@@ -22,8 +22,8 @@ function GetTag($Tag) {
 	$version = $params->get('version');	
 	if($version){
 		$query->from('nize01_cinovicomat.vs_tags AS t');
-		$query->select('t.*');
-		$query->where('t.name = "'.$Tag.'"');
+		$query->select('t.alias, t.name as tag');
+		$query->where("t.alias = '$Tag' OR t.name='$Tag'");
 	}else{
 		$query->from('nize01_zelnik.vs_tags AS t');
 		$query->select('t.*');
@@ -61,13 +61,19 @@ function GetPrispevek($Alias) {
 }
 
 function ParseOutTag($TagAlias) {
+	$params = JComponentHelper::getParams('com_vsebine');
+	$version = $params->get('version');
 	$db = JFactory::getDbo();
 	$query = $db->getQuery(true);
-	
-	$query->from('nize01_zelnik.vs_tags AS t');
-	$query->select('t.tag');
-	$query->where('t.alias = "'.$TagAlias.'"');
-	
+	if($version){
+		$query->from('nize01_cinovicomat.vs_tags AS t');
+		$query->select('t.name as tag');
+		$query->where('t.alias = "'.$TagAlias.'"');
+	}else{
+		$query->from('nize01_zelnik.vs_tags AS t');
+		$query->select('t.tag');
+		$query->where('t.alias = "'.$TagAlias.'"');
+	}
 	$db->setQuery($query);
 	$Row = $db->loadObject();
 	
@@ -81,17 +87,16 @@ function ParseOutPrispevek($PrispevekId) {
 	$query = $db->getQuery(true);
 	
 	if($version){
-		$query->from('nize01_cinovicomat.vs_content AS v');
-		$query->select('v.name as title_url');
-		$query->where('v.id = '.$PrispevekId.'');
+		return "";
 	}else{
 		$query->from('nize01_zelnik.vs_vsebine AS v');
 		$query->select('v.title_url');
 		$query->where('v.id = '.$PrispevekId.'');
+		$db->setQuery($query);
+		$Row = $db->loadObject();
 	}
 	
-	$db->setQuery($query);
-	$Row = $db->loadObject();
+	
 
     return $Row->title_url;
 }

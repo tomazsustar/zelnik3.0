@@ -82,10 +82,10 @@ class VsebineModelVsebine extends JModelList {
         	$query->select(
         			$this->getState(
         					'list.select', "c.description as introtext, 
-        					CONCAT('http://ci.novicomat.si/',mm.url) as slika, 
+        					mm.url as slika, 
         					c.name as title,
         					a.publish_up,
-        					c.id
+        					c.id as id
         					"
         			)
         	);
@@ -131,7 +131,7 @@ class VsebineModelVsebine extends JModelList {
 	        $query->from('`nize01_zelnik`.`vs_vsebine` AS a');
 	        
 	        
-	        $query->where('a.publish_up < current_timestamp');
+	        $query->where('a.publish_up <= current_timestamp');
 	        
 	        
 	        $query->order('a.publish_up DESC');
@@ -200,6 +200,12 @@ class VsebineModelVsebine extends JModelList {
 				$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id.
 						"&title=".JFilterOutput::stringURLSafe($item->title).
 						"&Itemid=".$activeId);
+				$arr=explode('/', $item->slika); //sparsaj ven lokacijo TODO treba popravit, da se bo lokacija ujemala z id-em
+				$namearr=explode('.', $arr[count($arr)-1]);
+				$arr[count($arr)-1]="m.".$namearr[1];
+				$item->slika="http://ci.novicomat.si/".implode("/", $arr);
+				//echo $item->slika;
+				//print_r($arr);
 				//else
 				//	 $item->url = JRoute::_("component/vsebine/prispevek/".JFilterOutput::stringURLSafe($item->title));
 				if(!$podstr && $zdruzi){
@@ -260,7 +266,6 @@ class VsebineModelVsebine extends JModelList {
 				$i++;
 			}
 		}
-		
 		$return=array();
 		if(!$podstr && $zdruzi){
 			foreach ($blocks as $key => $block){
@@ -271,6 +276,7 @@ class VsebineModelVsebine extends JModelList {
 			//echo "<pre>".print_r($blocks)."</pre>";
 			return $return;
 		}
+		
 		else return $items;
 	}
 	

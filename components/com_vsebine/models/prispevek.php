@@ -56,17 +56,19 @@ protected function populateState()
 //			$this->_item = array();
 //		}
 //
+		
+		
 		if ($prispevek) {
-
+			
 			try {
 				
 				$db = $this->getDbo();
 				$query = $db->getQuery(true);
 				
 				if($version){
+					
 					$query->from('nize01_cinovicomat.vs_content AS c');
-					$query->select('c.*');
-					$query->join('INNER', '`nize01_cinovicomat`.vs_portali_vsebine as pv ON pv.id_vsebine = a.id');
+					$query->select('c.id as id, c.name as title, c.updated as edited, c.description as introtext, a.text as `fulltext`, a.publish_up, a.publish_down, a.author_name as author_alias');
 					$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id');
         			$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id');
         			$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id 
@@ -90,119 +92,34 @@ protected function populateState()
 					}
 				}
 				
-				// Join on user table.
-//				$query->select('u.name AS author');
-//				$query->join('LEFT', '#__users AS u on u.id = a.created_by');
-
-				// Join on contact table
-				
-
-				// Filter by start and end dates.
-//				$nullDate = $db->Quote($db->getNullDate());
-//				$date = JFactory::getDate();
-//
-//				$nowDate = $db->Quote($date->toSql());
-
-//				$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
-//				$query->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
-
-				// Join to check for category published state in parent categories up the tree
-				// If all categories are published, badcats.id will be null, and we just use the article state
-//				$subquery = ' (SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ';
-//				$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
-//				$subquery .= 'WHERE parent.extension = ' . $db->quote('com_content');
-//				$subquery .= ' AND parent.published <= 0 GROUP BY cat.id)';
-//				$query->join('LEFT OUTER', $subquery . ' AS badcats ON badcats.id = c.id');
-
-				// Filter by published state.
-//				$published = $this->getState('filter.published');
-//				$archived = $this->getState('filter.archived');
-//
-				
-				
 				
 				$db->setQuery($query);
-
 				$data = $db->loadObject();
-
 				if (empty($data)) {
+					
 					return JError::raiseError(404, JText::_('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
 				}
+				
 
-				// Check for published state if filter set.
-//				if (((is_numeric($published)) || (is_numeric($archived))) && (($data->state != $published) && ($data->state != $archived))) {
-//					return JError::raiseError(404, JText::_('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
-//				}
-
-				// Convert parameter fields to objects.
-//				$registry = new JRegistry;
-//				$registry->loadString($data->attribs);
-//
-//				$data->params = clone $this->getState('params');
-//				$data->params->merge($registry);
-//
-//				$registry = new JRegistry;
-//				$registry->loadString($data->metadata);
-//				$data->metadata = $registry;
-
-				// Compute selected asset permissions.
-//				$user	= JFactory::getUser();
-
-				// Technically guest could edit an article, but lets not check that to improve performance a little.
-//				if (!$user->get('guest')) {
-//					$userId	= $user->get('id');
-//					$asset	= 'com_content.article.'.$data->id;
-//
-//					// Check general edit permission first.
-//					if ($user->authorise('core.edit', $asset)) {
-//						$data->params->set('access-edit', true);
-//					}
-//					// Now check if edit.own is available.
-//					elseif (!empty($userId) && $user->authorise('core.edit.own', $asset)) {
-//						// Check for a valid user and that they are the owner.
-//						if ($userId == $data->created_by) {
-//							$data->params->set('access-edit', true);
-//						}
-//					}
-//				}
-
-				// Compute view access permissions.
-//				if ($access = $this->getState('filter.access')) {
-//					// If the access filter has been set, we already know this user can view.
-//					$data->params->set('access-view', true);
-//				}
-//				else {
-//					// If no access filter is set, the layout takes some responsibility for display of limited information.
-//					$user = JFactory::getUser();
-//					$groups = $user->getAuthorisedViewLevels();
-//
-//					if ($data->catid == 0 || $data->category_access === null) {
-//						$data->params->set('access-view', in_array($data->access, $groups));
-//					}
-//					else {
-//						$data->params->set('access-view', in_array($data->access, $groups) && in_array($data->category_access, $groups));
-//					}
-//				}
 				//DATUMI
 				$data->publish_up=new ZDate($data->publish_up);
 				$data->publish_down=new ZDate($data->publish_down);
-				$data->checked_out_time=new ZDate($data->checked_out_time);
+				//$data->checked_out_time=new ZDate($data->checked_out_time);
 				$data->edited=new ZDate($data->edited);
-				$data->edited=new ZDate($data->edited);
-
+				
 				// ZNAČKE
 				if($version){
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_tags AS t');
-					$query->select('t.*, tv.*');
-					$query->join('INNER', "nize01_cinovicomat.vs_tags_content as tc ON tc.tag id = t.id AND tc.content_id=$data->id");
+					$query->select('t.name as tag, t.alias, tc.*');
+					$query->join('INNER', "nize01_cinovicomat.vs_tags_content as tc ON tc.tag_id = t.id AND tc.content_id=$data->id");
 					$db->setQuery($query);
 					$tags = $db->loadObjectList();
 					
-					print_r($tags);
+					//print_r($tags);
 					$arr=array();
 					foreach ($tags as &$tag){
-						$tag->tagUrl = JRoute::_("index.php?option=com_vsebine&tags=".$tag->tag);
+						$tag->tagUrl = JRoute::_("index.php?option=com_vsebine&tags=".$tag->alias);
 						$arr[]=$tag->tag;
 					}
 					$data->str_tags=implode(', ', $arr);
@@ -212,29 +129,55 @@ protected function populateState()
 					
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
-					$query->select('*');
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c2.ref_id = s.id " );
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='right' AND cc.content_id=$data->id");
-        			$query->order("cc.ordering ASC");
+					$query->select('s.url');
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id " );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='header-image' AND cc.content_id=$data->id");
+					$query->order("cc.ordering ASC");
 					$db->setQuery($query);
-					$slike = $db->loadObjectList();
-					$data->slike = $slike;
+					$slika = $db->loadResult();
+					$arr=explode('/', $slika); //sparsaj ven lokacijo TODO treba popravit, da se bo lokacija ujemala z id-em
+					$namearr=explode('.', $arr[count($arr)-1]);
+					$arr[count($arr)-1]="m.".$namearr[1];
+					$data->slika="http://ci.novicomat.si/".implode("/", $arr);
 						
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
 					$query->select('*');
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c2.ref_id = s.id " );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id " );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='right' AND cc.content_id=$data->id");
+        			$query->order("cc.ordering ASC");
+					$db->setQuery($query);
+					$slike = $db->loadObjectList();
+					
+					foreach ($slike as $slika){
+						$arr=explode('/', $slika->url); //sparsaj ven lokacijo TODO treba popravit, da se bo lokacija ujemala z id-em
+						$namearr=explode('.', $arr[count($arr)-1]);
+						$arr[count($arr)-1]="m.".$namearr[1];
+						$slika->url2="http://ci.novicomat.si/".implode("/", $arr);
+					}
+					$data->slike = $slike;
+					
+					$query = $db->getQuery(true);
+					$query->from('nize01_cinovicomat.vs_multimedias AS s');
+					$query->select('*');
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id " );
 					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='bottom' AND cc.content_id=$data->id");
         			$query->order("cc.ordering ASC");
 					$db->setQuery($query);
 					$slike = $db->loadObjectList();
 					$data->galerija = $slike;
+					foreach ($data->galerija as $slika){
+						$arr=explode('/', $slika->url); //sparsaj ven lokacijo TODO treba popravit, da se bo lokacija ujemala z id-em
+						$namearr=explode('.', $arr[count($arr)-1]);
+						$arr[count($arr)-1]="m.".$namearr[1];
+						$slika->url2="http://ci.novicomat.si/".implode("/", $arr);
+					}
 						
 					// PRIPONKE
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
 					$query->select('*');
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c2.ref_id = s.id " );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id " );
 					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='file' AND cc.content_id=$data->id");
         			$query->order("cc.ordering ASC");
 					$db->setQuery($query);
@@ -246,16 +189,18 @@ protected function populateState()
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
 					$query->select('*');
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c2.ref_id = s.id " );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id " );
 					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='file' AND cc.content_id=$data->id");
 					$query->where("s.format='mp4'");
 					$query->order("cc.ordering ASC");
 					$db->setQuery($query);
 					$video = $db->loadObject();
 					
-					require_once JPATH_COMPONENT.'/helpers/ZVideoHelper.php';
-					$data->video=ZVideoHelper::insertVideo($video->url);
-						
+					if(isset($video)){
+						require_once JPATH_COMPONENT.'/helpers/ZVideoHelper.php';
+						$data->video=ZVideoHelper::insertVideo($video->url);
+					}
+					else $data->video="";
 					$this->_item = $data;
 				}
 				else{
@@ -289,6 +234,7 @@ protected function populateState()
 					$slike = $db->loadObjectList();
 					$data->slike = $slike;
 					
+					
 					$query = $db->getQuery(true);
 					$query->from('nize01_zelnik.vs_slike AS s');
 					$query->select('s.*, sv.*');
@@ -299,6 +245,7 @@ protected function populateState()
 					$db->setQuery($query);
 					$slike = $db->loadObjectList();
 					$data->galerija = $slike;
+
 					
 					// PRIPONKE
 					$query = $db->getQuery(true);
@@ -321,7 +268,7 @@ protected function populateState()
 				}
 			}
 			catch (Exception $e)
-			{
+			{echo $e;
 				if ($e->getCode() == 404) {
 					// Need to go thru the error handler to allow Redirect to work.
 					JError::raiseError(404, $e->getMessage());
