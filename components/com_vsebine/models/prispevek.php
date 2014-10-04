@@ -69,12 +69,11 @@ protected function populateState()
 					
 					$query->from('nize01_cinovicomat.vs_content AS c');
 					$query->select('c.id as id, c.name as title, c.updated as edited, c.description as introtext, a.text as `fulltext`, a.publish_up, a.publish_down, a.author_name as author_alias');
-					$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id');
+					$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id AND mc.status=2' );
         			$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id');
         			$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id 
         			AND domain = '".$app->getParams('com_vsebine')->get('portal')."'");
-					$query->join('INNER', '`nize01_cinovicomat`.vs_articles as a ON c.ref_id = a.id AND a.state=2');
-					
+					$query->join('INNER', '`nize01_cinovicomat`.vs_articles as a ON c.ref_id = a.id');
 					$query->where("c.id = $prispevek");
 					}
 				else{
@@ -84,7 +83,6 @@ protected function populateState()
 					$query->join('INNER', '`nize01_zelnik`.vs_portali as p ON pv.id_portala = p.id');
 					$query->where("p.domena = '".$app->getParams('com_vsebine')->get('portal')."'");
 					$query->where('pv.status = 2');
-					
 					if (is_numeric($prispevek)) {
 						$query->where("a.id = $prispevek");
 					}else{
@@ -130,7 +128,7 @@ protected function populateState()
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
 					$query->select('s.url');
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id " );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'multimedia'" );
 					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='header-image' AND cc.content_id=$data->id");
 					$query->order("cc.ordering ASC");
 					$db->setQuery($query);
@@ -139,13 +137,14 @@ protected function populateState()
 					$namearr=explode('.', $arr[count($arr)-1]);
 					$arr[count($arr)-1]="m.".$namearr[1];
 					$data->slika="http://ci.novicomat.si/".implode("/", $arr);
-						
+					
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
 					$query->select('*');
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id " );
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='right' AND cc.content_id=$data->id");
-        			$query->order("cc.ordering ASC");
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'multimedia'" );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.position='right' AND cc.content_id=$data->id");
+					$query->where("s.format IN ('jpg', 'png', 'gif', 'jpeg')");
+					$query->order("cc.ordering ASC");
 					$db->setQuery($query);
 					$slike = $db->loadObjectList();
 					
@@ -160,9 +159,10 @@ protected function populateState()
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
 					$query->select('*');
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id " );
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='bottom' AND cc.content_id=$data->id");
-        			$query->order("cc.ordering ASC");
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'multimedia'" );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.position='bottom' AND cc.content_id=$data->id");
+					$query->where("s.format IN ('jpg', 'png', 'gif', 'jpeg')");
+					$query->order("cc.ordering ASC");
 					$db->setQuery($query);
 					$slike = $db->loadObjectList();
 					$data->galerija = $slike;
@@ -177,7 +177,7 @@ protected function populateState()
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
 					$query->select('*');
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id " );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'multimedia'" );
 					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='file' AND cc.content_id=$data->id");
         			$query->order("cc.ordering ASC");
 					$db->setQuery($query);
@@ -188,17 +188,17 @@ protected function populateState()
 					//VIDEO
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
-					$query->select('*');
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id " );
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='file' AND cc.content_id=$data->id");
+					$query->select('s.url');
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'multimedia'" );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.content_id=$data->id");
+					$query->where("s.format IN ('mp4')");
 					$query->where("s.format='mp4'");
 					$query->order("cc.ordering ASC");
 					$db->setQuery($query);
 					$video = $db->loadObject();
-					
+					//print_r($video);
 					if(isset($video)){
-						require_once JPATH_COMPONENT.'/helpers/ZVideoHelper.php';
-						$data->video=ZVideoHelper::insertVideo($video->url);
+						$data->video='<iframe style="display: block; margin: auto;" width="420" height="315" src="'.$video->url.'" frameborder="0" allowfullscreen></iframe>';
 					}
 					else $data->video="";
 					$this->_item = $data;

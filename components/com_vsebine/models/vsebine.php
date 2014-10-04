@@ -94,12 +94,12 @@ class VsebineModelVsebine extends JModelList {
         	 
         	$query->where("c.type = 'article' ");
         	
-        	$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id');
-        	$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id');
+        	$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id AND mc.status=2');
+        	$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id ');
         	$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id 
         			AND domain = '".$app->getParams('com_vsebine')->get('portal')."'");
         	
-        	$query->join('INNER', '`nize01_cinovicomat`.vs_articles as a ON c.ref_id = a.id AND a.state=2');			
+        	$query->join('INNER', '`nize01_cinovicomat`.vs_articles as a ON c.ref_id = a.id');			
         	$query->order('a.publish_up DESC');
         	
         	$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.content_id AND cc.correlation='header-image'");
@@ -116,7 +116,7 @@ class VsebineModelVsebine extends JModelList {
         		$query->join('INNER', '`nize01_cinovicomat`.vs_tags as t ON tc.tag_id = t.id');
         		$query->where("t.name IN ($tags)");
         	}else{
-        		$query->where("(a.publish_down > current_timestamp or a.publish_down is null or a.publish_down='0000-00-00')");
+        		$query->where("(a.publish_down > current_timestamp or a.publish_down is null or a.publish_down='0000-00-00') and a.publish_up <= current_timestamp");
         		$query->where('(a.frontpage = 1)');
         	}
         	 
