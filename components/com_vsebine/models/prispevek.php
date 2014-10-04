@@ -129,7 +129,7 @@ protected function populateState()
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
 					$query->select('s.url');
 					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'multimedia'" );
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='header-image' AND cc.content_id=$data->id");
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.position='head' AND cc.content_id=$data->id");
 					$query->order("cc.ordering ASC");
 					$db->setQuery($query);
 					$slika = $db->loadResult();
