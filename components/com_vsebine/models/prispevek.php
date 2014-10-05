@@ -183,7 +183,11 @@ protected function populateState()
 					$db->setQuery($query);
 					$slike = $db->loadObjectList();
 					$data->priponke = $slike;
-						
+					
+					foreach ($data->priponke as $slika){
+						if($server=="dev" || $server=="localhost")	$slika->url="http://dev.novicomat.si/".$slika->url
+						else $slika->url="http://novicomat.si/".$slika->url
+					}
 						
 					//VIDEO
 					$query = $db->getQuery(true);
