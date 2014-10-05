@@ -186,6 +186,8 @@ class VsebineModelVsebine extends JModelList {
 		$activeId = $menu->getActive()->id;
 		$params = JComponentHelper::getParams('com_vsebine');
 		$version = $params->get('version');
+		$server = @array_shift(explode(".",$_SERVER['HTTP_HOST']));
+		//echo $server;
 		//echo count($items);
 		if($version){
 			foreach ($items as $item){
@@ -200,11 +202,14 @@ class VsebineModelVsebine extends JModelList {
 				$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id.
 						"&title=".JFilterOutput::stringURLSafe($item->title).
 						"&Itemid=".$activeId);
+				
 				$arr=explode('/', $item->slika); //sparsaj ven lokacijo TODO treba popravit, da se bo lokacija ujemala z id-em
-				$namearr=explode('.', $arr[count($arr)-1]);
-				$arr[count($arr)-1]="m.".$namearr[1];
-				$item->slika="http://ci.novicomat.si/".implode("/", $arr);
-				//echo $item->slika;
+				$arr[count($arr)-1]="300x200-".$arr[count($arr)-1];
+				if($server=="dev" || $server=="localhost")	$item->slika="http://dev.novicomat.si/".implode("/", $arr);
+				else $item->slika="http://novicomat.si/".implode("/", $arr);
+				
+				//echo '"'.$item->slika.'"<br>';
+				
 				//print_r($arr);
 				//else
 				//	 $item->url = JRoute::_("component/vsebine/prispevek/".JFilterOutput::stringURLSafe($item->title));
