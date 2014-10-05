@@ -96,7 +96,7 @@ class PovezaniPrispevki {
 		
 		if($version){
 			$query = 
-			"select common_tags, all_tags - common_tags as not_common_tags, c.id, c.name as title from nize01_cinovicomat.vs_content as c
+			"select common_tags, all_tags - common_tags as not_common_tags, c.id, c.name as title mm.url as slika from nize01_cinovicomat.vs_content as c
 			inner join (select A.content_id, count(*) as common_tags from nize01_cinovicomat.vs_tags_content as A
 			            inner join nize01_cinovicomat.vs_tags_content as B on A.tag_id = B.tag_id and B.content_id=".$Prispevek->id."
 			            where A.content_id <> ".$Prispevek->id."
@@ -108,6 +108,8 @@ class PovezaniPrispevki {
 			inner join `nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id
 			INNER JOIN `nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id 
 			AND domain= '".$app->getParams('com_vsebine')->get('portal')."'
+			JOIN `nize01_cinovicomat`.vs_content_content cc on cc.content_id=c.id and cc.position='head'
+			INNER JOIN `nize01_cinovicomat`.vs_multimedias mm on cc.ref_content_id = mm.id
 			order by common_tags DESC, not_common_tags asc, a.publish_up desc limit ".$Omejitev;
 			
 		}

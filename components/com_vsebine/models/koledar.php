@@ -83,7 +83,7 @@ class VsebineModelKoledar extends JModelList {
         if($version){
         	$query->select(
         			$this->getState(
-        					'list.select', ' cc.content_id as id, c.name as title, c.name as naslov, cc.content_id as title_url, e.start_date as zacetek, e.end_date as konec, e.id as koledar_id, c.description as lokacija '
+        					'list.select', ' cc.content_id as id, c.name as title, c.name as naslov, cc.content_id as title_url, e.start_date as zacetek, e.end_date as konec, e.id as koledar_id, cc2.name as lokacija '
         			)
         	);
         	 
@@ -100,9 +100,9 @@ class VsebineModelKoledar extends JModelList {
         	$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id 
         			AND domain = '".$app->getParams('com_vsebine')->get('portal')."'");
         	$query->join('INNER', '`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id');
-        	//$query->join('inner', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.content_id");
-        	//$query->join('inner', "`nize01_cinovicomat`.vs_content AS c2 ON c2.id = cc.ref_content_id and c2.type='location'" );
-        	//$query->join('inner', "`nize01_cinovicomat`.vs_locations AS l ON c2.ref_id = l.id " );
+        	$query->join('inner', "`nize01_cinovicomat`.vs_content_content AS ccc ON c.id = ccc.content_id");
+        	$query->join('inner', "`nize01_cinovicomat`.vs_content AS cc2 ON cc2.id = ccc.ref_content_id and cc2.type='location'" );
+        	$query->join('inner', "`nize01_cinovicomat`.vs_locations AS l ON cc2.ref_id = l.id " );
         	 
         	$query->order('e.start_date ASC');
         	if($prispevek){

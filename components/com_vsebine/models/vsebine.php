@@ -203,7 +203,7 @@ class VsebineModelVsebine extends JModelList {
 						"&title=".JFilterOutput::stringURLSafe($item->title).
 						"&Itemid=".$activeId);
 				
-				$arr=explode('/', $item->slika); //sparsaj ven lokacijo TODO treba popravit, da se bo lokacija ujemala z id-em
+				$arr=explode('/', $item->slika);
 				$arr[count($arr)-1]="300x200-".$arr[count($arr)-1];
 				if($server=="dev" || $server=="localhost")	$item->slika="http://dev.novicomat.si/".implode("/", $arr);
 				else $item->slika="http://novicomat.si/".implode("/", $arr);
