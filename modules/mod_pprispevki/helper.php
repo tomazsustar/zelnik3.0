@@ -108,8 +108,6 @@ class PovezaniPrispevki {
 			inner join `nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id
 			INNER JOIN `nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id 
 			AND domain= '".$app->getParams('com_vsebine')->get('portal')."'
-			JOIN `nize01_cinovicomat`.vs_content_content cc on cc.content_id=c.id and cc.position='head'
-			INNER JOIN `nize01_cinovicomat`.vs_multimedias mm on cc.ref_content_id = mm.id
 			order by common_tags DESC, not_common_tags asc, a.publish_up desc limit ".$Omejitev;
 			
 		}
