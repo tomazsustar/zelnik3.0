@@ -58,9 +58,9 @@ class Prispevek {
 		$version = $params->get('version');
 		
 		if($version){
-			$query = "SELECT c.id, t.tag FROM nize01_cinovicomat.vs_content AS c
+			$query = "SELECT c.id, t.name as FROM nize01_cinovicomat.vs_content AS c
 			JOIN nize01_cinovicomat.vs_tags_content AS vt ON vt.content_id = c.id
-			JOIN nize01_cinovicomat.vs_tags AS t ON vt.id_tag = t.id
+			JOIN nize01_cinovicomat.vs_tags AS t ON vt.tag_id = t.id
 			INNER JOIN `nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id AND mc.status=2
 			WHERE c.id = ".$this->id;
 		}
