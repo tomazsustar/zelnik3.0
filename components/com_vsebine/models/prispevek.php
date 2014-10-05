@@ -113,7 +113,8 @@ protected function populateState()
 					$query->join('INNER', "nize01_cinovicomat.vs_tags_content as tc ON tc.tag_id = t.id AND tc.content_id=$data->id");
 					$db->setQuery($query);
 					$tags = $db->loadObjectList();
-					
+					$server = @array_shift(explode(".",$_SERVER['HTTP_HOST']));
+					//echo $server;
 					//print_r($tags);
 					$arr=array();
 					foreach ($tags as &$tag){
@@ -128,20 +129,20 @@ protected function populateState()
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
 					$query->select('s.url');
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'multimedia'" );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'image'" );
 					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.position='head' AND cc.content_id=$data->id");
 					$query->order("cc.ordering ASC");
 					$db->setQuery($query);
 					$slika = $db->loadResult();
 					$arr=explode('/', $slika); //sparsaj ven lokacijo TODO treba popravit, da se bo lokacija ujemala z id-em
-					$namearr=explode('.', $arr[count($arr)-1]);
-					$arr[count($arr)-1]="m.".$namearr[1];
-					$data->slika="http://ci.novicomat.si/".implode("/", $arr);
+					$arr[count($arr)-1]="300x200-".$arr[count($arr)-1];
+					if($server=="dev" || $server=="localhost")	$data->slika="http://dev.novicomat.si/".implode("/", $arr);
+					else $data->slika="http://novicomat.si/".implode("/", $arr);
 					
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
 					$query->select('*');
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'multimedia'" );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'image'" );
 					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.position='right' AND cc.content_id=$data->id");
 					$query->where("s.format IN ('jpg', 'png', 'gif', 'jpeg')");
 					$query->order("cc.ordering ASC");
@@ -150,16 +151,17 @@ protected function populateState()
 					
 					foreach ($slike as $slika){
 						$arr=explode('/', $slika->url); //sparsaj ven lokacijo TODO treba popravit, da se bo lokacija ujemala z id-em
-						$namearr=explode('.', $arr[count($arr)-1]);
-						$arr[count($arr)-1]="m.".$namearr[1];
-						$slika->url2="http://ci.novicomat.si/".implode("/", $arr);
+						$arr[count($arr)-1]="300x200-".$arr[count($arr)-1];
+						if($server=="dev" || $server=="localhost")	$slika->url2="http://dev.novicomat.si/".implode("/", $arr);
+						else $slika->url2="http://novicomat.si/".implode("/", $arr);
+						
 					}
 					$data->slike = $slike;
 					
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
 					$query->select('*');
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'multimedia'" );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'image'" );
 					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.position='bottom' AND cc.content_id=$data->id");
 					$query->where("s.format IN ('jpg', 'png', 'gif', 'jpeg')");
 					$query->order("cc.ordering ASC");
@@ -168,17 +170,17 @@ protected function populateState()
 					$data->galerija = $slike;
 					foreach ($data->galerija as $slika){
 						$arr=explode('/', $slika->url); //sparsaj ven lokacijo TODO treba popravit, da se bo lokacija ujemala z id-em
-						$namearr=explode('.', $arr[count($arr)-1]);
-						$arr[count($arr)-1]="m.".$namearr[1];
-						$slika->url2="http://ci.novicomat.si/".implode("/", $arr);
+						$arr[count($arr)-1]="300x200-".$arr[count($arr)-1];
+						if($server=="dev" || $server=="localhost")	$slika->url2="http://dev.novicomat.si/".implode("/", $arr);
+						else $slika->url2="http://novicomat.si/".implode("/", $arr);
 					}
 						
 					// PRIPONKE
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
 					$query->select('*');
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'multimedia'" );
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.correlation='file' AND cc.content_id=$data->id");
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'file'" );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.content_id=$data->id");
         			$query->order("cc.ordering ASC");
 					$db->setQuery($query);
 					$slike = $db->loadObjectList();
@@ -189,7 +191,7 @@ protected function populateState()
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
 					$query->select('s.url');
-					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'multimedia'" );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c ON c.ref_id = s.id AND c.type =  'video'" );
 					$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id AND cc.content_id=$data->id");
 					$query->where("s.format IN ('mp4')");
 					$query->where("s.format='mp4'");
