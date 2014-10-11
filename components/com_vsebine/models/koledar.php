@@ -86,7 +86,7 @@ class VsebineModelKoledar extends JModelList {
         		$tags = $db->quote($tags);
         		
         		$query ="
-select A.*, A.start_date zacetek, A.end_date konec 
+select A.*, A.start_date zacetek, A.end_date konec, A.id title_url, A.name title
 from ((select ec1.*, e1.start_date, e1.end_date from `nize01_cinovicomat`.vs_tags t1
 inner join `nize01_cinovicomat`.vs_tags_content tc1 on tc1.tag_id=t1.id and t1.alias=$tags
 inner join `nize01_cinovicomat`.vs_content ec1 on tc1.content_id=ec1.id and type='event'
