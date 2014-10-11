@@ -107,7 +107,7 @@ where e2.start_date>=current_timestamp and ec2.id
 INNER join `nize01_cinovicomat`.vs_media_content mc2 ON mc2.content_id = A.id
 INNER join `nize01_cinovicomat`.vs_media as m2 ON mc2.media_id = m2.id
 INNER join `nize01_cinovicomat`.vs_contacts as co2 ON m2.contact_id = co2.id
-AND domain = '".$db->quote($portal)."' order by A.start_date ASC
+AND domain = ".$db->quote($portal)." order by A.start_date ASC
         				";
         				
         	}else{
