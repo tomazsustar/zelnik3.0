@@ -86,21 +86,21 @@ class VsebineModelKoledar extends JModelList {
         		$tags = $db->quote($tags);
         		
         		$query ="
-select A.* from ((select ec1.*, e1.start_date, e1.end_date from vs_tags t1
-inner join vs_tags_content tc1 on tc1.tag_id=t1.id and t1.alias=$tags
-inner join vs_content ec1 on tc1.content_id=ec1.id and type='event'
-inner join vs_events e1 on e1.id=ec1.ref_id
+select A.* from ((select ec1.*, e1.start_date, e1.end_date from `nize01_cinovicomat`.vs_tags t1
+inner join `nize01_cinovicomat`.vs_tags_content tc1 on tc1.tag_id=t1.id and t1.alias=$tags
+inner join `nize01_cinovicomat`.vs_content ec1 on tc1.content_id=ec1.id and type='event'
+inner join `nize01_cinovicomat`.vs_events e1 on e1.id=ec1.ref_id
 where e1.start_date>=current_timestamp
 )
         		
 union distinct
         		
-(select ec2.*, e2.start_date, e2.end_date from vs_tags t2
-inner join vs_tags_content tc2 on tc2.tag_id=t2.id and t2.alias=$tags
-inner join vs_content ac on tc2.content_id=ac.id and type='article'
-inner join vs_content_content cc2 on cc2.content_id=ac.id
-inner join vs_content ec2 on ec2.id=cc2.ref_content_id and ec2.type='event'
-inner join vs_events e2 on e2.id=ec2.ref_id
+(select ec2.*, e2.start_date, e2.end_date from `nize01_cinovicomat`.vs_tags t2
+inner join `nize01_cinovicomat`.vs_tags_content tc2 on tc2.tag_id=t2.id and t2.alias=$tags
+inner join `nize01_cinovicomat`.vs_content ac on tc2.content_id=ac.id and type='article'
+inner join `nize01_cinovicomat`.vs_content_content cc2 on cc2.content_id=ac.id
+inner join `nize01_cinovicomat`.vs_content ec2 on ec2.id=cc2.ref_content_id and ec2.type='event'
+inner join `nize01_cinovicomat`.vs_events e2 on e2.id=ec2.ref_id
 where e2.start_date>=current_timestamp and ec2.id
 )) as A
 
