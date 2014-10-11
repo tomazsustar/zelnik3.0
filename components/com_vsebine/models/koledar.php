@@ -89,7 +89,7 @@ class VsebineModelKoledar extends JModelList {
         	 
         	 
         	if ($format=="ical"){
-        		$query->select('a.fulltext, a.slika, a.title, a.id as vsebina_id, a.introtext');
+        		$query->select('c.id as vsebina_id, c.name as title, c.description as introtext');
         	}
         	 
         	$query->from('`nize01_cinovicomat`.`vs_events` AS e');
@@ -97,7 +97,7 @@ class VsebineModelKoledar extends JModelList {
         	$query->join('INNER', "nize01_cinovicomat.vs_content as c ON e.id = c.ref_id AND c.type = 'event' ");
         	$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id');
         	$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id');
-        	$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id 
+        	$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id
         			AND domain = '".$app->getParams('com_vsebine')->get('portal')."'");
         	$query->join('INNER', '`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id');
         	$query->join('inner', "`nize01_cinovicomat`.vs_content_content AS ccc ON c.id = ccc.content_id");
@@ -174,6 +174,7 @@ class VsebineModelKoledar extends JModelList {
        $this->setState('list.limit', 25);
         $this->setState('list.offset', 0);
     }
+
     	/**
 	 * Method to get a list of articles.
 	 *
@@ -187,13 +188,45 @@ class VsebineModelKoledar extends JModelList {
 		$app = JFactory::getApplication('site');
 		$version = $app->getParams('com_vsebine')->get('version');
 		$dates=array();
-		$items	= parent::getItems();
+
+		$items = parent::getItems();
 		$i=0;
-		if(count($items)){
+		if(isset($items[0]->zacetek)){
 			$zac = new ZDate($items[0]->zacetek);
 			$dan = $zac->datumDB();
 			//echo "DAAAAN:".$dan;
 			foreach ($items as $item){
+
+				// if format = ical
+				if(isset($item->vsebina_id)) {
+					$db = $this->getDbo();
+					$query = $db->getQuery(true);
+
+					$query->select("c.id, a.text");
+					$query->from('nize01_cinovicomat.vs_articles AS a');
+					$query->join('INNER', "nize01_cinovicomat.vs_content as c ON a.id = c.ref_id AND c.type = 'article' ");
+					$query->join('INNER', 'nize01_cinovicomat.vs_content_content as cc ON cc.content_id = c.id and cc.ref_content_id = '.$item->vsebina_id);
+					$db->setQuery($query);
+					$data = $db->loadObject();
+
+					$item->fulltext = (isset($data->text) ? $data->text : '');
+					$item->id_prispevka = (isset($data->id) ? $data->id : 0);
+				}
+
+				if(isset($item->id_prispevka) && $item->id_prispevka != 0) {
+					$db = $this->getDbo();
+					$query = $db->getQuery(true);
+
+					$query->select("mu.id, CONCAT('http://dev.zelnik.net/', CONCAT(SUBSTRING_INDEX(mu.url, '/', 3),CONCAT('/300x200-',SUBSTRING_INDEX(mu.url, '/', -1)))) as url");
+					$query->from('nize01_cinovicomat.vs_multimedias AS mu');
+					$query->join('INNER', "nize01_cinovicomat.vs_content as c ON mu.id = c.ref_id AND c.type = 'image' ");
+					$query->join('INNER', 'nize01_cinovicomat.vs_content_content as cc ON cc.ref_content_id = c.id and cc.content_id = '.$item->id_prispevka.' and cc.position = "head"');
+					$db->setQuery($query);
+					$data = $db->loadObject();
+
+					$item->slika = (isset($data->url) ? $data->url : (isset($data->id) ? $data->id : ''));
+				}
+
 				//datumi
 				$item->zacetek=new ZDate($item->zacetek);
 				
