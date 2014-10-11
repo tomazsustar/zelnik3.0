@@ -86,7 +86,7 @@ class VsebineModelKoledar extends JModelList {
         		$tags = $db->quote($tags);
         		
         		$query ="
-select cc.content_id as id, A.start_date zacetek, A.end_date konec, cc.content_id as title_url, A.name naslov, A.name title, cc2.name as lokacija
+select cc.content_id as id, A.start_date zacetek, A.end_date konec, cc.content_id as title_url, A.name naslov, A.name title, B.lokacija
 from ((select ec1.*, e1.start_date, e1.end_date from `nize01_cinovicomat`.vs_tags t1
 inner join `nize01_cinovicomat`.vs_tags_content tc1 on tc1.tag_id=t1.id and t1.alias=$tags
 inner join `nize01_cinovicomat`.vs_content ec1 on tc1.content_id=ec1.id and type='event'
@@ -109,10 +109,11 @@ INNER join `nize01_cinovicomat`.vs_media_content mc2 ON mc2.content_id = A.id
 INNER join `nize01_cinovicomat`.vs_media as m2 ON mc2.media_id = m2.id
 INNER join `nize01_cinovicomat`.vs_contacts as co2 ON m2.contact_id = co2.id
 AND domain = ".$db->quote($portal)." 
-INNER join `nize01_cinovicomat`.vs_content_content AS cc ON A.id = cc.ref_content_id
-inner join `nize01_cinovicomat`.vs_content_content AS ccc ON A.id = ccc.content_id
-inner join  `nize01_cinovicomat`.vs_content AS cc2 ON cc2.id = ccc.ref_content_id and cc2.type='location'
-inner join `nize01_cinovicomat`.vs_locations AS l ON cc2.ref_id = l.id 
+left join `nize01_cinovicomat`.vs_content_content AS cc ON A.id = cc.ref_content_id
+
+left join (select ccc.content_id, cc2.name as lokacija from `nize01_cinovicomat`.vs_content_content AS ccc
+inner join  `nize01_cinovicomat`.vs_content AS cc2 ON cc2.id = ccc.ref_content_id and cc2.type='location') as B
+on B.content_id = A.id
 order by A.start_date ASC
         				";
         				
