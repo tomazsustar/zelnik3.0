@@ -121,7 +121,7 @@ order by A.start_date ASC
         	
 	        	$query->select(
 	        			$this->getState(
-	        					'list.select', ' cc.content_id as id, c.name as title, c.name as naslov, cc.content_id as title_url, e.start_date as zacetek, e.end_date as konec, e.id as koledar_id, cc2.name as lokacija '
+	        					'list.select', ' cc.content_id as id, c.name as title, c.name as naslov, cc.content_id as title_url, e.start_date as zacetek, e.end_date as konec, e.id as koledar_id, B.lokacija '
 	        			)
 	        	);
 	        	 
@@ -137,10 +137,10 @@ order by A.start_date ASC
 	        	$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id');
 	        	$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id
 	        			AND domain = ".$db->quote($portal));
-	        	$query->join('INNER', '`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id');
-	        	$query->join('inner', "`nize01_cinovicomat`.vs_content_content AS ccc ON c.id = ccc.content_id");
-	        	$query->join('inner', "`nize01_cinovicomat`.vs_content AS cc2 ON cc2.id = ccc.ref_content_id and cc2.type='location'" );
-	        	$query->join('inner', "`nize01_cinovicomat`.vs_locations AS l ON cc2.ref_id = l.id " );
+	        	$query->join('left', '`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id');
+	        	$query->join('left', "(select ccc.content_id, cc2.name as lokacija from `nize01_cinovicomat`.vs_content_content AS ccc
+						inner join  `nize01_cinovicomat`.vs_content AS cc2 ON cc2.id = ccc.ref_content_id and cc2.type='location') as B
+						on B.content_id = c.id" );
 	        	 
 	        	$query->order('e.start_date ASC');
 	        	if($prispevek){
