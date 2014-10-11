@@ -81,49 +81,71 @@ class VsebineModelKoledar extends JModelList {
         $params = JComponentHelper::getParams('com_vsebine');
         $version = $params->get('version');
         if($version){
-        	$query->select(
-        			$this->getState(
-        					'list.select', ' cc.content_id as id, c.name as title, c.name as naslov, cc.content_id as title_url, e.start_date as zacetek, e.end_date as konec, e.id as koledar_id, cc2.name as lokacija '
-        			)
-        	);
-        	 
-        	 
-        	if ($format=="ical"){
-        		$query->select('c.id as vsebina_id, c.name as title, c.description as introtext');
-        	}
-        	 
-        	$query->from('`nize01_cinovicomat`.`vs_events` AS e');
-        	 
-        	$query->join('INNER', "nize01_cinovicomat.vs_content as c ON e.id = c.ref_id AND c.type = 'event' ");
-        	$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id');
-        	$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id');
-        	$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id
-        			AND domain = '".$app->getParams('com_vsebine')->get('portal')."'");
-        	$query->join('INNER', '`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id');
-        	$query->join('inner', "`nize01_cinovicomat`.vs_content_content AS ccc ON c.id = ccc.content_id");
-        	$query->join('inner', "`nize01_cinovicomat`.vs_content AS cc2 ON cc2.id = ccc.ref_content_id and cc2.type='location'" );
-        	$query->join('inner', "`nize01_cinovicomat`.vs_locations AS l ON cc2.ref_id = l.id " );
-        	 
-        	$query->order('e.start_date ASC');
-        	if($prispevek){
+        	
+        	if($tags){
+        		$tags = $db->quote($tags);
         		
-        		$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c2 ON c2.id = cc.content_id AND c2.id=$prispevek" );
+        		$query ="
+select A.* from ((select ec1.*, e1.start_date, e1.end_date from vs_tags t1
+inner join vs_tags_content tc1 on tc1.tag_id=t1.id and t1.alias=$tags
+inner join vs_content ec1 on tc1.content_id=ec1.id and type='event'
+inner join vs_events e1 on e1.id=ec1.ref_id
+where e1.start_date>=current_timestamp
+)
+        		
+union distinct
+        		
+(select ec2.*, e2.start_date, e2.end_date from vs_tags t2
+inner join vs_tags_content tc2 on tc2.tag_id=t2.id and t2.alias=$tags
+inner join vs_content ac on tc2.content_id=ac.id and type='article'
+inner join vs_content_content cc2 on cc2.content_id=ac.id
+inner join vs_content ec2 on ec2.id=cc2.ref_content_id and ec2.type='event'
+inner join vs_events e2 on e2.id=ec2.ref_id
+where e2.start_date>=current_timestamp and ec2.id
+)) as A
+
+INNER join `nize01_cinovicomat`.vs_media_content mc2 ON mc2.content_id = A.id
+INNER join `nize01_cinovicomat`.vs_media as m2 ON mc2.media_id = m2.id
+INNER join `nize01_cinovicomat`.vs_contacts as co2 ON m2.contact_id = co2.id
+AND domain = '".$db->quote($portal)."' order by A.start_date ASC
+        				";
+        				
         	}else{
         	
-        		$today = date("Y-m-d")." 00:00:00.000";
-        		$query->where("e.start_date >= '".$today."'");
+	        	$query->select(
+	        			$this->getState(
+	        					'list.select', ' cc.content_id as id, c.name as title, c.name as naslov, cc.content_id as title_url, e.start_date as zacetek, e.end_date as konec, e.id as koledar_id, cc2.name as lokacija '
+	        			)
+	        	);
+	        	 
+	        	 
+	        	if ($format=="ical"){
+	        		$query->select('c.id as vsebina_id, c.name as title, c.description as introtext');
+	        	}
+	        	 
+	        	$query->from('`nize01_cinovicomat`.`vs_events` AS e');
+	        	 
+	        	$query->join('INNER', "nize01_cinovicomat.vs_content as c ON e.id = c.ref_id AND c.type = 'event' ");
+	        	$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id');
+	        	$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id');
+	        	$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id
+	        			AND domain = '".$db->quote($portal)."'");
+	        	$query->join('INNER', '`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.ref_content_id');
+	        	$query->join('inner', "`nize01_cinovicomat`.vs_content_content AS ccc ON c.id = ccc.content_id");
+	        	$query->join('inner', "`nize01_cinovicomat`.vs_content AS cc2 ON cc2.id = ccc.ref_content_id and cc2.type='location'" );
+	        	$query->join('inner', "`nize01_cinovicomat`.vs_locations AS l ON cc2.ref_id = l.id " );
+	        	 
+	        	$query->order('e.start_date ASC');
+	        	if($prispevek){
+	        		
+	        		$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c2 ON c2.id = cc.content_id AND c2.id=$prispevek" );
+	        	}else{
+	        	
+	        		$today = date("Y-m-d")." 00:00:00.000";
+	        		$query->where("e.start_date >= '".$today."'");
+	        	}
         	}
-        	 
-        	if($tags){
-        		$tags = explode(',', $tags);
-        		$qTags = array();
-        		foreach($tags as $tag){$qTags[]=$db->quote($tag); }
-        		$tags=implode(',', $qTags);
-        		//echo $tags;
-        		$query->join('INNER', '`nize01_cinovicomat`.vs_tags_content as tc ON tc.content_id = c.id');
-        		$query->join('INNER', '`nize01_cinovicomat`.vs_tags as t ON tc.tag_id = t.id');
-        		$query->where("t.name IN ($tags)");
-        	}
+        	
         }else{
 	        $query->select(
 	                $this->getState(
