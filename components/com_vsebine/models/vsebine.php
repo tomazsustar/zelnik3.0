@@ -117,7 +117,8 @@ class VsebineModelVsebine extends JModelList {
         		$query->where("t.name IN ($tags)");
         	}else{
         		$query->where("(a.publish_down > current_timestamp or a.publish_down is null or a.publish_down='0000-00-00') and a.publish_up <= current_timestamp");
-        		$query->where('(a.frontpage = 1)');
+        		$query->join('LEFT', '`nize01_cinovicomat`.vs_tags_content as tc ON tc.content_id = c.id');
+        		$query->where('(a.frontpage = 1 OR tc.tag_id=815)');
         	}
         	 
         	$query=str_replace("SELECT", "SELECT DISTINCT", $query);
