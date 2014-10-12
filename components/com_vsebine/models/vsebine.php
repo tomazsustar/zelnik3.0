@@ -102,7 +102,7 @@ class VsebineModelVsebine extends JModelList {
         	$query->join('INNER', '`nize01_cinovicomat`.vs_articles as a ON c.ref_id = a.id');			
         	$query->order('a.publish_up DESC');
         	
-        	$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.content_id AND cc.correlation='header-image'");
+        	$query->join('INNER', "`nize01_cinovicomat`.vs_content_content AS cc ON c.id = cc.content_id AND cc.position='head'");
         	$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c2 ON c2.id = cc.ref_content_id " );
         	$query->join('INNER', "`nize01_cinovicomat`.vs_multimedias AS mm ON c2.ref_id = mm.id " );
         	
@@ -117,7 +117,7 @@ class VsebineModelVsebine extends JModelList {
         		$query->where("t.name IN ($tags)");
         	}else{
         		$query->where("(a.publish_down > current_timestamp or a.publish_down is null or a.publish_down='0000-00-00') and a.publish_up <= current_timestamp");
-        		$query->join('LEFT', "`nize01_cinovicomat`.vs_media_content as mc2 ON mc.content_id = c.id and mc2.type='menu'");
+        		$query->join('LEFT', "`nize01_cinovicomat`.vs_media_content as mc2 ON mc2.content_id = c.id and mc2.type='menu'");
         		$query->where('(a.frontpage = 1 OR mc2.media_id=4)');
         	}
         	 
