@@ -12,6 +12,11 @@
 				<option value="0">NE</option>
 				<option value="1">DA</option>
 			</field>
+			<field name="menu" type="text"
+				description="Vpiši id menuja iz novicomata"
+				extension="com_vsebine"
+				label="Menu ID"
+			/>
 		</fieldset>
 	</fields>
 		
