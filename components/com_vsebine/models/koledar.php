@@ -144,7 +144,7 @@ order by A.start_date ASC
 	        	 
 	        	$query->order('e.start_date ASC');
 	        	if($prispevek){
-	        		$ype=VsebineController::GetType($prispevek);
+	        		$type=VsebineController::GetType($prispevek);
 	        		switch ($type){
 	        			case 'event':
 	        				$query->where("c.id = $prispevek");
