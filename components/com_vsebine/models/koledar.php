@@ -273,9 +273,11 @@ order by A.start_date ASC
 				//datumi
 				$item->zacetek=new ZDate($item->zacetek);
 				
-				if($item->konec)
+				//echo $item->konec;
+				if($item->konec && $item->konec!="0000-00-00 00:00:00")
 					$item->konec=new ZDate($item->konec);
-				
+				else
+					$item->konec = false;
 				if($item->title_url=="" || $version)
 					$item->url = JRoute::_("index.php?option=com_vsebine&prispevek=".$item->id."&title=".JFilterOutput::stringURLSafe($item->title));
 				else
