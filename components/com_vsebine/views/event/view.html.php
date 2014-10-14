@@ -15,7 +15,7 @@ jimport('joomla.application.component.view');
 /**
  * View class for a list of Vsebine.
  */
-class VsebineViewPrispevek extends JViewLegacy
+class VsebineViewEvent extends JViewLegacy
 
 {
 protected $item;
@@ -237,7 +237,8 @@ protected $item;
 		{
 			$this->document->addCustomTag('<meta property="og:title" content="'.$this->item->title.'"/>');
 			$this->document->addCustomTag('<meta property="og:description" content="'.$this->item->introtext.'"/>');
-			$this->document->addCustomTag('<meta property="og:image" content="'.$this->item->slika.'"/>');
+			if($this->item->slika)
+				$this->document->addCustomTag('<meta property="og:image" content="'.$this->item->slika.'"/>');
 		}
 //		elseif (!$this->item->metakey && $this->params->get('menu-meta_keywords'))
 //		{
@@ -249,7 +250,7 @@ protected $item;
 //			$this->document->setMetadata('robots', $this->params->get('robots'));
 //		}
 //
-		if ($this->item->author_alias)
+		if (isset($this->item->author_alias))
 		{
 			$this->document->setMetaData('author', $this->item->author_alias);
 		}

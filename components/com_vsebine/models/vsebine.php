@@ -208,7 +208,7 @@ class VsebineModelVsebine extends JModelList {
 				$arr=explode('/', $item->slika);
 				$arr[count($arr)-1]="300x200-".$arr[count($arr)-1];
 				if($server=="dev" || $server=="localhost")	$item->slika="http://dev.novicomat.si/".implode("/", $arr);
-				else $item->slika="http://novicomat.si/".implode("/", $arr);
+				else $item->slika="http://ci.novicomat.si/".implode("/", $arr);
 				
 				//echo '"'.$item->slika.'"<br>';
 				
@@ -334,5 +334,7 @@ class VsebineModelVsebine extends JModelList {
 		$return=array_merge($return, $diff);
 		return $return;
 	}
+	
+	
 
 }

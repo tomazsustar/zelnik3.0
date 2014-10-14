@@ -23,7 +23,39 @@ class VsebineController extends JControllerLegacy
 					JRequest::setVar('view', 'vsebine');
 				}
 				if(JRequest::getVar('prispevek')){
-					JRequest::setVar('view', 'prispevek');
+					$prispevek = JRequest::getVar('prispevek');
+					$type =self::GetType($prispevek);
+					JRequest::setVar('view', $type);
+					//die($type);
+					/*
+					switch ($type){
+						case 'article':
+							JRequest::setVar('view', 'prispevek');
+						break;
+						case 'event':
+							$count = self::CountArticles($prispevek, $article);
+							switch ($count){
+								case 0:
+									echo "AAA";
+									JRequest::setVar('view', 'prispevek');
+									JRequest::setVar('layout', 'dogodek');
+									break;
+								case 1:
+									echo "BBB";
+									JRequest::setVar('view', 'prispevek');
+									JRequest::setVar('prispevek', self::GetArticle($prispevek));
+								break;
+								default:
+									echo "CCC";
+									JRequest::setVar('view', 'prispevek');
+									JRequest::setVar('prispevek', self::GetArticle($prispevek));
+								break;
+							}
+							JRequest::setVar('view', 'vsebine');
+							JRequest::setVar('dogodek', '');
+						break;
+					}
+					*/
 				}
 			}
 	
@@ -50,6 +82,34 @@ class VsebineController extends JControllerLegacy
 //			//echo "<pre>bbb ";print_r($mdl->getState());echo "</pre>";
 			echo $view->display();
 			
+		}
+		
+		public static function GetType($id){
+			$db=JFactory::getDbo();
+			$q="SELECT type from nize01_cinovicomat.vs_content where id=$id" ;
+			$db->setQuery($q);
+			return $db->loadResult();
+		}
+		
+		public static function CountArticles($id){
+			$db=JFactory::getDbo();
+			$q="SELECT count(*), from  nize01_cinovicomat.vs_content c inner join 
+					nize01_cinovicomat.vs_content_content cc on cc.ref_content_id = c.id
+					inner join nize01_cinovicomat.vs_content ca on ca.id=cc.content_id and type='article'
+					where c.id=$id" ;
+			$db->setQuery($q);
+			return $db->loadResult();
+		}
+		public static function GetArticle($id){
+			$db=JFactory::getDbo();
+			$q="SELECT ca.id, from  nize01_cinovicomat.vs_content c inner join
+					nize01_cinovicomat.vs_content_content cc on cc.ref_content_id = c.id
+					inner join nize01_cinovicomat.vs_content ca on ca.id=cc.content_id and type='article'
+					inner join nize01_cinovicomat.articles a on a.id=ca.ref_id
+					where c.id=$id
+					order by a.publish_up desc limit 0,1" ;
+			$db->setQuery($q);
+			return $db->loadResult();
 		}
 	
 }

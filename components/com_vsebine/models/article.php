@@ -15,7 +15,7 @@ include_once JPATH_SITE.'/components/com_vsebine/helpers/ZDate.php';
 /**
  * Methods supporting a list of Vsebine records.
  */
-class VsebineModelPrispevek extends JModelItem {
+class VsebineModelArticle extends JModelItem {
 
 protected function populateState()
 	{
@@ -137,7 +137,7 @@ protected function populateState()
 					$arr=explode('/', $slika); //sparsaj ven lokacijo TODO treba popravit, da se bo lokacija ujemala z id-em
 					$arr[count($arr)-1]="300x200-".$arr[count($arr)-1];
 					if($server=="dev" || $server=="localhost")	$data->slika="http://dev.novicomat.si/".implode("/", $arr);
-					else $data->slika="http://novicomat.si/".implode("/", $arr);
+					else $data->slika="http://ci.novicomat.si/".implode("/", $arr);
 					
 					$query = $db->getQuery(true);
 					$query->from('nize01_cinovicomat.vs_multimedias AS s');
@@ -152,7 +152,7 @@ protected function populateState()
 						$arr=explode('/', $slika->url); //sparsaj ven lokacijo TODO treba popravit, da se bo lokacija ujemala z id-em
 						$arr[count($arr)-1]="300x200-".$arr[count($arr)-1];
 						if($server=="dev" || $server=="localhost")	$slika->url2="http://dev.novicomat.si/".implode("/", $arr);
-						else $slika->url2="http://novicomat.si/".implode("/", $arr);
+						else $slika->url2="http://ci.novicomat.si/".implode("/", $arr);
 						
 					}
 					$data->slike = $slike;
@@ -170,7 +170,7 @@ protected function populateState()
 						$arr=explode('/', $slika->url); //sparsaj ven lokacijo TODO treba popravit, da se bo lokacija ujemala z id-em
 						$arr[count($arr)-1]="300x200-".$arr[count($arr)-1];
 						if($server=="dev" || $server=="localhost")	$slika->url2="http://dev.novicomat.si/".implode("/", $arr);
-						else $slika->url2="http://novicomat.si/".implode("/", $arr);
+						else $slika->url2="http://ci.novicomat.si/".implode("/", $arr);
 					}
 						
 					// PRIPONKE
@@ -186,7 +186,7 @@ protected function populateState()
 					
 					foreach ($data->priponke as $slika){
 						if($server=="dev" || $server=="localhost")	$slika->url="http://dev.novicomat.si/".$slika->url;
-						else $slika->url="http://novicomat.si/".$slika->url;
+						else $slika->url="http://ci.novicomat.si/".$slika->url;
 					}
 						
 					//VIDEO

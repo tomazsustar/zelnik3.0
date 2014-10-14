@@ -105,7 +105,7 @@ inner join `nize01_cinovicomat`.vs_events e2 on e2.id=ec2.ref_id
 where e2.start_date>=current_timestamp and ec2.id
 )) as A
 
-INNER join `nize01_cinovicomat`.vs_media_content mc2 ON mc2.content_id = A.id
+INNER join `nize01_cinovicomat`.vs_media_content mc2 ON mc2.content_id = A.id and mc2.status=2
 INNER join `nize01_cinovicomat`.vs_media as m2 ON mc2.media_id = m2.id
 INNER join `nize01_cinovicomat`.vs_contacts as co2 ON m2.contact_id = co2.id
 AND domain = ".$db->quote($portal)." 
@@ -121,7 +121,7 @@ order by A.start_date ASC
         	
 	        	$query->select(
 	        			$this->getState(
-	        					'list.select', ' cc.content_id as id, c.name as title, c.name as naslov, cc.content_id as title_url, e.start_date as zacetek, e.end_date as konec, e.id as koledar_id, B.lokacija '
+	        					'list.select', ' c.id as ev_id, cc.content_id as id, c.name as title, c.name as naslov, cc.content_id as title_url, e.start_date as zacetek, e.end_date as konec, e.id as koledar_id, B.lokacija '
 	        			)
 	        	);
 	        	 
@@ -133,7 +133,7 @@ order by A.start_date ASC
 	        	$query->from('`nize01_cinovicomat`.`vs_events` AS e');
 	        	 
 	        	$query->join('INNER', "nize01_cinovicomat.vs_content as c ON e.id = c.ref_id AND c.type = 'event' ");
-	        	$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id');
+	        	$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id and mc.status=2' );
 	        	$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id');
 	        	$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id
 	        			AND domain = ".$db->quote($portal));
@@ -144,8 +144,17 @@ order by A.start_date ASC
 	        	 
 	        	$query->order('e.start_date ASC');
 	        	if($prispevek){
+	        		$ype=VsebineController::GetType($prispevek);
+	        		switch ($type){
+	        			case 'event':
+	        				$query->where("c.id = $prispevek");
+	        			break;
+	        			default:
+	        				$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c2 ON c2.id = cc.content_id AND c2.id=$prispevek" );
+	        			break;
+	        		}
 	        		
-	        		$query->join('INNER', "`nize01_cinovicomat`.vs_content AS c2 ON c2.id = cc.content_id AND c2.id=$prispevek" );
+	        		//$query->join('INNER', "((SELECT c2.id from `nize01_cinovicomat`.vs_content AS c2 WHERE c2.id = cc.content_id AND c2.id=$prispevek) union (select c3.id from `nize01_cinovicomat`.vs_content c3.id =$prispevek)) as C4 on C4.id=c.id" );
 	        	}else{
 	        	
 	        		$today = date("Y-m-d")." 00:00:00.000";
@@ -246,7 +255,7 @@ order by A.start_date ASC
 					$db = $this->getDbo();
 					$query = $db->getQuery(true);
 
-					$query->select("mu.id, CONCAT('http://dev.zelnik.net/', CONCAT(SUBSTRING_INDEX(mu.url, '/', 3),CONCAT('/300x200-',SUBSTRING_INDEX(mu.url, '/', -1)))) as url");
+					$query->select("mu.id, CONCAT('http://ci.novicomat.si/', CONCAT(SUBSTRING_INDEX(mu.url, '/', 3),CONCAT('/300x200-',SUBSTRING_INDEX(mu.url, '/', -1)))) as url");
 					$query->from('nize01_cinovicomat.vs_multimedias AS mu');
 					$query->join('INNER', "nize01_cinovicomat.vs_content as c ON mu.id = c.ref_id AND c.type = 'image' ");
 					$query->join('INNER', 'nize01_cinovicomat.vs_content_content as cc ON cc.ref_content_id = c.id and cc.content_id = '.$item->id_prispevka.' and cc.position = "head"');
@@ -254,6 +263,11 @@ order by A.start_date ASC
 					$data = $db->loadObject();
 
 					$item->slika = (isset($data->url) ? $data->url : (isset($data->id) ? $data->id : ''));
+				}
+				
+				if(!isset($item->id)){
+					$item->id = $item->ev_id;
+					$item->title_url = $item->ev_id;
 				}
 
 				//datumi
