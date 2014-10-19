@@ -240,13 +240,13 @@ order by A.start_date ASC
 					$db = $this->getDbo();
 					$query = $db->getQuery(true);
 
-					$query->select("c.id, a.text");
+					$query->select("c.id, a.text, c.description as intro");
 					$query->from('nize01_cinovicomat.vs_articles AS a');
 					$query->join('INNER', "nize01_cinovicomat.vs_content as c ON a.id = c.ref_id AND c.type = 'article' ");
 					$query->join('INNER', 'nize01_cinovicomat.vs_content_content as cc ON cc.content_id = c.id and cc.ref_content_id = '.$item->vsebina_id);
 					$db->setQuery($query);
 					$data = $db->loadObject();
-
+					$item->introtext = (isset($data->intro) ? $data->intro : $item->introtext);
 					$item->fulltext = (isset($data->text) ? $data->text : '');
 					$item->id_prispevka = (isset($data->id) ? $data->id : 0);
 				}
@@ -255,7 +255,7 @@ order by A.start_date ASC
 					$db = $this->getDbo();
 					$query = $db->getQuery(true);
 
-					$query->select("mu.id, CONCAT('http://ci.novicomat.si/', CONCAT(SUBSTRING_INDEX(mu.url, '/', 3),CONCAT('/300x200-',SUBSTRING_INDEX(mu.url, '/', -1)))) as url");
+					$query->select("mu.id, CONCAT('http://ci.novicomat.si/', CONCAT(SUBSTRING_INDEX(mu.url, '/', 3),CONCAT('/100x67-',SUBSTRING_INDEX(mu.url, '/', -1)))) as url");
 					$query->from('nize01_cinovicomat.vs_multimedias AS mu');
 					$query->join('INNER', "nize01_cinovicomat.vs_content as c ON mu.id = c.ref_id AND c.type = 'image' ");
 					$query->join('INNER', 'nize01_cinovicomat.vs_content_content as cc ON cc.ref_content_id = c.id and cc.content_id = '.$item->id_prispevka.' and cc.position = "head"');

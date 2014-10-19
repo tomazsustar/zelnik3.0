@@ -80,7 +80,7 @@ DTSTAMP:<?= gmdate('Ymd\THis\Z', time()) ?>
 LOCATION:<?= preg_replace('/([\,;])/','\\\$1', $dogodek->lokacija) ?>
 
 <?php if(!$standard):?>
-DESCRIPTION;ENCODING=QUOTED-PRINTABLE:<?= VsebineHelper::wraplines('<img src="'.$dogodek->slika.'" alt="slika" style="float:left;margin:5px;" />'.$dogodek->fulltext) // preg_replace('/([\,;])/','\\\$1', strip_tags($dogodek->fulltext)), 76, true  ?>
+DESCRIPTION;ENCODING=QUOTED-PRINTABLE:<?= VsebineHelper::wraplines('<img src="'.$dogodek->slika.'" alt="slika" style="float:left;margin:5px;" />'.strip_tags($dogodek->introtext).' ... <a href="' . "http://".$_SERVER['HTTP_HOST'].$dogodek->url.'">več o tem</a>') // preg_replace('/([\,;])/','\\\$1', strip_tags($dogodek->fulltext)), 76, true  ?>
 <?php else:?>
 <?php if($full):?>
 DESCRIPTION:<?= preg_replace('/([\,;])/','\\\$1', strip_tags($dogodek->fulltext)) ?>
