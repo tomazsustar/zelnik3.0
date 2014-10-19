@@ -68,7 +68,7 @@ function ParseOutTag($TagAlias) {
 	if($version){
 		$query->from('nize01_cinovicomat.vs_tags AS t');
 		$query->select('t.name as tag');
-		$query->where('t.alias = "'.$TagAlias.'"');
+		$query->where("t.alias = '$TagAlias'");
 	}else{
 		$query->from('nize01_zelnik.vs_tags AS t');
 		$query->select('t.tag');
