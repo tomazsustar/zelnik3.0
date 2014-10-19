@@ -136,8 +136,8 @@ function VsebineBuildRoute(&$query) {
 function VsebineParseRoute($segments)
 {
 	$vars = array();
-	foreach ($segments as $segment){
-		$segment=str_replace(":", "-", $segment);
+	for ($i = 0; $i < count($segment); $i=$i+1){
+		$segment[$i]=str_replace(":", "-", $segment[$i]);
 	}
 	
 	if($segments[0] == 'Prispevek') {
