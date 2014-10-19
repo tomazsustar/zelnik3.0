@@ -119,7 +119,8 @@ class VsebineModelVsebine extends JModelList {
         	}else{
         		$query->where("(a.publish_down > current_timestamp or a.publish_down is null or a.publish_down='0000-00-00') and a.publish_up <= current_timestamp");
         		$query->join('LEFT', "`nize01_cinovicomat`.vs_media_content as mc2 ON mc2.content_id = c.id and mc2.type='menu'");
-        		$query->where("(a.frontpage = 1 OR mc2.media_id=$menu)");
+        		//$query->where("(a.frontpage = 1 OR mc2.media_id=$menu)");
+			$query->where("mc2.media_id=$menu");
         	}
         	 
         	$query=str_replace("SELECT", "SELECT DISTINCT", $query);
