@@ -77,7 +77,7 @@ function ParseOutTag($TagAlias) {
 	$db->setQuery($query);
 	$Row = $db->loadObject();
 	if(!isset($Row))
-			die("".$query);
+			die("".$query." ".$TagAlias);
     return $Row->tag;
 }
 
