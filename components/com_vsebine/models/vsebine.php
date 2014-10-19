@@ -152,7 +152,7 @@ class VsebineModelVsebine extends JModelList {
 	        	//echo $tags;
 	        	$query->join('INNER', '`nize01_zelnik`.vs_tags_vsebina as tv ON tv.id_vsebine = a.id');
 	        	$query->join('INNER', '`nize01_zelnik`.vs_tags as t ON tv.id_tag = t.id');
-	        	$query->where("t.tag IN ($tags)");
+	        	$query->where("t.tag IN ('$tags')");
 	        }else{
 	        	$query->where('(a.publish_down > current_timestamp or a.publish_down is null)');
 	        	$query->where('(a.frontpage = 1)');
