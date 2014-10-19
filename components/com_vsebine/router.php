@@ -76,8 +76,8 @@ function ParseOutTag($TagAlias) {
 	}
 	$db->setQuery($query);
 	$Row = $db->loadObject();
-	if(!isset($Row))
-			die("".$query." ".$TagAlias);
+	//if(!isset($Row))
+	//		die("".$query." ".$TagAlias);
     return $Row->tag;
 }
 
@@ -136,6 +136,9 @@ function VsebineBuildRoute(&$query) {
 function VsebineParseRoute($segments)
 {
 	$vars = array();
+	foreach ($segments as $segment){
+		$segment=str_replace(":", "-", $segment);
+	}
 	
 	if($segments[0] == 'Prispevek') {
 		if(is_numeric($segments[1])) {
