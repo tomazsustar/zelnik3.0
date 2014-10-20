@@ -115,7 +115,7 @@ protected function populateState()
 					$tags = $db->loadObjectList();
 					$server = @array_shift(explode(".",$_SERVER['HTTP_HOST']));
 					//echo $server;
-					//print_r($tags);
+					print_r($tags);
 					$arr=array();
 					foreach ($tags as &$tag){
 						$tag->tagUrl = JRoute::_("index.php?option=com_vsebine&tags=".$tag->alias);
