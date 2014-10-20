@@ -23,7 +23,7 @@ function GetTag($Tag) {
 	if($version){
 		$query->from('nize01_cinovicomat.vs_tags AS t');
 		$query->select('t.alias, t.name as tag');
-		$query->where("t.alias = '$Tag' OR t.name='$Tag'");
+		$query->where("t.alias LIKE '$Tag' OR t.name LIKE '$Tag'");
 	}else{
 		$query->from('nize01_zelnik.vs_tags AS t');
 		$query->select('t.*');
