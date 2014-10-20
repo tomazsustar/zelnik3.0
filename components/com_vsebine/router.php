@@ -31,7 +31,8 @@ function GetTag($Tag) {
 	}
 	$db->setQuery($query);
 	$Row = $db->loadObject();
-	
+	if(!isset($Row))
+		echo("".$query);
     return $Row;
 }
 
