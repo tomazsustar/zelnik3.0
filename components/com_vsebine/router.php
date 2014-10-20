@@ -23,7 +23,7 @@ function GetTag($Tag) {
 	if($version){
 		$query->from('nize01_cinovicomat.vs_tags AS t');
 		$query->select('t.alias, t.name as tag');
-		$query->where("t.alias LIKE '$Tag' OR t.name LIKE '".str_replace("-", " ", $Tag)."'");
+		 $query->where("t.alias LIKE '$Tag' OR t.name LIKE '".str_replace("-", " ", $Tag)."'");
 	}else{
 		$query->from('nize01_zelnik.vs_tags AS t');
 		$query->select('t.*');
@@ -31,8 +31,6 @@ function GetTag($Tag) {
 	}
 	$db->setQuery($query);
 	$Row = $db->loadObject();
-	if(!isset($Row))
-		echo("".$query);
     return $Row;
 }
 
