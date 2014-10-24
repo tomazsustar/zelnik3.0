@@ -67,7 +67,7 @@ protected function populateState()
 				
 					$query->from('nize01_cinovicomat.vs_content AS c');
 					$query->select('c.id as id, c.name as title, c.updated as edited, c.description as introtext, c.description as `fulltext`');
-					$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id AND mc.status=2' );
+					$query->join('INNER', "`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id AND mc.status=2 AND mc.type='media'" );
         			$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id');
         			$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id 
         			AND domain = '".$app->getParams('com_vsebine')->get('portal')."'");

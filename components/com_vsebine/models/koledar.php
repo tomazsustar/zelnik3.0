@@ -105,7 +105,7 @@ inner join `nize01_cinovicomat`.vs_events e2 on e2.id=ec2.ref_id
 where e2.start_date>=current_timestamp and ec2.id
 )) as A
 
-INNER join `nize01_cinovicomat`.vs_media_content mc2 ON mc2.content_id = A.id and mc2.status=2
+INNER join `nize01_cinovicomat`.vs_media_content mc2 ON mc2.content_id = A.id and mc2.status=2 and mc2.type='media'
 INNER join `nize01_cinovicomat`.vs_media as m2 ON mc2.media_id = m2.id
 INNER join `nize01_cinovicomat`.vs_contacts as co2 ON m2.contact_id = co2.id
 AND domain = ".$db->quote($portal)." 
@@ -133,7 +133,7 @@ order by A.start_date ASC
 	        	$query->from('`nize01_cinovicomat`.`vs_events` AS e');
 	        	 
 	        	$query->join('INNER', "nize01_cinovicomat.vs_content as c ON e.id = c.ref_id AND c.type = 'event' ");
-	        	$query->join('INNER', '`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id and mc.status=2' );
+	        	$query->join('INNER', "`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id and mc.status=2' and mc.type='media'" );
 	        	$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id');
 	        	$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id
 	        			AND domain = ".$db->quote($portal));
