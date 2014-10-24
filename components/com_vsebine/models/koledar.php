@@ -133,7 +133,7 @@ order by A.start_date ASC
 	        	$query->from('`nize01_cinovicomat`.`vs_events` AS e');
 	        	 
 	        	$query->join('INNER', "nize01_cinovicomat.vs_content as c ON e.id = c.ref_id AND c.type = 'event' ");
-	        	$query->join('INNER', "`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id and mc.status=2' and mc.type='media'" );
+	        	$query->join('INNER', "`nize01_cinovicomat`.vs_media_content mc ON mc.content_id = c.id and mc.status=2 and mc.type='media'" );
 	        	$query->join('INNER', '`nize01_cinovicomat`.vs_media as m ON mc.media_id = m.id');
 	        	$query->join('INNER', "`nize01_cinovicomat`.vs_contacts as co ON m.contact_id = co.id
 	        			AND domain = ".$db->quote($portal));
